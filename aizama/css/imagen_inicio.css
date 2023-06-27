@@ -1,0 +1,128 @@
+
+:root{
+    --color1 : #006581;
+	--color2: #e23b3b;
+	--color3: lightblue;
+	--color4:rgb(224, 218, 216); /*Gris*/
+	--color5:rgb(186, 214, 206); /*verde*/
+}
+
+.contenedor {
+    background-color: var(--color3);
+    margin: 10px;
+    border-radius: 10px;
+    padding: 10px;
+    height: 90vh;
+    text-align: center;
+}
+h1 {
+    text-transform: uppercase;
+    color: var(--color1);
+    font-size: 2em;
+}
+input {
+    outline: none;
+    margin: 0.3em;
+    border-radius: 10px;
+    text-align: center;
+    border: 1px solid var(--color1);
+    padding-left: 3px;
+}
+.divisor {
+    margin: 15px 1px;
+}
+.container .wrapper {
+    margin:auto;
+    position: relative;
+    height: 300px;
+    width: 400px;
+    border: 2px dashed #e2edda;
+    border-radius: 24px 24px 0 0;
+}
+.wrapper .image {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.wrapper .image img {
+    height: 100%;
+    
+    border-radius: 24px 24px 0 0;
+}
+input {
+    outline: none;
+    margin: 0.3em;
+    border-radius: 10px;
+    text-align: center;
+    border: 1px solid var(--color1);
+    padding-left: 3px;
+}
+#file {
+    margin-top: -2px;
+    width: 400px;
+    height: 30px;
+    border: none;
+    border-radius: 0 0 24px 24PX;
+}
+.botones {
+    display: inline-flex;
+}
+.Guardar {
+    background-color: var(--color1);
+    padding: 0.5em;
+    font-weight: 500;
+    font-size: 1.250em;
+    color: white;
+    border-radius: 6px;
+    border: 2px;
+    box-shadow: 2px 2px 9px 0 grey;
+    margin: 15px;
+}
+.Cancelar {
+    margin: 15px;
+    text-align: center;
+    background-color: var(--color2);
+    padding: 0.5em;
+    font-weight: 500;
+    font-size: 1.250em;
+    color: white;
+    border-radius: 6px;
+    border: 2px;
+    box-shadow: 2px 2px 10px 0 grey;
+}
+.Eliminar {
+    background-color: #979797;
+    border-radius: 30px;
+    border: 10px;
+    margin: 20px;
+    position: fixed;
+    padding: 9px 11px;
+    z-index: 100;
+    left: calc(100% - 75px);
+    top: calc(100% - 100px);
+}
+.Eliminar img {
+    width: 20px;
+    height: 20px;
+}
+
+@media (max-width: 480px) {
+    .divisor {
+        display: block;
+        margin: 15px 1px;
+    }
+    .container {
+        margin: 16px 0;
+    }
+    .relleno {
+        margin: 5px -18px;
+    }
+    .botones {
+        display: inline-flex;
+        /*margin: 0 0 10px 0;*/
+    }
+    
+}

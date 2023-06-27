@@ -1,0 +1,377 @@
+html {
+  box-sizing: border-box;
+}
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+body {
+  font-family: 'Lato', sans-serif;
+}
+img {
+  max-width: 100%;
+}
+h1 {
+  font-weight: 900;
+  text-transform: uppercase;
+  color: #2A8F8F;
+}
+@media (min-width: 768px) {
+  h1 {
+    font-size: 50px;
+  }
+}
+/* Utilidades */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 95%;
+}
+@media (min-width: 998px) {
+  .container {
+    width:85%;
+  }
+}
+
+.no-margin {
+  margin: 0;
+}
+.centrar {
+  margin: 0 auto;
+}
+/* Boton */
+.btn {
+  color: white;
+  font-weight: bold;
+  text-decoration: none;
+  text-transform: uppercase;
+  background-color: #0c6f88;
+  padding: 1rem 3rem;
+  display: inline-block;
+  text-align: center;
+  border: none;
+  border-radius: 5px;
+  width: 100%;
+}
+@media (min-width: 768px) {
+  .btn {
+    width:auto;
+  }
+  .mensaje .btn {
+    margin-left:15px;
+  }
+}
+.nombre-profesor {
+    margin:10px 0;
+}
+/* Selects (Curso materia, alumno) */
+.select-curso, .select-materia, .select-alumnos {
+    margin-bottom: 20px;
+}
+.selects-agenda-digital {
+    margin-top:20px;
+}
+@media (min-width: 768px) {
+  .selects-agenda-digital {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    column-gap: 10px;
+    row-gap: 10px;
+  }
+  .select-alumnos {
+    grid-column: 1/3;
+  }
+  .select-curso, .select-materia, .select-alumnos {
+    margin-bottom: 5px;
+}
+}
+/* Imagen Logo del colegio */
+.img-logo {
+  display: flex;
+  justify-content: flex-end;
+}
+.img-logo img {
+  height: 100px;
+}
+/* Botones de opciones para el alumno (primero ultimo lista asistencia)*/
+.button-opcion-alumno {
+  margin-top: 10px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  column-gap: 10px;
+  row-gap: 10px;
+  margin-bottom: 5px;
+}
+.lista-asistencia {
+  grid-column: 1/3;
+}
+@media (min-width: 998px) {
+  .button-opcion-alumno {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .lista-asistencia {
+    grid-column: 3/4;
+  }
+}   
+
+/* Input */
+.mensajes ,select{
+  padding: 1rem;
+  background-color: #e1e1e1;
+  margin-bottom: 5px;
+  border: none;
+  display: block;
+  width: 100%;
+  border-radius: 5px;
+}
+
+@media (min-width: 768px) {
+  input:not([type="button"]), select {
+    margin-bottom: 0px;
+  }
+}
+
+.container-mensaje-1 {
+  margin: 20px auto;
+}
+.container-mensaje-2 {
+  margin: 20px auto;
+}
+@media (min-width: 768px) {
+  .mensaje {
+    display: flex;
+    align-items: center;
+  }
+}
+label {
+  text-transform: uppercase;
+  font-weight: bold;
+}
+/* Botones de seleccion */
+.select2-container--default .select2-selection--single {
+  background-color: #e1e1e1;
+  border: 1px solid #aaa;
+  border-radius: 5px;
+}
+.select2-container--default .select2-selection--single .select2-selection__rendered {
+  line-height: 28px;
+}
+.select2-container--default .select2-selection--single .select2-selection__arrow {
+  height: 26px;
+  position: absolute;
+  top: 1px;
+  right: 1px;
+  width: 20px;
+}
+
+
+/* Listas de Comportamientos */
+@media (min-width: 768px) {
+  .lista-comportamiento {
+    display:grid;
+    grid-template-columns: repeat(2, 1fr);
+    column-gap: 1rem;
+    margin: 0 auto;
+  }
+}
+
+.container-list {
+  margin-bottom: 20px;
+  width: auto;
+  border-left: 1px solid #b5b5b5;
+  border-right: 1px solid #b5b5b5;
+  
+}
+ul {
+  padding: 0;
+  margin: 0;
+}
+ul li {
+  list-style: none;
+
+}
+ul li button {
+  width: 100%;
+  height: 100%;
+  border: none;
+  padding: 15px;
+  cursor: pointer;
+  border-bottom: 1px solid #b5b5b5;
+}
+ul li button:hover {
+  background-color: #e3354c;
+  color: #ffffff;
+}
+.lista-blue ul li button:hover {
+  background-color: #043c5c;
+}
+
+.container-list h2 {
+  color: #ffffff;
+  background-color: #e3354c;
+  padding: 10px 30px;
+  width: 100%;
+  font-weight: bold;
+  text-align: center;
+  text-transform: uppercase;
+  margin: 0;
+  border: 1px solid #b5b5b5;
+}
+.lista-blue .container-list h2 {
+  color: #ffffff;
+  background-color: #043c5c;
+}
+.bloque-grupo{
+  border:1px solid #043c5c;
+  background-color: #043c5c;
+  border-radius: 8px;
+  padding-right: 5px;
+  padding-left: 5px; 
+}
+.etiqueta-bandeja{
+  padding: 10px;
+  color: white;
+  text-align: center;
+}
+.bandeja2{
+  width: 100%;
+  height: 250px;
+  overflow-y: scroll;
+  padding: 5px;
+  background-color: white;
+  border-radius: 5px;
+}
+.bandeja{
+  width: 100%;
+  height: 250px;
+  overflow-y: scroll;
+  padding: 5px;
+  background-color: white;
+  border-radius: 5px;
+}
+.bloque-mensaje{
+  margin-bottom: 5px;
+  font-family: georgia;
+  display: block;
+}
+.fecha-msg{
+  font-size: 0.8em;
+  text-align: center;
+  margin: auto;
+  margin-bottom: 5px;
+  background-color: #e3354c;
+  max-width: 100px;
+  border-radius: 5px;
+  padding: 3px;
+  color: white;
+
+}
+.div-mensaje-chat p{
+  color: white;
+  font-size: 0.9em;
+}
+.div-mensaje-chat{
+  background-color: #005773;
+  display: inline-block;
+  border-radius: 5px;
+  padding: 5px 10px;
+  margin-bottom: 8px;
+  min-width: 250px;
+}
+.div-mensaje-chat-hora{
+  text-align: right;
+  width: auto;
+
+}
+.hora-mesaje{
+  font-size: 0.7rem;
+  text-align: right;
+  color: white;
+  margin-top: 3px;
+}
+.fecha-msg{
+  font-size: 0.8em;
+  text-align: center;
+  margin: auto;
+  margin-bottom: 5px;
+  background-color: #e3354c;
+  max-width: 100px;
+  border-radius: 5px;
+  padding: 3px;
+  color: white;
+
+}
+.div-mensaje-chat-fecha{
+  background-color: #46c6ec;
+  border-radius: 5px;
+}
+.div-box-message{
+  display: grid;
+  grid-template-columns: calc(100% - 110px) 100px;
+  padding: 10px 0;
+}
+.box-message{
+  border-radius: 5px;
+  resize: none;
+  height: 50px;
+  padding: 5px;
+}
+.etiqueta-bandeja{
+  padding: 10px;
+  color: white;
+  text-align: center;
+}
+.btn-send-message{
+  height: 40px;
+  margin-left: 10px;
+  margin-top: 5px;
+  background-color: #e3354c;
+  color:white;
+  border: 1px solid #e3354c;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.btn-send-message:hover{
+  background-color: #e74b60;
+  border: 1px solid #e74b60;
+}
+@media (min-width:780px){
+  .container-bandejas{
+  display: grid;
+  grid-template-columns: repeat(2,1fr);
+  gap:10px;
+  padding: 10px;
+  }
+}
+.bloque-alumno{
+  border:1px solid #043c5c;
+  background-color: #043c5c;
+  border-radius: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  
+}
+@media (max-width:779px){
+  .bloque-grupo{
+    border:1px solid #043c5c;
+    background-color: #043c5c;
+    border-radius: 8px;
+    padding-right: 5px;
+    padding-left: 5px; 
+    margin-bottom: 10px;
+    max-width: 490px;
+  }
+  .bloque-alumno{
+    border:1px solid #043c5c;
+    background-color: #043c5c;
+    border-radius: 8px;
+    padding-left: 5px;
+    padding-right: 5px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    max-width: 490px;
+  }  
+}
+
+
+
+

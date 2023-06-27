@@ -1,0 +1,243 @@
+html {
+  box-sizing: border-box;
+  scroll-behavior: smooth;
+}
+.btn-1{
+  margin: 15px auto;
+  padding: 10px 30px;
+  border: none;
+  background-color: #006581;
+  color: white;
+  text-transform: uppercase;
+  font-weight: bold;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  width: 150px;
+}
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+body {
+  font-family: 'Roboto', sans-serif;
+
+}
+h1 {
+    text-transform:uppercase;
+    color:#006581;
+}
+input {
+    padding-left:6px;
+}
+button {
+    border:none;
+    background:transparent;
+    cursor:pointer;
+}
+.selects {
+    margin:10px 0;
+}
+.fecha {
+  margin:10px 0;
+}
+.hora-inicio {
+  margin:10px 0;  
+}
+.hora-fin {
+  margin:10px 0;
+}
+
+/* Utilidades */
+.contenedor {
+  margin:0 auto;
+  max-width: 1200px;
+  width: 95%;
+}
+.btn {
+  margin: 15px auto;
+  padding: 10px 30px;
+  border: none;
+  background-color: #006581;
+  color: white;
+  text-transform: uppercase;
+  font-weight: bold;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  width: 100%;
+}
+.asignar-button {
+    display:flex;
+    justify-content:center;
+}
+.btn-actualizar {
+    display:none;
+}
+.contenedor-boton-actualizar {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  column-gap: 10px;  
+}
+
+/* Grids */
+
+
+@media (min-width:767px) {
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      column-gap: 10px;
+    }
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      column-gap: 10px;
+      margin: 10px 0;
+    }
+    .grid-4 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      column-gap: 10px;
+      margin: 10px 0;
+    }
+    .titulo {
+      grid-column: 1 / 3;
+    }
+}   
+@media (min-width:1024px) {
+    .grid-3 {
+      grid-template-columns: repeat(3, 1fr);
+      column-gap: 10px;
+      margin: 10px 0;
+      justify-self:center;
+      
+    }
+    .grid-4 {
+      grid-template-columns: repeat(4, 1fr);
+      column-gap: 10px;
+      margin: 10px 0;
+      justify-self:center;
+      
+    }
+    .titulo {
+      grid-column: 3 / 4;
+    }
+    .selects, .hora-inicio, .hora-fin,.fecha {
+        margin:0;
+    }
+}
+
+/* Contenedor Formulario */
+.contenedor-formulario {
+  display: flex;
+  justify-content:center;
+}
+form {
+    width:95%;
+}
+/* Contenedor tablas */
+.contenedor-tables {
+  display: flex;
+  width:95%;
+  justify-content:center;
+  margin-bottom:20px;
+}
+
+.table td, .table th {
+  padding: 12px 15px;
+  border: 1px solid #006581;
+  text-align: center;
+}
+
+.table th {
+  background-color: #043c5c;
+  color: #ffffff;
+}
+.table tbody tr:nth-child(even) {
+  background-color: #a3deee;
+}
+@media (max-width: 1024px) {
+  .contenedor-table-general, .contenedor-table-filtrada {
+      width:100%;
+  }
+  .table td {
+        width:auto;
+    }
+  .table thead {
+    display: none;
+  }
+  .table, .table tbody, .table tr, .table td {
+    display: block;
+    width: 100%;
+  }
+  .table tr {
+    margin-bottom: 15px;
+  }
+  .table td {
+    text-align: right;
+    padding-left: 50%;
+    text-align: right;
+    position: relative;
+  }
+  .table td::before {
+    content: attr(data-label);
+    position: absolute;
+    left: 0;
+    text-align:left;
+    width: 50%;
+    padding-left: 15px;
+    font-weight:bold;
+  }
+}
+
+/* Tabla general */
+.contenedor-table-general,
+.contenedor-table-preguntas,
+.contenedor-table-presentacion{
+  display: none;
+}
+.contenedor-table-general .table,
+.contenedor-table-preguntas .table,
+.contenedor-table-presentacion .table{
+  border-collapse: collapse;  
+}
+.contenedor-table-generall table{
+    border-collapse: collapse;  
+  }
+/* Tabla filtrada */
+.contenedor-table-filtrada {
+  display:none;
+}
+.contenedor-table-filtrada .table {
+  border-collapse: collapse;  
+}
+
+/* inputs */
+.enlace {
+ margin-bottom: 10px;
+}
+.titulo {
+ margin-bottom: 10px;   
+}
+
+input {
+    width: 100%;
+}
+input:not([type="submit"])  {
+    border-radius: 4px;
+    background-color:white;
+    border: 1px solid #aaa;
+    height:28px;
+}
+
+label {
+  text-transform: uppercase;
+  width: 100%;
+  display: block;
+  font-weight:bold;
+}
+label span {
+  font-weight:normal;
+}
+.active {
+  display: block;
+}
+

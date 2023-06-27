@@ -1,0 +1,306 @@
+:root{
+	--c1 : #006581;
+	--c1a : #57A3B8;
+	--c2 : #EBF1F9; /*Gris*/
+	--c3 : #E6344A;/*Rojo institucional*/
+	--c3a: #f97d8c;
+	--c4 : #fafafa;/*Background*/
+	--c5 : #fff;
+}
+
+/*Titulo de documento*/
+.div-title{
+	padding: 15px;
+    text-align: center;
+    color: var(--c1);
+    text-transform: uppercase;
+}
+/*---------------------*/
+
+
+/*CSS Para los cursos flotantes*/
+
+.div-cursos-float{
+	padding: 10px 5px;
+	background: #fff;
+	border-radius: 35px;
+	width: 100%;
+	max-width: 500px;
+	position: fixed;
+	bottom: 0px;
+	left: 50%;
+	transform: translateX(-50%);
+	overflow-x: scroll;
+}
+.div-cursos-float div{
+	display: flex;
+	flex-wrap: nowrap;
+	gap: 10px;
+	align-items: center;
+	border-radius: 50%;
+}
+.float-selected{
+	width: 70px !important;
+	transition: 0.5s;
+}
+.div-float-selected{
+	border: .1em solid var(--c3);
+	padding: 2px;
+	transition: .5s;
+}
+.div-curso img{
+	width: 60px;
+	border-radius: 35px;
+	cursor: pointer;
+}
+
+/*----------------------------*/
+/*CSS de la tabla*/
+.div-tabla{
+    padding: 12px;
+    border-radius: 5px;
+    width: calc(100% - 20px);
+    box-shadow: 0 3px 10px rgb(10 37 64 / 40%);
+    max-width: 700px;
+    margin: auto;
+    min-height: 550px;
+}
+h2{
+	text-align: center;
+    text-transform: uppercase;
+    color: var(--c1);
+    font-size: 1em;
+}
+.table{
+	margin-top: 20px;
+    width: 100%;
+    color: var(--c1);
+    border-collapse: collapse;
+}
+.table thead{
+	text-align: center;
+    text-transform: uppercase;
+    font-weight: bold;
+    font-size: .8em;
+}
+.table thead tr td,.table tbody tr td{
+	padding: 5px;
+	border: 1px solid var(--c2);
+}
+.table tbody{
+	font-size: .9em;
+}
+.center{
+	text-align: center;
+}
+.table tbody tr{
+	cursor: pointer;
+}
+.table tbody tr:hover{
+	background-color: var(--c2);
+}
+.w60{
+	width: 60px;
+}
+/*-----------------------------*/
+.oculto{
+	display: none;
+}
+/*CSS del boton de cierre*/
+.btn-close img {
+    position: absolute;
+    width: 18px;
+    right: 5px;
+    top: 5px;
+    cursor: pointer;
+    z-index: 50;
+}
+/*-----------------------------*/
+/*CSS del boton de actualizacion*/
+.div-btn-refresh{
+	margin: 20px auto 130px auto;
+	text-align: center;
+}
+.submit {
+    padding: 10px 20px;
+    background: var(--c1);
+    box-shadow: 0 3px 10px rgb(10 37 64 / 40%);
+    border-radius: 5px;
+    color: var(--c5);
+    text-transform: uppercase;
+    border: none;
+    cursor: pointer;
+}
+.submit:hover{
+	background: var(--c1a);
+}
+/*--------------------------*/
+/*CSS efecto de progreso*/
+.sk-double-bounce {
+  width: 4em;
+  height: 4em;
+  position: relative;
+  margin: auto;
+}
+.sk-double-bounce .sk-child {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background-color: var(--c1);
+  opacity: 0.6;
+  position: absolute;
+  top: 0;
+  left: 0;
+  -webkit-animation: sk-double-bounce 2s infinite ease-in-out;
+          animation: sk-double-bounce 2s infinite ease-in-out;
+}
+.sk-double-bounce .sk-double-bounce-2 {
+  -webkit-animation-delay: -1s;
+          animation-delay: -1s;
+}
+@-webkit-keyframes sk-double-bounce {
+  0%, 100% {
+    transform: scale(0);
+  }
+  50% {
+    transform: scale(1);
+  }
+}
+@keyframes sk-double-bounce {
+  0%, 100% {
+    transform: scale(0);
+  }
+  50% {
+    transform: scale(1);
+  }
+}
+
+/*-----------------------------------*/
+/*CSS tabla de tops por materia selector de nivel*/
+.div-select-nivel{
+	display: flex;
+    justify-content: center;
+}
+.div-select-nivel button{
+	border: none;
+    background: transparent;
+    padding: 10px 20px;
+    cursor: pointer;
+    width: 130px;
+    background: var(--c1);
+    font-weight: bold;
+    color: white;
+}
+.div-select-nivel button:hover{
+	background: var(--c3a);
+}
+.selected{
+	background: var(--c3) !important;
+}
+.selected-b{
+	background: var(--c1) !important;
+	color: white !important;
+}
+.div-selector-materias ul{
+	list-style: none;
+    display: flex;
+    overflow-x: scroll;
+    margin: 15px 0;
+    background: #ccc;
+    border-radius: 5px;
+
+}
+.div-selector-materias ul li {
+	padding: 10px;
+    font-size: .9em;
+    cursor: pointer;
+    min-width: 100px;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--c1);
+}
+.div-selector-materias ul li:hover {
+	background: var(--c1a);
+	color: white;
+}
+/*---------------------------------------------*/
+/*CSS de la tabla de notas*/
+.div-notas-materias{
+    background: var(--c4);
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    width: 300px;
+    overflow: auto;
+    position: relative;
+    margin: 20px auto;
+}
+h3{
+	color: var(--c1);
+    font-size: .9em;
+    padding: 5px;
+}
+.table-notas-materias{
+	color: var(--c1);
+    width: 100%;
+}
+.table-notas-materias thead {
+	text-transform: uppercase;
+    font-size: .9em;
+    text-align: center;
+}
+/*--------------------------------------------*/
+/*CSS para el boton de ajustes avanzads*/
+.div-btn-adjust{
+	position: fixed;
+    right: 5px;
+    width: 25px;
+    top: 68px;
+}
+.div-btn-adjust button{
+	border-radius: 15px;
+    border: none;
+    cursor: pointer;
+    background: transparent;
+}
+.div-adjust{
+	display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+    min-width: 200px;
+    font-size: .7em;
+}
+.div-op-adjust{
+	width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/*--------------------------------------------*/
+
+/*CSS para pantalla mayor a 800px*/
+@media screen and (min-width: 800px){
+	/*CSS para los botones flotantes de los cursos*/	
+	.div-cursos-float{
+		padding: 10px 5px;
+	    background: transparent;
+	    border-radius: 35px;
+	    width: 100%;
+	    max-width: calc(100% - 250px);
+	    position: fixed;
+	    bottom: 10px;
+	    left: auto;
+	    transform: none;
+	}
+	.div-cursos-float div{
+		display: flex;
+	    flex-wrap: nowrap;
+	    gap: 10px;
+	    align-items: center;
+	    justify-content: center;
+	}
+}

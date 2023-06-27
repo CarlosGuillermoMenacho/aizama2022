@@ -1,0 +1,58 @@
+img{
+    width: 15%;
+    height: 25%;
+}
+#select-alu, #input-curso{
+    width: 50vw;
+    height: 30px;
+}
+
+#motivo-lic{
+    width: 50vw;
+    padding: 5px;
+}
+#table{
+    width: 60vw;
+}
+.motivo{
+    max-width: 580px;
+    margin: 0 auto;
+}
+@media (max-width: 480px) {
+   .motivo{
+       width: 100vw;
+   }
+   .boton{
+       width: 85vw;
+   }
+   #motivo-lic{
+        width: 95vw;
+        padding: 5px;
+   }
+   #select-alu, #input-curso{
+    width: 95vw;
+    height: 30px;
+    }
+    #tabla{
+      width: 90vw;  
+    }
+}
+@media (max-width: 1024px) {
+    .motivo{
+        width: 100vw;
+    }
+    .boton{
+        width: 85vw;
+    }
+    #motivo-lic{
+         width: 95vw;
+         padding: 5px;
+    }
+    #select-alu, #input-curso{
+     width: 95vw;
+     height: 30px;
+     }
+     #tabla{
+       width: 90vw;  
+     }
+ }

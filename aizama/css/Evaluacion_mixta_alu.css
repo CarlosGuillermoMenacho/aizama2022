@@ -1,0 +1,696 @@
+:root{
+	--color1 : #006581;
+	--color2: #e23b3b;
+	--color3: lightblue;
+	--color4:rgb(224, 218, 216); /*Gris*/
+	--color5:rgb(186, 214, 206); /*verde*/
+}
+html {
+    box-sizing: border-box;
+  }
+  *, *:before, *:after {
+    box-sizing: inherit;
+  }
+  /* Globales */
+  body {
+    font-family: 'Roboto', sans-serif;
+  }
+  input {
+      padding-left:10px;
+  }
+  h1 {
+   /* text-transform: uppercase;*/
+    font-weight: bold;
+    text-align: center;
+    color: var(--color1);
+    margin:0;
+    margin-top:15px;
+  }
+  h2 {
+    margin:0;    
+    text-transform: uppercase;
+    text-align: center;
+  }
+  h3#nombrecurso {
+    color: var(--color1);
+  }
+  
+  .titulo-lista {
+    text-transform: uppercase;
+    font-weight: normal;
+    text-align: center;
+    padding: 12px;
+    background-color: #043c5c;
+    margin: 0;
+    padding: 30px auto;
+    color: white;
+  }
+  p {
+    margin-left: 20px;
+    /*text-transform: uppercase;*/
+    font-size: 20px;
+  }
+ 
+  img {
+    max-width: 100%;
+  }
+  ul {
+    list-style: none;
+    padding-left: 0;
+    margin-top: 0;
+  }
+  .lista-materias li button {
+      padding:10px;
+  }
+  
+.lista-evaluaciones li button {
+    padding:10px;
+}
+.icon{
+    width: 35px;
+}
+.contenedor-no-eval img{
+    height: 300px;
+  }
+.contenedor-no-eval{
+    padding: 50px;
+}
+  /* Contenedor principal tabla lista */
+  .contenedor-principal-table-lista {
+    display: block;
+  }
+  
+  /* Contenedor Tabla */
+  .contenedor-tabla-button {
+      display:none;
+  }
+  .contenedor-table {
+    text-align: center;
+    justify-content:center;
+    flex-direction:column;
+    
+  }
+  .link img {
+      height:50px;
+  }
+  
+  .table{
+    margin: 10px auto;
+    border-collapse: collapse;
+  }
+  
+  .table td, .table th {
+    padding: 12px 15px;
+    border: 1px solid #006581;
+    text-align: center;
+  }
+  .table th {
+    background-color: #043c5c;
+    color: #ffffff;
+  }
+  .table tbody tr:nth-child(even) {
+    background-color: #a3deee;
+  }
+  /*descripcion evaluacion*/
+  
+  .descripcion-eval{
+    width: 85%;
+    padding: 5px;
+	align-items: center;
+	margin: 20px auto 5px auto;
+  }
+  .encabezado{
+	display: grid;
+	grid-template-columns: calc(100% - 50px) 50px;
+	grid-template-rows: 50px;
+	margin: 0.5em 0 1em ;
+	border: 1px solid var(--color1);
+	padding: 10px;
+	border-radius: 36px;
+    }
+  .encabezado-cursoMateria{
+	display: flex;
+	align-items: center;
+	margin-left: 10px;
+    }
+    .NroEva{
+        display: flex;
+        color: white;
+        background-color: var(--color1);
+        border-radius: 50%;
+        font-size: 1em;
+    }
+    .badge-n{
+        color: white;
+        margin: auto;
+    }
+    .descri{
+        margin: 0 0 1em ;
+    }
+    
+    label{
+        color:var(--color1);
+        font-weight: 500; 
+        word-spacing: normal;   
+        letter-spacing: 1 px;
+    }
+    #descrip{
+        outline: none;
+        margin-top: 5px;
+        height: 50px;
+        border-radius: 9px;
+        margin-left : 10px;
+        border-color:var(--color1);
+        width: 95%;
+        padding: 0.5em;
+    } 
+    
+    .inicio{
+        display: grid;
+        grid-template-columns:50px 160px 110px;
+    }
+    
+    .fecha{
+        outline: none;
+        margin: 0.2em 1em;
+        border-radius: 10px; 
+        text-align: center; 
+    }
+    .hora{
+        outline: none;
+        border-radius: 10px; 
+        text-align: center; 
+        width: 100%;
+    
+    }
+    .nota-tiempo{
+        display: flex;
+        justify-content: space-between;
+    }
+    .nro-preguntas{
+        text-align: center;
+    }
+    .nota{
+        margin: 0 2em 1em .3em ;
+    }
+    .tiempo{
+        margin: 0 0 1em 0.3em;
+    }
+    input {
+        outline: none;
+        margin: 0.3em;
+        border-radius: 10px; 
+        text-align: center; 
+        border: 1px solid var(--color1); 
+        padding-left:2px ;
+        font-size: 90%; 
+    }
+    
+    .inicio-fin{
+        display: block;
+        text-align: center;
+    }
+    
+    .input , .input-nota{
+        border-radius: 10px;
+        width: 3.3em;
+        height: 1.9em;
+    }
+    .guardar-cancelar{
+        text-align: center;
+        display:flex;
+        justify-content: center;
+    }
+.Guardar{
+    background-color:var(--color1);
+    padding: 0.50em;
+    font-weight: 500;
+    font-size: 1.250em;
+    color: white;
+    border-radius: 6px;
+    border: 2px ;
+    box-shadow: 2px 2px 9px 0 gray;
+    margin: 20px;
+}
+.Cancelar{
+    margin: 20px;
+    text-align: center;
+    background-color:var(--color2);
+    padding: 0.50em;
+    font-weight: 500;
+    font-size: 1.250em;
+    color: white;
+    border-radius: 6px;
+    border: 2px;
+    box-shadow: 2px 2px 10px 0 gray; 
+}
+.principal {
+  width: 600px;
+  background: #ECF4F9;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 30px;
+  margin-top: 20px;
+  border: 1px solid var(--color1);
+  border-radius: 30px;
+}
+.info{
+  width: 300px;
+  margin: 5px;
+  color: #023859;
+}
+.bloque-info {
+  background: white;
+  border: 1px solid white;
+  border-radius: 30px;
+  padding: 20px;
+  margin: 20px 0px 20px 0px;
+  display: flex;
+  color: #023859;
+}
+.reloj {
+  margin-top: 15px;
+  width: 185px;
+  text-align: center;
+  background: #ECF4F9;
+  border-radius: 10px;
+}
+.reloj label {
+  font-size: 25px;
+}
+.selected {
+  border: 1px solid #E6344A;
+  border-radius: 16px;
+  background: #E6344A;
+  color: white;
+}
+.btn-end {
+  width: 100px;
+  padding: 10px;
+  cursor: pointer;
+}
+.botones {
+  text-align: center;
+}
+.botones button{
+	cursor: pointer;
+	margin: 5px;
+	width: 35px;
+	height: 35px;
+}
+.navigator {
+  margin: 10px;
+  text-align: center;
+  height: 30px;
+}
+.left {
+  float: left;
+  display: inline;
+}
+.navegar {
+  width: 90px;
+  height: 30px;
+  text-transform: uppercase;
+  background: #023859;
+  color: white;
+  border: 1px solid #023859;
+  border-radius: 15px;
+  cursor: pointer;
+}
+.nrPreg {
+  text-transform: uppercase;
+  color: #023859;
+}
+.right{
+  float: right;
+  margin-right: 0px;
+  display: inline;
+}
+.navegar {
+  width: 90px;
+  height: 30px;
+  text-transform: uppercase;
+  background: #023859;
+  color: white;
+  border: 1px solid #023859;
+  border-radius: 15px;
+  cursor: pointer;
+}
+.pregunta {
+  margin: 10px 30px 10px 30px;
+  padding: 2px;
+  background: white;
+  border: 1px solid white;
+  border-radius: 20px;
+}
+.notaC{
+  margin: 10px 30px 10px 30px;
+  padding: 2px 10px;
+  background: white;
+  border: 1px solid white;
+  border-radius: 20px;
+  color: rgb(128, 128, 128);
+}
+.respuesta {
+  width: calc(100% - 60px);
+  margin: 30px;
+  padding: 10px;
+  background: white;
+  border: 1px solid white;
+  border-radius: 20px;
+  resize: vertical;
+  min-height: 40px;
+}
+.opciones {
+  padding: 5px 5px 0 15px;
+  /* text-align: center; */
+}
+.opcion {
+  margin: 0.4em;
+}
+label {
+  color: var(--color1);
+  font-weight: 500;
+  word-spacing: normal;
+}
+input {
+  outline: none;
+  margin: 0.3em;
+  border-radius: 10px;
+  text-align: center;
+  border: 1px solid var(--color1);
+  padding-left: 3px;
+}
+.opcion button {
+  border: none;
+  width: 13px;
+  height: 13px;
+  background-color: white;
+}
+.puntero {
+  cursor: pointer;
+}
+.opcion img {
+  width: 13px;
+  height: 13px;
+}
+.unselected {
+  border: 1px solid #023859;
+  border-radius: 16px;
+  background: #023859;
+  color: white;
+}
+.display-none {
+  display: none;
+}
+.resp-flechas{
+  text-align: center;
+}
+.agregado{
+  margin: 15px;
+}
+.detalle-enun{
+  display: grid;
+  grid-template-columns: 10% 30% 5% 10% 30% 5% 10%;
+}
+.num{
+  background-color: var(--color1);
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  font-size: 1em;
+  font-weight: 950;
+  text-align: center;
+  margin: auto;
+}
+.num-enu{
+  color: white;
+  font-weight: 500;
+  word-spacing: normal;
+}
+#textarea-text{
+  background: var(--color4);
+  border-color: transparent;
+}
+.detalle-enun textarea{
+  text-align: center;
+  border-radius: 35%;
+  width: 99%;
+  height: 79%;
+  outline: none;
+  margin: 5px;
+  padding: 11.3px;
+}
+textarea{
+  resize: none;
+}
+.text-img{
+  border-radius: 35%;
+  width: 99%;
+  height: 90%;
+  margin: 3px;
+  padding: 3px;
+  background: rgb(216, 216, 216);
+  display: flex;
+  align-items: center;
+}
+.text-img button{
+  border: none;
+  background-color: transparent;
+}
+.text-img img{
+  width: 70%;
+  height: 70%;
+}
+input{
+  outline: none;
+  margin: 0.3em;
+  border-radius: 10px;
+  text-align: center;
+  border: 1px solid var(--color1);
+  padding-left: 3px;
+}
+/*.text-ima{
+  border-radius: 31%;
+  width: 99%;
+  height: 90%;
+  margin: 3px;
+  padding: 3px;
+  align-items: center;
+}*/
+.text-ima {
+  /* border-radius: 31%; */
+  width: 99%;
+  height: 79%;
+  margin: 5px;
+  /* padding: 11.3px; */
+  align-items: center;
+}
+.container {
+  border-radius: 35%;
+  overflow: hidden;
+  background-color: var(--color4);
+  height: 103%;
+  padding: 11.3px;
+}
+.container img {
+  height: 37px;
+  width: auto;
+  vertical-align: middle;
+}
+.inputimg {
+  width: inherit;
+  margin: auto;
+}
+.inputselect {
+  width: 100%;
+  height: 24px;
+  display: block;
+  border: none;
+  border-radius: 0 0 10px 10px;
+  color: #ffffff;
+  background-color: var(--color1);
+  cursor: pointer;
+}
+.btn-elim {
+  padding: 2px;
+  width: 1.5em;
+  height: 1.5em;
+  border: 1px solid #ffffff;
+  border-radius: 0.8em;
+}
+.btn-elim img {
+  width: 100%;
+}
+.opcion-enun input {
+  border-radius: 10px;
+  width: 3em;
+  height: 1.9em;
+  margin: 15px auto;
+}
+/*input {
+  outline: none;
+  text-align: center;
+  border: 1px solid var(--color1);
+  padding-left: 3px;
+}*/
+input#opcion-input-text {
+  WIDTH: 75%;
+}
+#eliminar-relacion {
+  margin: auto;
+}
+.position-relative {
+  position: relative;
+}
+.imagen {
+  text-align: center;
+  width: 95%;
+  margin: auto;
+}
+.imagen img {
+  height: 60%;
+  width: 85%;
+}
+.respuesta-verdadero {
+  padding-left: 130px;
+}
+.f-v {
+  margin: 0.3em;
+}
+input {
+  outline: none;
+  margin: 0.3em;
+  border-radius: 10px;
+  text-align: center;
+  border: 1px solid var(--color1);
+  padding-left: 3px;
+}
+
+img {
+  max-width: 100%;
+  border-style: none;
+}
+/* FORMATO IMAGEN EVALUACION ALUMNO tipo1-2-3*/
+#imagen {
+  cursor: pointer;
+  margin: auto;
+}
+/* FORMATO RELACION*/
+.img-alumno img {
+  height: 64px;
+  width: 89%;
+  vertical-align: middle;
+  border-radius: 20px;
+}
+
+  /*---------------*/
+
+  @media (max-width: 1024px) {
+    .table {
+        width:100%;
+    }
+     
+    .table thead {
+      display: none;
+    }
+    .table, .table tbody, .table tr, .table td {
+      display: block;
+      width: 100%;
+    }
+    .table tr {
+      margin-bottom: 15px;
+    }
+    .table td {
+      text-align: right;
+      padding-left: 50%;
+      text-align: right;
+      position: relative;
+    }
+    .table td::before {
+      content: attr(data-label);
+      position: absolute;
+      left: 0;
+      text-align:left;
+      width: 50%;
+      padding-left: 15px;
+      font-weight:bold;
+    }
+  }
+  /* Boton atras */
+  .boton-atras {
+      display:flex;
+      justify-content:center;
+      margin-top:15px;
+  }
+  .btn {
+    margin:0 auto;
+    text-transform: uppercase;
+    background-color: #006581;
+    border: none;
+    padding: 10px 30px;
+    border-radius: 5px;
+    cursor: pointer;
+    color: white;
+  }
+  
+  /* Contenedor cuando no tiene clases */
+  .contenedor-no-classe {
+    display: none;
+    padding: 50px;
+  }
+  .contenedor-imagen {
+    display: flex;
+    justify-content:center;
+  }
+  .contenedor-no-classe img{
+    height: 300px;
+  }
+  .contenedor-no-classe h2 {
+      margin-top:10px;
+      font-weight: lighter;
+  }
+  
+  /* Listas */
+  .contenedor-lista {
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 15px;
+  }
+  .contenedor-lista {
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 15px;
+}
+  
+  .info-materia {
+    margin-left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .materia {
+    display: flex;
+    align-items:center;
+  }
+  .materia img {
+    height: 40px;
+  }
+  /* badge */
+  .badge {
+    border: none;
+    border-radius: 50%;
+    background-color: #006581;
+    padding: 10px 15px;
+    color: white;
+    font-size: 15px;
+    font-weight: bold;
+  }
+  
+  .active {
+    display: block;
+  }
+  .inputselect {
+    font-size: 13px;
+}

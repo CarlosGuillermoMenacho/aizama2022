@@ -1,0 +1,266 @@
+.container{
+	width: 100%;
+	margin-bottom: 20px;
+}
+.titulo{
+	text-align: center;
+	padding: 15px;
+	font-size: 1.5em;
+	color: #023859;
+	font-weight: bold;
+}
+.div-btn{
+	display: grid;
+	max-width: 100%;
+	margin: auto;
+	grid-template-columns: calc(100% - 100px) 100px;
+	grid-template-rows: 30px;
+	align-items: center;
+}
+.div-btn-nuevo button{
+	padding: 5px 20px;
+	border-radius: 20px;
+	background: #023859;
+	color: white;
+	border: 1px solid #023859;
+	font-weight: bold;
+}
+.div-eventos{
+	width: 95%;
+	max-width: 700px;
+	min-width: 380px;
+	margin: 5px auto 0 auto;
+	overflow-y: hidden;
+	overflow-x: auto;
+}
+.head-tabla{
+	display: flex;
+	border-top: 2px solid #023859;
+	border-bottom: 2px solid #023859;
+	color: #023859;
+	font-weight: bold;
+}
+.item{
+	display: flex;
+	border-bottom: 1px solid #023859;
+	color: #023859;
+}
+.nro{
+	width: 50px;
+	text-align: center;
+	padding: 5px;
+}
+.descripcion{
+	width: calc(100% - 250px);
+	text-align: center;
+	padding: 5px;
+}
+.opcion{
+	width: 100px;
+	text-align: center;
+	padding: 5px;
+}
+.descripcion-item{
+	width: calc(100% - 250px);
+	text-align: left;
+	padding: 5px;
+}
+.fecha{
+	width: 100px;
+	text-align: center;
+	padding: 5px;
+}
+.opcion-item{
+	width: 100px;
+	height: 17px;
+	text-align: center;
+}
+.opcion-item img{
+	width: 18px;
+	margin-left: 5px;
+}
+.div-formulario{
+    width: 95%;
+	max-width: 400px;
+	margin: auto;
+	background: #CAD9EC;
+	padding: 15px;
+	border-radius: 15px;
+}
+.titulo-form{
+	text-align: center;
+	font-size: 1.1em;
+	color: #023859;
+	font-weight: bold;
+}
+.descripcion-from{
+	margin-top: 15px;
+}
+.descripcion-from textarea{
+	width: 100%;
+	height: 70px;
+	padding: 10px;
+	border-radius: 15px;
+	resize: none;
+	outline: none;
+	color: #023859;
+	font-size: .9em;
+	border: 1px solid #023859;
+}
+.caja input{
+	display: block;
+	border-radius: 10px;
+	border: 1px solid #023859;
+	padding: 5px;
+}
+.time-form{
+	display: flex;
+	flex-wrap: wrap;
+	margin-top: 15px;
+	
+}
+.fecha-form{
+	width: 200px;
+	
+}
+.hora-form{
+	width: 200px;
+}
+.enlace-form{
+	margin-top: 15px;
+	color: #023859;
+	font-weight: bold;
+}
+.enlace-form textarea{
+	width: 100%;
+	height: 70px;
+	padding: 10px;
+	border-radius: 15px;
+	resize: none;
+	outline: none;
+	color: #023859;
+	border: 1px solid #023859;
+	font-size: .9em;
+}
+ label{
+ 	color: #023859;
+ 	font-weight: bold;
+	font-size: .8em;
+ }
+ .pointer-hover,button:hover {
+ 	cursor: pointer;
+ }
+ .div-btns{
+ 	margin-top: 15px;
+ 	text-align: center;
+ }
+ .btn-send{
+ 	padding: 10px 20px;
+ 	background: #023859;
+ 	color: white;
+ 	border: 1px solid #023859;
+ 	border-radius: 15px;
+ }
+ .btn-cancel{
+ 	padding: 10px 20px;
+ 	background: #E6344A;
+ 	color: white;
+ 	border: 1px solid #E6344A;
+ 	border-radius: 15px;
+ }
+ .btn-order{
+ 	height: 30px;
+ 	text-align: right;
+ 	padding-right: 10px;
+ }
+ .btn-order button, img{
+ 	background: none;
+ 	border: none;
+ 	width: 30px;
+ 	height: 30px;
+}
+.btn-order-selected{
+	border: 1px solid #E6344A;
+	border-radius: 5px;
+}
+.tabla-mobil{
+	background: #E9EDEE;
+	position: relative;
+	margin: 15px 10px 0 0;
+	border-radius: 10px;
+	color: #023859;
+}
+.index-icon{
+	width: 25px;
+	height: 25px;
+	border-radius: 20px;
+	background: white;
+	display: grid;
+	align-items: center;
+	position: absolute;
+	right: 5px;
+	top: 5px;
+}
+.index-icon label{
+	color: 023859;
+	text-align: center;
+	font-size: .7em;
+}
+.div-descripcion-mobil{
+	margin-left: 5px;
+}
+.label-descripcion{
+	padding: 15px 10px 2px 5px;
+	color: #023859;
+	font-size: .9em;
+	font-weight: bold;
+}
+.descripcion-p{
+	background: white;
+	width: 90%;
+	border-radius: 5px;
+	padding: 5px;
+	text-align: justify;
+	font-size: .9em;
+	margin-left: 15px;
+}
+.fecha-mobil{
+	height: 40px;
+	padding: 5px;
+	display: grid;
+	grid-template-columns: 55px 80px 25px 65px 20px 70px;
+	align-items: center;
+	justify-content: center;
+}
+.data-fecha{
+	font-size: .8em;
+	background: white;
+	border-radius: 5px;
+	padding: 3px;
+}
+.label-fecha{
+	color: #023859;
+	font-size: .9em;
+	font-weight: bold;
+	text-align: right;
+	margin-right: 3px;
+}
+.opciones-mobil1{
+	display: grid;
+	padding: 10px;
+	grid-template-columns: repeat(3, 1fr);
+	justify-content: center;
+	font-size: .8em;
+}
+.opciones-mobil1 div{
+	text-align: center;
+}
+@media screen and (min-width: 300px) {
+  	.div-btn{
+		display: grid;
+		max-width: 700px;
+		grid-template-columns: calc(100% - 100px) 100px;
+		grid-template-rows: 30px;
+		align-items: center;
+	}
+}

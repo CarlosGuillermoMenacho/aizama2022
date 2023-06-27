@@ -1,0 +1,1 @@
+$(document).ready(function(){$("#tblReporte tr:nth-child(odd)").addClass("tr_impar");$('#tblReporte').tableHover({rowClass:'td_hover',clickClass:'td_click'});});

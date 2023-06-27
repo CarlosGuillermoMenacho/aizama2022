@@ -1,0 +1,254 @@
+html {
+  box-sizing: border-box;
+}
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+}
+h3 {
+  font-weight: normal;
+  text-align: left;
+}
+body {
+  font-family: "Roboto", sans-serif;
+}
+img {
+  max-width: 100%;
+}
+.contenedor {
+  max-width: 1000px;
+  margin: 30px auto;
+}
+/* Barra busqueda */
+.barra-busqueda {
+  display: flex;
+  justify-content: center;
+  margin: 20px auto;
+}
+.barra-busqueda input {
+  max-width: 350px;
+  width: 100%;
+  margin-right: 10px;
+  border: 2px solid #e5e5e5;
+  border-radius: 5px;
+  padding: 10px;
+  outline: none;
+}
+.barra-busqueda input:focus {
+  border-color: #023859;
+}
+.barra-busqueda button {
+  background-color: #023859;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  text-transform: uppercase;
+  font-weight: bold;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+/* Card */
+@media (min-width: 768px) {
+  .contenedor-card-curso,
+  .contenedor-card-curso-materia,
+  .contenedor-card-curso-libro,
+  .contenedor-card-libro,
+  .contenedor-card-materia,
+  .contenedor-card-materia-libro {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    column-gap: 25px;
+    margin: 20px 0;
+  }
+}
+@media (min-width: 992px) {
+  .contenedor-card-curso,
+  .contenedor-card-curso-materia,
+  .contenedor-card-curso-libro,
+  .contenedor-card-libro,
+  .contenedor-card-materia,
+  .contenedor-card-materia-libro {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    column-gap: 25px;
+    margin: 20px 0;
+  }
+}
+
+.card {
+  background-color: white;
+  margin-bottom: 15px;
+  border-radius: 5px;
+  min-height: 325px;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+.card img {
+  border-radius: 5px 5px 0px 0px;
+  width: 100%;
+  height: 213px;
+}
+.card__contenido {
+  padding: 10px 20px 15px 20px;
+}
+.card__contenido div {
+  margin-top: 8px;
+}
+.card__contenido label {
+  font-weight: bold;
+}
+.card__contenido button {
+  width: 100%;
+  padding: 10px;
+  background-color: #023859;
+  color: white;
+  border: none;
+  text-transform: uppercase;
+  font-size: 16px;
+  margin-top: 12px;
+  bottom: 0;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.card__contenido h3 {
+  font-weight: normal;
+  font-size: 22px;
+  text-transform: uppercase;
+}
+/* Temas */
+.contenedor-tema {
+  display: flex;
+  flex-direction: column;
+}
+.tema-dropdown button {
+  display: flex;
+  justify-content: space-between;
+  background-color: #eef0eb;
+  align-items: center;
+  width: 100%;
+  padding: 18px 15px;
+  border-width: 2px;
+  border-color: #b4b8ab;
+  border-style: solid;
+  cursor: pointer;
+}
+.contenedor__contenido-tema {
+  background-color: white;
+  position: relative;
+}
+.contenedor__contenido-tema a {
+  text-decoration: none;
+  color: black;
+  padding: 18px 15px;
+  width: 100%;
+}
+.enlace__tema {
+  display: flex;
+  align-items: center;
+}
+.enlace__tema img {
+  width: 27px;
+  height: 27px;
+  margin-left: 10px;
+}
+.contenedor__contenido-tema a:hover {
+  background-color: #b4b8ab;
+}
+
+.contenedor__contenido-tema button {
+  background-color: transparent;
+  color: #284b63;
+  padding: 5px;
+  border: 2px solid #284b63;
+  border-radius: 3px;
+  font-weight: bold;
+}
+.contenedor__contenido-tema button:hover {
+  background-color: #284b63;
+  color: white;
+}
+
+.recurso__button {
+  position: absolute;
+  right: 0;
+  padding-right: 10px;
+}
+.contenido-tema__recurso-button {
+  position: relative;
+}
+.contenedor-contenido__recursos {
+  display: flex;
+  flex-direction: column;
+  background-color: #fafafa;
+  position: absolute;
+  right: 0;
+  width: 250px;
+  z-index: 1;
+}
+.contenedor-contenido__recursos a {
+  padding: 10px;
+  width: 100%;
+  text-align: left;
+}
+.contenedor-contenido__recursos a:hover {
+  background-color: #b4b8ab;
+}
+
+.info-tema {
+  border: 2px solid #f2f3f5;
+  background-color: white;
+  padding: 15px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+#dropdown {
+  display: none;
+}
+.contenido-tema {
+  background-color: #ffffff;
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+}
+.contenido-tema__recurso {
+  border: 1px solid teal;
+  color: teal;
+  padding: 5px 15px;
+  display: flex;
+  align-items: center;
+}
+
+/* Estilo para los titulos del tema */
+#titulo-tema-materia,
+#titulo-tema-curso {
+  margin-bottom: 20px;
+  font-size: 30px;
+}
+/* Estilo para los errores de busqueda */
+.errorBusqueda h2 {
+  font-size: 35px;
+  margin: 15px 0;
+}
+.errorBusqueda p {
+  margin: 10px 0;
+}
+#titulo-libro-busqueda {
+  margin-top: 15px;
+  margin-bottom: 5px;
+  font-size: 30px;
+}
+.label-busqueda {
+  margin-bottom: 5px;
+}
+.label-busqueda label {
+  font-weight: bold;
+}
+
+/* Show for dropdown */
+.show-cotent {
+  display: flex !important;
+  justify-content: space-between;
+  align-items: center;
+}

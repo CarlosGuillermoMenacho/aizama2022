@@ -1,0 +1,143 @@
+/*class*/
+.principal{
+	width: 600px;
+	background: #ECF4F9;
+	margin-left: auto;
+	margin-right: auto;
+	padding: 30px;
+	margin-top: 20px;
+	border: 1px solid #0579C1;
+	border-radius: 30px;
+}
+.center{
+	text-align: center;
+}
+.botones{
+	text-align: center;
+}
+.nrPreg{
+	text-transform: uppercase;
+	color: #023859;
+}
+.center-margin{
+	display:block; 
+	margin-top: 10px;
+	text-align: center;
+}
+.info{
+	width: 300px;
+	margin: 5px;
+	color: #023859;
+}
+.reloj{
+	margin-top: 15px;
+	width: 185px;
+	text-align: center;
+	background: #ECF4F9;
+	border: ipx solid;
+	border-radius: 10px;
+}
+.reloj label{
+	font-size: 25px;
+}
+.display-none{
+	display: none;
+}
+.bloque-info{
+	background: white;
+	border: 1px solid white;
+	border-radius: 30px;
+	padding: 20px;
+	margin: 20px 0px 20px 0px;
+	display: flex;
+	color: #023859;
+}
+.btn-end{
+	width: 100px;
+	padding: 10px;
+	cursor: pointer;
+}
+.botones button{
+	cursor: pointer;
+	margin: 5px;
+	width: 35px;
+	height: 35px;
+}
+.pregunta{
+	margin: 10px 30px 0px 30px;
+	padding: 10px;
+	background: white;
+	border: 1px solid white;
+	border-radius: 20px;
+}
+.resp-eval{
+	width: calc(100% - 20px);
+	margin: 10px;
+	padding: 10px;
+	background: white;
+	border: 1px solid white;
+	border-radius: 20px;
+	resize: vertical;
+	min-height: 40px;
+}
+.respuesta{
+	width: calc(100% - 60px);
+	margin: 30px;
+	padding: 10px;
+	background: white;
+	border: 1px solid white;
+	border-radius: 20px;
+	resize: vertical;
+	min-height: 40px;
+}
+.selected{
+	border: 1px solid #E6344A;
+	border-radius: 16px;
+	background: #E6344A;
+	color: white;
+}
+.unselected{
+	border: 1px solid #023859;
+	border-radius: 16px;
+	background: #023859;
+	color: white;
+}
+.navigator{
+	margin: 10px;
+	text-align: center;
+	height: 30px;
+}
+.navegar{
+	width: 90px;
+	height: 30px;
+	text-transform: uppercase;
+	background: #023859;
+	color: white;
+	border: 1px solid #023859;
+	border-radius: 15px;
+	cursor: pointer;
+}
+.left{
+	float: left;
+	display: inline;
+}
+.right{
+	float: right;
+	margin-right: 0px;
+	display: inline;
+}
+.view-eval{
+	width: 100%;
+}
+
+/*Selectores*/
+h1{
+	text-transform: uppercase;
+	color: #006581;
+}
+textarea:focus{
+	outline: none;
+	border: 1px solid #0579C1;
+	border-radius: 20px;
+
+}

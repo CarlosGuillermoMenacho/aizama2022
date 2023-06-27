@@ -1,0 +1,222 @@
+.contenedor{
+	padding: 10px;
+}
+.title{
+	text-align: center;
+	font-size: 1em;
+	font-weight: bold;
+	padding: 15px;
+	color: #023859;
+}
+.oculto{
+	display: none;
+}
+.lista-cursos{
+	display: flex;
+	flex-direction: column;
+	border-top: 1px solid #023859;
+	margin-top: 10px;
+}
+.item-curso{
+	display: flex;
+	height: 60px;
+	align-items: center;
+	justify-content: space-between;
+	background: white;
+	border-bottom: 1px solid #023859;
+	cursor: pointer;
+	transition: .2s;
+	
+}
+.lista-materias{
+	display: flex;
+	flex-direction: column;
+	border-top: 1px solid #023859;
+	margin-top: 10px;
+}
+.lista-actividades{
+	display: flex;
+	flex-direction: column;
+	border-top: 1px solid #023859;
+	margin-top: 10px;
+}
+.item-curso:hover{
+	background: #FFA9B0;
+}
+.active{
+	display: none;
+}
+
+.icon-index{
+	background: #023859;
+	color: white;
+	width: 40px;
+	height: 40px;
+	border-radius: 20px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+.nombre-curso{
+	color: #023859;
+	transition: .2s;
+	text-transform: uppercase;
+}
+.descripcion{
+	color: #023859;
+	transition: .2s;
+}
+.tab{
+	display: flex;
+	gap: 5px;
+	justify-content: center;
+	max-width: 500px;
+	margin: auto;
+}
+.btn-tab{
+	width: 100px;
+	height: 50px;
+	font-weight: bold;
+	font-size: .6em;
+	text-transform: uppercase;
+	border-radius: 5px;
+	border: none;
+	background: #E6344A;
+	color: white;
+	padding: 5px;
+	cursor: pointer;
+}
+.btn-tab:hover{
+	background: #FF7B8B;
+}
+.div-detalle{
+	margin: 15px auto 0 auto;
+	background: #CFD9E0;
+	padding: 15px;
+	border-radius: 5px;
+	max-width: 500px;
+	min-width: 300px;
+}
+.form-detalle{
+	min-width: 250px;
+}
+
+.form-title{
+	text-align: center;
+	color: #023859;
+	font-size: .8em;
+
+}
+
+.form-curso,.form-materia,.form-descripcion{
+	display: grid;
+	margin-top: 10px;
+	grid-template-columns: 90px calc(100% - 90px);
+	align-items: center;
+	font-size: .9em;
+	color: #023859;
+}
+.form-descripcion textarea{
+	padding: 5px;
+	height: 60px;
+	color: #023859;
+	outline-style: none;
+	resize: none;
+	border: none;
+	border-radius: 5px;
+
+}
+#form_curso,#form_materia{
+	background: white;
+	padding: 5px;
+	border-radius: 5px;
+}
+.form-fecha,.form-horai,.form-horaf{
+	display: grid;
+	margin-top: 10px;
+	grid-template-columns: 90px calc(100% - 90px);
+	align-items: center;
+	font-size: .9em;
+	color: #023859;
+}
+.form-fecha input,.form-horai input,.form-horaf input{
+	height: 30px;
+	border-radius: 5px;
+	border: none;
+	outline: none;
+	background: white;
+	max-width: 150px;
+	color: #023859;
+	padding-left: 5px;
+}
+.form-btn{
+	text-align: center;
+	padding: 15px;
+	margin-top: 15px;
+}
+.btn-form-submit{
+	width: 100px;
+	height: 30px;
+	border-radius: 5px;
+	border: none;
+	background: #023859;
+	color: white;
+	cursor: pointer;
+}
+.btn-form-submit:hover{
+	background: #277DB2;
+}
+
+.div-btn-nueva-actividad{
+	text-align: center;
+	padding: 15px;
+}
+
+.div-btn-nueva-actividad button{
+	width: 50%;
+	height: 30px;
+	max-width: 200px;
+	min-width: 150px;
+	margin-top: 15px;
+	padding: 5px;
+	border-radius: 5px;
+	border: none;
+	color: white;
+	background: #023859;
+	cursor: pointer;
+}
+.div-btn-nueva-actividad button:hover{
+	background: #277DB2;
+}
+.div-btn-delete{
+	text-align: right;
+}
+.div-btn-delete button{
+	width: 40px;
+	height: 40px;
+	border-radius: 20px;
+	border: none;
+	cursor: pointer;
+}
+.div-btn-delete button img{
+	width: 30px;
+}
+@media screen and (min-width: 600px){
+	.title{
+		font-size: 1.5em;
+	}
+	.contenedor{
+		background: #F5F5F5;
+		width: 80%;
+		margin: auto;
+	}
+	.lista-cursos{
+		width: 70%;
+		margin: 20px auto;
+	}
+	.nombre-curso{
+		font-size: 1.2em;
+	}
+
+
+}

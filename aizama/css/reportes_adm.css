@@ -1,0 +1,87 @@
+.titulo{
+	text-align: center;
+	padding: 15px;
+	font-size: 2em;
+	color: #023859;
+	font-weight: bold;
+}
+.selectores{
+	text-align: center;
+}
+.selectores select{
+	width: 350px;
+}
+.cabecera{
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+}
+.reporte{
+	margin: 20px auto 30px auto;
+	width: 95%;
+	font-size: .8em;
+}
+.head-tabla{
+	display: flex;
+}
+.codigo-sena{
+	width: 75%;
+	padding: 5px;
+}
+.tabla{
+	margin-top: 15px;
+	border-top: 1px solid black;
+	border-collapse: collapse;
+}
+.usuario{
+	padding: 5px;
+	text-align: center;
+	width: 15%;
+}
+.fecha-nac{
+	padding: 5px;
+	text-align: center;
+	width: 10%;
+}
+.content-alumno{
+	display: flex;
+	border-top: 1px solid black;
+	padding: 5px;
+}
+.codigo-alumno{
+	width: 15%;
+}
+.nombre-alumno{
+	width: 60%;
+}
+.usuario-alumno{
+	width: 15%;
+	text-align: center;
+}
+.nac-alumno{
+	width: 10%;
+	text-align: center;
+}
+.content-tutores{
+	display: flex;
+	padding: 5px;
+	border-top: 1px solid black;
+}
+.nombre-tutor{
+	margin-left: 2%;
+	width: 76%;
+}
+.btnPrint{
+	text-align: center;
+	padding: 25px;
+}
+.btnPrint button{
+	padding: 10px;
+	background: #023859;
+	color: white;
+	margin: auto;
+	border-radius: 20px;
+}
+.btnPrint p {
+	margin-top: 15px;
+	font-size: 0.8em;
+}

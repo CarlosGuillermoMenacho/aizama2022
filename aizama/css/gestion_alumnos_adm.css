@@ -1,0 +1,590 @@
+:root{
+    --color1 : #006581;
+	--color2: #e23b3b;
+	--color3: lightblue;
+	--color4:rgb(224, 218, 216); /*Gris*/
+	--color5:rgb(186, 214, 206); /*verde*/
+	--c1: #006581;
+    --c1a: #57A3B8;
+    --c2: #EBF1F9;
+    --c3: #E6344A;
+    --c3a: #f97d8c;
+    --c4: #fafafa;
+    --c5: #fff;
+    --c6:#f7ccd2; /*background red*/
+}
+/*TITULO Y SELECTS PRINCIPALES*/
+.title{
+	text-align: center;
+    padding: 20px;
+}
+h1{
+	text-transform: uppercase;
+	color: var(--color1);
+}
+.div-selects{
+	display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
+}
+.oculto{
+	display: none;
+}
+.content{
+	background: var(--c4);
+}
+/*TABLA GENERAL DE ESCRITRIO DE ESTUDIANTES */
+.div-table-escritorio {
+    overflow-x: auto;
+    background: transparent;
+    border: none;
+    margin-top: 65px;
+    position: relative;
+    max-width: 1030px;
+    margin: auto;
+}
+.div-table-escritorio table{
+    border-collapse: collapse;
+    width: 100%;
+    max-width: 1000px;
+    margin: 10px auto;
+    border-radius: 5px;
+    box-shadow: 0 3px 10px rgb(10 37 64 / 40%);
+    background-color: var(--c5);
+    font-size: .8em;
+}
+.div-table-escritorio table thead tr td{
+    text-align: center;
+    text-transform: uppercase;
+    padding: 10px;
+    color: var(--c1);
+    font-weight: bold;
+}
+.div-table-escritorio table tbody tr td{
+    padding: 10px;
+    color: var(--c1);   
+}
+.index {
+    width: 20px;
+    color: var(--c1);
+    text-align: center;
+    border-top: 1px solid var(--c2);
+}
+.border-td {
+    border-top: 1px solid var(--c2);
+    border-left: 1px solid var(--c2);
+    /*min-width: 130px;*/
+}
+.border-td2 {
+    border-top: 1px solid var(--c2);
+    border-left: 1px solid var(--c2);
+    /*min-width: 100px;
+    max-width: 112px;*/
+}
+.onCursor:hover{
+    background: var(--color3);
+}
+.selected{
+    background: var(--color3);  
+}
+/*Botones de configuracion de las listas*/
+.div-config{
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 3px 10px rgb(10 37 64 / 40%);
+    margin: 10px auto;
+    max-width: 1000px;
+}
+.btn-config{
+    cursor: pointer;
+    padding: 5px;
+    border: 1px solid var(--c1);
+    text-transform: uppercase;
+    background: #006581;
+    border-radius: 5px;
+    color: white;
+    font-size: .7em;
+}
+.div-config button:hover{
+    background: var(--c1a);
+    border: 1px solid var(--c1a);
+}
+
+/*ELEMENTOS DE FORMULARIOS*/
+.info{
+    text-align: center;
+}
+.info img{
+    width: 20px;
+    cursor: pointer;
+}
+.info2 img{
+    width: 18px;
+    cursor: pointer;
+}
+.info2{
+    text-align: center;
+}
+.btn-close img{
+    position: absolute;
+    width: 20px;
+    right: 10px;
+    top: 10px;
+    cursor: pointer;
+    z-index: 50;
+}
+/*FORMULARIO DE DATOS DEL ESTUDIANTE*/
+.formulario_asignacion{
+    position: relative;
+    max-width: 800px;
+    min-width: 300px;
+    margin: 30px auto;
+    padding: 25px;
+    border-radius: 5px;
+    box-shadow: 0 3px 10px rgb(10 37 64 / 40%);
+    background-color: var(--c5);
+    font-size: .8em;
+
+}
+.formulario_asignacion_movil{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-50%);
+    max-width: 500px;
+    margin: auto;
+    padding: 25px;
+    border-radius: 5px;
+    box-shadow: 0 3px 10px rgb(10 37 64 / 40%);
+    background-color: var(--c5);
+    font-size: .8em;
+    
+    z-index: 10;
+}
+.title-alumno{
+    text-transform: uppercase;
+    color: var(--c1);
+    text-align: center;
+}
+.datos-nombres{
+    margin-top: 20px;
+    border-radius: 5px;
+    display: flex;
+    gap: 20px;
+    flex-direction: column;
+    justify-content: space-between;
+}
+.div-checkbox{
+    display:flex;
+    gap: 15px; 
+    align-items:center;
+    border: 1px solid #ccc;
+    padding: 10px;    
+    border-radius: 5px;
+}
+.datos-nombres input{
+    height: 30px;
+    border: 1px solid #aaa;
+    border-radius: 5px;
+    padding: 5px;
+    margin-top: 2px;
+    width: 100%;
+}
+.div-input label{
+    color: var(--c1);
+    padding-left: 6px;
+}
+.div-input input{
+    width: 100%;
+}
+.datos-curso{
+    margin-top: 20px;
+    border-radius: 5px;
+    display: flex;
+    gap: 20px;
+}
+.div-slc{
+    display: grid;
+    row-gap: 2px;
+}
+.usuario-clave{
+    margin-top: 20px;
+    border-radius: 5px;
+    display: flex;
+    gap: 20px;
+    justify-content: space-between;
+}
+.datos-form{
+    margin: 20px 0;
+    border-radius: 5px;
+    box-shadow: 0 3px 10px rgb(10 37 64 / 40%);
+    padding: 20px;
+}
+.btn-update-datos button{
+    margin: 15px auto;
+    padding: 10px 30px;
+    border: none;
+    background-color: #006581;
+    color: white;
+    text-transform: uppercase;
+    font-weight: bold;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    width: 100%;
+    cursor: pointer;
+}
+.btn-update-datos button:hover {
+    background-color:var(--c1a);
+}
+.container-checkbox {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    column-gap: 15px;
+}
+.container-checkbox div{
+    display: flex;
+    align-items: center;
+}
+.container-checkbox div div{
+    display: flex;
+    align-items: center;
+}
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 55px;
+    height: 28px;
+}
+.usuario-clave input{
+    height: 30px;
+    border: 1px solid #aaa;
+    border-radius: 5px;
+    padding: 5px;
+    margin-top: 2px;
+}
+.div-table-escritorio table{
+	border-collapse: collapse;
+    width: 100%;
+    max-width: 1000px;
+    margin: 10px auto;
+    border-radius: 5px;
+    box-shadow: 0 3px 10px rgb(10 37 64 / 40%);
+    background-color: var(--c5);
+    font-size: .8em;
+}
+.div-table-escritorio table thead tr td{
+	text-align: center;
+    text-transform: uppercase;
+    padding: 10px;
+    color: var(--c1);
+    font-weight: bold;
+}
+.div-table-escritorio table tbody tr td{
+	padding: 10px;
+    color: var(--c1);	
+}
+/*Table de tutores*/
+.div-lista-tutores table{
+    width: 100%;
+    color: var(--c1);
+    font-size: 1.2em;
+    border-radius: 5px;
+    border: 1px solid #c7d0db;
+    padding: 10px;
+}
+.div-lista-tutores table thead{
+    font-weight: bold;
+}
+.div-lista-tutores table thead tr td{
+    padding: 10px 0;
+}
+.icon-option{
+    cursor: pointer;
+}
+.td-options{
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+.contacto{
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+/*Asignar tutor*/
+.div-asignar-tutor{
+    padding: 10px;
+    margin-top: 25px;
+    display: flex;
+    align-content: center;
+    align-items: center;
+    flex-direction: row;
+    gap: 20px;
+}
+/*TABLA KARDEX DE PAGO*/
+.main-div-kardex-escritorio{
+    max-width: 680px;
+    margin: 50px auto;
+    padding: 20px 0;
+    box-shadow: 0 3px 10px rgb(10 37 64 / 40%);
+    border-radius: 5px;
+    position: relative;
+}
+
+.title-kardex{
+    max-width: 650px;
+    margin: auto;
+    color: var(--c1);
+}
+.title-kardex h2{
+    text-align: center;
+}
+.head-kardex{
+    margin-top: 35px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.head-kardex input{
+    padding: 5px;
+    max-width: 70px;
+    border-radius: 5px;
+    border: 1px solid #aaa;
+}
+.gestion-kardex p{
+    text-align: center;
+    margin-top: 20px;
+}
+.btn-gestion-kardex{
+    display: flex;
+    gap: 10px;
+    border: 1px solid #aaa;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+.div-table-kardex-escritorio {
+    overflow-x: auto;
+    background: transparent;
+    border: none;
+    position: relative;
+}
+.div-table-kardex-escritorio table{
+    border-collapse: collapse;
+    width: 100%;
+    max-width: 650px;
+    margin: 10px auto;
+    border-radius: 5px;
+    box-shadow: 0 3px 10px rgb(10 37 64 / 40%);
+    background-color: var(--c5);
+    font-size: .8em;
+}
+.div-table-kardex-escritorio table thead tr td{
+    text-align: center;
+    text-transform: uppercase;
+    padding: 10px;
+    color: var(--c1);
+    font-weight: bold;
+}
+.div-table-kardex-escritorio table tbody tr td{
+    padding: 10px;
+    color: var(--c1);   
+}
+.right{
+    text-align: right;
+}
+.btn-gestion button{
+    padding: 5px;
+    border: none;
+    background-color: #006581;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+}
+/*tabla agenda*/
+.main-div-agenda-escritorio{
+    max-width: 1000px;
+    margin: 50px auto;
+    padding: 20px 0;
+    box-shadow: 0 3px 10px rgb(10 37 64 / 40%);
+    border-radius: 5px;
+    position: relative;
+}
+.div-table-agenda-escritorio {
+    overflow-x: auto;
+    background: transparent;
+    border: none;
+    position: relative;
+}
+.title-agenda{
+    max-width: 950px;
+    margin: auto;
+    color: var(--c1);
+}
+.head-agenda{
+    margin-top: 35px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.title-agenda h2{
+    text-align: center;
+}
+.div-table-agenda-escritorio table{
+    border-collapse: collapse;
+    width: 100%;
+    max-width: 950px;
+    margin: 10px auto;
+    border-radius: 5px;
+    background-color: var(--c5);
+    font-size: .8em;
+}
+.head-table-agenda{
+    display: flex;
+    justify-content: space-between;
+}
+.div-print img{
+    width: 20px;
+    cursor: pointer;
+}
+.div-table-agenda-escritorio table thead tr td{
+    text-align: center;
+    text-transform: uppercase;
+    padding: 10px;
+    color: var(--c1);
+    font-weight: bold;
+}
+.div-table-agenda-escritorio table tbody tr td{
+    padding: 10px;
+    color: var(--c1);   
+}
+/*Opciones de búsqueda*/
+.div-search{
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+.input-search{
+    padding: 6px;
+    border-radius: 5px;
+    box-shadow: 0 3px 10px rgb(10 37 64 / 40%);
+    border: none;
+    color: var(--c1);
+}
+.btn-search{
+    display: flex;
+    justify-content: center;
+    padding: 0 5px;
+    box-shadow: 0 3px 10px rgb(10 37 64 / 40%);
+    border-radius: 5px;
+}
+.btn-search img{
+    width: 20px
+}
+.main-div-escritorio{
+    margin-top: 30px;
+}
+@media(max-width: 700px){
+    .main-div-escritorio{
+        /*display: none;*/
+    }
+    .main-div-mobil{
+        display: block;   
+    }
+    .btn-refresh{
+        display: none;
+
+    }
+    .btn-refresh-movil{
+        display: block;
+        box-shadow: 0 3px 10px rgb(10 37 64 / 40%);
+        border-radius: 50%;
+    }
+    .usuario-clave{
+        margin-top: 10px;
+        border-radius: 5px;
+        display: flex;
+        gap: 10px;
+        justify-content: space-between;
+        flex-wrap: wrap;
+    }
+    .datos-nombres{
+        border-radius: 5px;
+        display: flex;
+        gap: 10px;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+    .div-input{
+        width: 100%;
+    }
+    .datos-curso{
+        margin-top: 10px;
+        border-radius: 5px;
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+    }
+    .container-checkbox {
+        display: grid;
+        grid-template-columns: repeat(1, 1fr);
+        row-gap: 10px;
+    }
+    .container-checkbox div{
+        display: flex;
+        justify-content: space-between;
+    }
+    .div-lista-tutores table{
+        width: 100%;
+        color: var(--c1);
+        font-size: 1.2em;
+        border-radius: 5px;
+        border: none;
+        padding: 0;
+    }
+    .div-lista-tutores table thead{
+        display: none;
+    }
+    #body-tutores tr{
+        display: flex;
+        flex-wrap: wrap;
+        border: 1px solid #ccc;
+        padding: 10px;
+        border-radius: 5px;
+        margin: 5px 0;
+        flex-direction: column;
+        gap: 10px;
+        position: relative;
+    }
+    #body-tutores tr .index,#body-tutores tr .ctc{
+        display: none;
+    }
+    .td-options{
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+        position: absolute;
+        width: 20px;
+        right: 6px;
+        top: 6px;
+        cursor: pointer;
+        z-index: 50;
+    }
+    /*Asignar tutor*/
+    .div-asignar-tutor{
+        padding: 10px;
+        margin-top: 25px;
+        display: flex;
+        flex-wrap: wrap;
+        align-content: center;
+        align-items: center;
+        flex-direction: row;
+        justify-content: center;
+        gap: 10px;
+    }
+    .cur{
+        display: none;
+    }
+
+}

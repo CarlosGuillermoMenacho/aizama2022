@@ -1,0 +1,79 @@
+body{
+    background: url(../images/fondo_login.gif);
+    background-repeat: no-repeat;
+    background-size:cover;
+    background-position: center center;
+    height:100vh;
+}
+
+.videos a {
+    position: relative;
+    
+}
+img {
+    max-width: 100%;
+}
+body {
+    font-family: 'Roboto', sans-serif;
+}
+.contenedor-card {
+    margin-bottom: 20px;
+}
+@media(min-width:768px) {
+    .contenedor-card {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        column-gap: 15px;
+    }    
+} 
+
+@media(min-width:1024px) {
+    .contenedor-card {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        column-gap: 15px;
+    }    
+} 
+
+.videos {
+    max-width: 900px;
+    margin: 0 auto;
+}
+@media( max-width: 768px ) {
+    .videos {
+        margin:0 20px;
+    }
+}
+
+.card {
+    background-color: #e1e1e1;
+    border: 1px solid gray;
+    margin-bottom: 10px;
+}
+
+.contenido-card {
+    padding: 10px 20px;
+}
+.contenido-card h3 {
+    text-align: center;
+    margin: 0;
+    font-weight: normal;
+    text-transform: uppercase;
+}
+.contenido-card a {
+    margin-top: 10px;
+    display: block;
+    text-align: center;
+    text-transform: uppercase;
+    font-weight: bold;
+    text-decoration:none;
+    color:white;
+    background-color:teal;
+    padding:7px 30px;
+    border-radius:5px;
+
+}
+.card img {
+    max-height: 155px;
+    width: 100%;
+}

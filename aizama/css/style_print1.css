@@ -1,0 +1,33 @@
+h1{
+	text-align: center;
+}
+td{
+	border: 1px solid black;
+}
+table{
+	border-collapse: collapse;
+	font-size: .8em;
+	margin: auto;
+}
+.vertical{
+	transform: rotate(180deg);
+	writing-mode: vertical-rl;
+	white-space: pre;
+}
+thead tr td{
+	text-align: center;
+}
+.cabecera{
+	display: flex;
+	justify-content: space-between;
+	margin-bottom: 15px;
+}
+.div_img img{
+	width: 80px;
+}
+.btn-print{
+	display: none;
+}
+.div_firmas{
+	margin-top: 100px;
+}

@@ -1,0 +1,2 @@
+[11-Apr-2022 10:04:25 America/La_Paz] PHP Warning:  mysqli_connect(): (HY000/2002): Connection timed out in /home/aizama/public_html/agendadigital/get_kardex_pago.php on line 9
+[11-Jul-2022 13:25:48 America/La_Paz] PHP Fatal error:  Call to a member function fetch_object() on boolean in /home/aizama/public_html/agendadigital/get_kardex_pago.php on line 34

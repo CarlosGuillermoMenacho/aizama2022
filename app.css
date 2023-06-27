@@ -1,0 +1,232 @@
+body {
+  font-family: 'Roboto', sans-serif;
+  height:100vh;
+  
+}
+@media (min-width: 767px) {
+  body {
+    font-size: 27px;
+  }
+}
+@media (min-width: 968px) {
+  body {
+    font-size: 16px;
+    background-image: radial-gradient(circle at 100% 0%, #ffc54c 0, #ffb946 12.5%, #ffa93d 25%, #fe9430 37.5%, #f37b1f 50%, #e76010 62.5%, #df470c 75%, #da2e11 87.5%, #d8091a 100%);
+    background-repeat: no-repeat;
+  }
+}
+img {
+  max-width: 100%;
+}
+h1 {
+  margin: 0;
+  text-transform: uppercase;
+  text-align: center;
+  color: #f37022;
+  font-weight: bold;
+}
+/* Boton */
+.boton {
+  text-align: center;
+  display: block;
+  background-color: #b91329;
+  color: #ffffff;
+  text-decoration: none; 
+  text-transform: uppercase;
+  margin: 0 0 10px 0;
+  border-radius: 5px;
+  padding: 10px 0;
+}
+@media (min-width: 767px) {
+  .boton {
+    padding: 20px 0;
+  }
+}
+@media (min-width: 968px) {
+  .boton {
+    padding: 10px 0;
+  }
+}
+/* Utilidades */
+.centrar-texto {
+  text-align: center;
+}
+
+/* Contenedor */
+main {
+  display: flex;
+  justify-content:center;
+  align-items:center;
+  height: 100vh;
+}
+.container-login {
+  width: 100%;
+  height: 100vh;
+  background-color: white;
+}
+.imagen-complementaria{
+  display: none;
+}
+@media (min-width: 980px) {
+  .container-login {
+    max-width: 900px;
+    max-height: 555px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    column-gap: 1rem;
+    background-color: white;
+  }
+  .imagen-complementaria{
+    display: block;
+    width:100%;
+  }
+}
+.login {
+  width:100%;
+}
+.contenido-login {
+  padding: 20px;
+}
+
+/* Redes sociales */
+.redes-sociales {
+  display: flex;
+  justify-content: flex-end;
+}
+.redes-sociales a {
+  margin-right: 20px;
+}
+.redes-sociales a:last-of-type{
+  margin-right: 0;
+}
+.redes-sociales img {
+  height: 50px;
+}
+@media (min-width: 767px) {
+  .redes-sociales img {
+    height: 70px;
+  } 
+}
+@media (min-width: 968px) {
+  .redes-sociales img {
+    height: 40px;
+    
+  }
+}
+.whatpsapp {
+  display: flex;
+  margin-left: 10px;
+  align-items:center;
+}
+.whatpsapp p {
+  margin: 0;
+  margin-left: 5px;
+}
+/* Informacion */
+.container-informacion {
+  display: flex;
+  align-items:center;
+}
+.container-informacion img {
+  height: 45px;
+  margin-right: 10px;
+}
+@media (min-width: 767px) {
+  .container-informacion img {
+    height: 60px;
+    margin-right: 10px;
+  }
+}
+@media (min-width: 980px) {
+  .container-informacion img {
+    height: 35px;
+    margin-right: 10px;
+  }
+  .informacion-web-telefono {
+    display: flex;
+  }
+  .container-informacion.web {
+    margin-right:15px;
+  }
+}
+/****** Tipo User *******/
+.user {
+  background-color: white;
+  padding: 10px;
+}
+.container-perfil h1 {
+  font-size: 3rem;
+  color:#b91329;
+  text-transform: uppercase;
+}
+.container-perfil h2 {
+  font-size: 1.6rem;
+  color:#f37022;
+  text-transform: uppercase;
+}
+@media (min-width: 767px) {
+  .container-perfil h1 {
+    font-size: 5rem;
+  }
+  .container-perfil h2 {
+    font-size: 2.5rem;
+  }
+}
+
+.container-perfil a {
+  margin: 30px 0 15px 0;
+  font-size: 1.7rem;
+  width: 100%;
+}
+@media (min-width: 767px) {
+  .container-perfil a {
+    margin: 30px 0 15px 0;
+    font-size: 2.4rem;
+    width: 100%;
+  }
+}
+@media (min-width: 980px) {
+  .container-perfil a {
+    margin: 0px 0 15px 0;
+    font-size: 2.4rem;
+    width:20%;
+  }
+  .boton-salir{
+    display: flex;
+    justify-content:center;
+  }
+}
+.container-card-perfil {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+}
+.contenido-card {
+  margin-bottom: 10px;
+}
+@media (min-width: 767px) {
+  .container-card-perfil {
+    column-gap: 20px;
+  } 
+}
+.container-card-perfil img {
+  height: 160px;
+}
+@media (min-width: 767px) {
+  .container-card-perfil img {
+    margin-bottom: 20px;
+    height: 280px;
+  }
+}
+@media (min-width: 980px) {
+  .container-card-perfil {
+    display: grid;
+    /*grid-template-columns: repeat(4, 1fr);*/
+    grid-template-columns: repeat(3, 1fr);
+    column-gap: 10px;
+  } 
+}
+
+
+
+
+

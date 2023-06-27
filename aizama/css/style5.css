@@ -1,0 +1,38 @@
+@charset "utf-8";
+*{font-family:Verdana, Arial, Helvetica, sans-serif;}
+#app_container{
+	width:800px;
+	height:571px;
+	margin:0 auto;
+	font-size:9pt;
+	background-image: url(../images/revertir.png);
+	background-repeat: no-repeat;
+}
+#app_form{width:750px; height:400px; margin:0 auto; position:relative; top:130px;}
+input{background:#FFF; border:1px solid #000; color:#000;}
+.input01{width:100px;}
+.imput02{width:370px;}
+.imput03{width:50px;}
+#wFactura{height:200px; overflow:auto; overflow-x:hidden; border:1px solid #39C;}
+#tblFactura{width:100%;}
+#tblFactura thead{height:25px; background:#39C; color:#FFF; vertical-align:middle;}
+#tblFactura tbody td{text-align:right; height:20px; padding-right:25px;}
+.btn{
+	width:100px;
+	cursor:pointer;
+	background:#39C;
+	color:#FFF;
+	height:25px;
+}
+#wImprimir{width:450px; margin:0 auto; border:1px solid #000;}
+#wImprimir table{font-size:8pt; font-family:Geneva, Arial, Helvetica, sans-serif; color:#FF0000}
+#wLogin{padding-top:150px;}
+.texto_01{color:#F00;}
+#wPDF{width:100%; height:1px;}
+#wPDFframe{width:100%; height:100%; border:none;}
+#tblReporte{font-size:10pt;}
+#tblReporte th{border-bottom:1px solid #000; border-top:1px solid #000; background-color:#309; color:#FFF;}
+.tr_impar{background:#9CF;}
+.td_hover{background:#FFC;}
+.td_click{background:#999; color:#FFF;}
+#info_usr{width:700px; margin:0 auto; padding-top:25px;}

@@ -1,0 +1,148 @@
+:root{
+	--c1 : #006581;
+	--c1a : #57A3B8;
+	--c2 : #EBF1F9; /*Gris*/
+	--c3 : #E6344A;/*Rojo institucional*/
+	--c3a: #f97d8c;
+	--c4 : #fafafa;/*Background*/
+	--c5 : #fff;
+}
+.div-lista-hijos{
+	padding-right: 10px;
+}
+.title{
+    width:100%;
+    max-width: 500px;
+	margin: 25px auto;
+	border-radius: 5px;
+	background-color: var(--c5);
+	font-size: 1.2em;
+}
+.title h1 {
+	text-align: center;
+	font-size: .9em;
+	text-transform: uppercase;
+	padding: 15px 0;
+	color: var(--c1);	
+}
+.div-hijo{
+	width:100%;
+    max-width: 600px;
+	margin: 25px auto;
+	border-radius: 5px;
+	box-shadow: 0 3px 10px rgb(10 37 64 / 40%);
+	background-color: var(--c5);
+	position: relative;
+}
+.hijo:hover{
+	background-color: #ccc;
+}
+.div-hijo h1 {
+	text-align: center;
+	font-size: .9em;
+	text-transform: uppercase;
+	padding: 15px 0;
+	color: var(--c1);	
+}
+
+.main-div-kardex-escritorio {
+    max-width: 680px;
+    margin: 50px auto;
+    padding: 20px 0;
+    box-shadow: 0 3px 10px rgb(10 37 64 / 40%);
+    border-radius: 5px;
+    position: relative;
+}
+.btn-close img {
+    position: absolute;
+    width: 20px;
+    right: 10px;
+    top: 10px;
+    cursor: pointer;
+    z-index: 50;
+}
+.div-table-kardex-escritorio {
+    overflow-x: auto;
+    background: transparent;
+    border: none;
+    position: relative;
+    padding: 0 10px;
+}
+.title-kardex {
+    max-width: 650px;
+    margin: auto;
+    color: var(--c1);
+    padding: 10px;
+}
+.title-kardex h2 {
+    text-align: center;
+}
+.head-kardex {
+    margin-top: 35px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.btn-gestion-kardex {
+    display: flex;
+    gap: 10px;
+    border: 1px solid #aaa;
+    padding: 5px;
+    border-radius: 5px;
+}
+.head-kardex input {
+    padding: 5px;
+    max-width: 70px;
+    border-radius: 5px;
+    border: 1px solid #aaa;
+}
+.btn-gestion button {
+    padding: 5px;
+    border: none;
+    background-color: #006581;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.gestion-kardex p {
+    text-align: center;
+    margin-top: 20px;
+}
+.div-table-kardex-escritorio table {
+    border-collapse: collapse;
+    width: 100%;
+    max-width: 650px;
+    margin: 10px auto;
+    border-radius: 5px;
+    box-shadow: 0 3px 10px rgb(10 37 64 / 40%);
+    background-color: var(--c5);
+    font-size: .8em;
+}
+.div-table-kardex-escritorio table thead tr td {
+    text-align: center;
+    text-transform: uppercase;
+    padding: 10px;
+    color: var(--c1);
+    font-weight: bold;
+}
+.div-table-kardex-escritorio table tbody tr td {
+    padding: 10px;
+    color: var(--c1);
+}
+.index {
+    width: 20px;
+    color: var(--c1);
+    text-align: center;
+    border-top: 1px solid var(--c2);
+}
+.border-td2 {
+    border-top: 1px solid var(--c2);
+    border-left: 1px solid var(--c2);
+}
+.right {
+    text-align: right;
+}
+.border-td {
+    border-top: 1px solid var(--c2);
+    border-left: 1px solid var(--c2);
+}

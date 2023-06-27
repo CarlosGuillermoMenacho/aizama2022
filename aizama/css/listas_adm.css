@@ -1,0 +1,151 @@
+:root{
+    --color1 : #006581;
+	--color2: #e23b3b;
+	--color3: lightblue;
+	--color4:rgb(224, 218, 216); /*Gris*/
+	--color5:rgb(186, 214, 206); /*verde*/
+	--c1: #006581;
+    --c1a: #57A3B8;
+    --c2: #EBF1F9;
+    --c3: #E6344A;
+    --c3a: #f97d8c;
+    --c4: #fafafa;
+    --c5: #fff;
+    --c6:#f7ccd2; /*background red*/
+}
+.title{
+	text-align: center;
+    padding: 20px;
+}
+h1{
+	text-transform: uppercase;
+	color: var(--color1);
+}
+.div-selects{
+	display: flex;
+    justify-content: center;
+    gap: 30px;
+}
+.oculto{
+	display: none;
+}
+.content{
+	background: var(--c4);
+}
+.div-table-escritorio {
+    overflow-x: auto;
+    background: transparent;
+    border: none;
+    margin-top: 35px;
+    position: relative;
+    min-height: 400px;
+}
+.div-table-escritorio table{
+	border-collapse: collapse;
+    width: 100%;
+    max-width: 1000px;
+    margin: 10px auto;
+    border-radius: 5px;
+    box-shadow: 0 3px 10px rgb(10 37 64 / 40%);
+    background-color: var(--c5);
+    font-size: .8em;
+}
+.div-table-escritorio table thead tr td{
+	text-align: center;
+    text-transform: uppercase;
+    padding: 10px;
+    color: var(--c1);
+    font-weight: bold;
+}
+.index {
+    width: 20px;
+    color: var(--c1);
+    text-align: center;
+    border-top: 1px solid var(--c2);
+}
+.center{
+	text-align: center;
+}
+.border-td {
+    border-top: 1px solid var(--c2);
+    border-left: 1px solid var(--c2);
+    min-width: 130px;
+}
+.border-td2 {
+    border-top: 1px solid var(--c2);
+    border-left: 1px solid var(--c2);
+    min-width: 100px;
+}
+.pointer{
+	cursor: pointer;
+}
+.pointer:hover{
+	background: var(--c2);
+}
+.div-table-escritorio table tbody tr td{
+	padding: 10px;
+    color: var(--c1);	
+
+}
+.options{
+	display: flex;
+    gap: 20px;
+}
+.formulario_asignacion{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-50%);
+    max-width: 500px;
+    margin: auto;
+    padding: 25px;
+    border-radius: 5px;
+    box-shadow: 0 3px 10px rgb(10 37 64 / 40%);
+    background-color: var(--c5);
+    font-size: .8em;
+    
+    z-index: 10;
+}
+.title-form{
+    text-transform: uppercase;
+    font-weight: bold;
+    font-size: 1em;
+    color: var(--color1);
+}
+.labels{
+    margin-top: 15px;
+    color: var(--color1);
+}
+.select-form{
+    margin-top: 15px;
+}
+.btn-submit{
+    padding: 5px 15px;
+    border-radius: 5px;
+    border: none;
+    background-color: var(--color1);
+    color: white;
+    margin-top: 20px;
+    cursor: pointer;
+}
+.btn-submit:hover{
+    background-color: var(--c1a);
+}
+.btn-close img{
+    position: absolute;
+    width: 20px;
+    right: 10px;
+    top: 10px;
+    cursor: pointer;
+}
+.profesor{
+    font-size: .85em;
+    font-weight: bold;
+}
+.materia{
+    font-size: 1.1em;
+    color: var(--c3);
+}
+.danger{
+	color: var(--c3a);
+}

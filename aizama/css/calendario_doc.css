@@ -1,0 +1,231 @@
+:root{
+	--c1 : #006581;
+	--c1a : #57A3B8;
+	--c2 : #EBF1F9; /*Gris*/
+	--c3 : #E6344A;/*Rojo institucional*/
+	--c3a: #f97d8c;
+	--c4 : #fafafa;/*Background*/
+	--c5 : #fff;
+	--c1b:#e2f8f9;
+}
+
+.container{
+	margin-top: 10px;
+	background-color: var(--c4);
+	padding-right: 10px;
+	color: var(--c1);
+}
+.title{
+    width:100%;
+    max-width: 500px;
+	margin: 25px auto;
+	/*border: 1px solid var(--c1);*/
+	border-radius: 5px;
+	box-shadow: 0 3px 10px rgb(10 37 64 / 40%);
+	background-color: var(--c5);
+	cursor: pointer;
+}
+.title h1 {
+	text-align: center;
+	font-size: .9em;
+	text-transform: uppercase;
+	padding: 15px 0;
+}
+.div-calendario{
+	width: 355px;
+	min-width: 300px;
+	display: none;
+}
+.table-calendario{
+	width: calc(100% - 10px);
+	max-width: 400px;
+	border-collapse: collapse;
+	box-shadow: 0 3px 10px rgb(10 37 64 / 40%);
+	border-radius: 5px;
+	background-color: var(--c5);
+}
+.table-calendario thead tr td{
+	color: var(--c1);
+	font-size: .8em;
+	text-align: center;
+	font-weight: bold;
+	max-width: 10px;
+	padding: 5px 0;
+
+}
+.table-calendario tbody tr td{
+	color: var(--c1);
+	font-size: .8em;
+	text-align: center;
+	padding: 15px 0;
+	cursor: pointer;
+	position: relative;
+	height: 50px;
+	width: 50px;
+}
+.table-calendario tbody tr td:hover{
+	background-color: #ccc;
+}
+.border-left{
+	border-top: 1px solid var(--c2);
+    border-left: 1px solid var(--c2);
+}
+.border-td{
+    border-top: 1px solid var(--c2);
+    border-left: 1px solid var(--c2);
+}
+.border-top{
+    border-top: 1px solid var(--c2);
+}
+.number-day{
+	position: absolute;
+	top: 3px;
+	right: 3px;
+	font-size: .8em;
+
+}
+.mes-button{
+	cursor: pointer;
+	padding: 10px 20px;
+	color: var(--c1a);
+}
+.mes-button:hover{
+	background-color: #ccc;
+}
+.button-meses{
+	display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 50px;
+}
+.button-meses div{
+	width: 100px;
+}
+.hoy{
+	background-color: var(--c1b);
+}
+.div-info-fecha{
+	position: relative;
+	width: 100%;
+	padding: 20px;
+	margin: 0px 15px 100px 0px;
+	background-size: cover;
+	border-radius: 5px;
+	box-shadow: 0 3px 10px rgb(10 37 64 / 40%);
+	background-color: #f7f1ee;	
+	display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    align-content: flex-start;
+    row-gap: 20px;
+}
+.div-dia-data{
+	width: 100%;
+
+}
+.div-tarjeta-e{
+	border-radius: 5px;
+    border: 1px solid #ccc;
+    width: 100%;
+    padding: 15px;
+    color: var(--c1);
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 5px;
+    align-content: flex-start;
+    font-size: .9em;
+    flex-direction: column;
+    position: relative;
+}
+.div-dia-data h2{
+	font-size: 1em;
+	color: var(--c1);
+	text-align: center;
+}
+.btn-close{
+    position: absolute;
+    width: 17px;
+    right: 13px;
+    top: 3px;
+    cursor: pointer;
+    z-index: 50;
+}
+.oculto{
+	display: none;
+}
+.main-div-calendario{
+	display: flex;
+	justify-content: space-between;
+}
+.calendar-icon{
+	position: fixed;
+	right: 20px;
+	bottom: 20px;
+	display: flex;
+	z-index: 100;
+}
+.calendar-icon img{
+	width: 70px;
+	cursor: pointer;
+	transition: .5s;
+
+}
+.calendar-icon img:hover{
+	width: 75px;
+}
+.div-hora-actividad{
+	position: absolute;
+    top: 5px;
+    left: 5px;
+    color: var(--c3a);
+    font-size: 0.9em;
+}
+.nombre-actividad{
+    text-align: center;
+    font-weight: bold;
+}
+.show-calendar{
+	display: block;
+    right: 0px;
+    bottom: 5px;
+    position: fixed;
+    z-index: 110;
+}
+@media screen and (min-width: 360px){
+	.main-div-calendario{
+		display: flex;
+	}
+	
+}
+@media screen and (min-width: 361px){
+	.div-calendario {
+	    width: 400px;
+	    min-width: 370px;
+	}
+}
+@media screen and (min-width: 450px){
+	.div-info-fecha{
+		margin: 0px 15px;
+	}
+	.div-calendario {
+	    width: 400px;
+	    min-width: 370px;
+	}
+	
+}
+@media screen and (min-width: 1100px){
+	.div-calendario{
+		display: block;
+		position: relative;
+	}
+	.btn-close{
+		display: none;
+	}
+	.calendar-icon{
+		display: none;
+	}
+	.div-calendario {
+	    width: 400px;
+	    min-width: 370px;
+	}
+}
