@@ -14,19 +14,18 @@
   <main class="login-user">
     <div class="main-bandeja">
       <div class="bandeja-chat">
-	      <div class="msn-response">
+	      <!--div class="msn-response">
 	      	Lorem ipsum dolor sit amet, consectetur adipisicing elit
 	      </div>
       	<div class="div-msn-send">
 	      	<div class="msn-send">
 	      		Lorem ipsum dolor sit amet
 	      	</div>
-      	</div>
+      	</div-->
       </div>
       <div class="writer-chat">
-      	<textarea>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-      	tempor incididunt ut labore et dolore magna aliqua.</textarea>
-      <button>Enviar</button>
+      	<textarea id="mensaje" onkeyup="key_press(event);"></textarea>
+      <button id="btn-send">Enviar</button>
       </div>
     </div>
   </main>

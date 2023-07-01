@@ -9,9 +9,12 @@
 .bandeja-chat{
 	display: flex;
 	flex-direction: column;
-	gap: 10px;
+	gap: 5px;
 	width: 100%;
 	height: 400px;
+	overflow-y: auto;
+	margin-bottom: 10px;
+	padding: 5px;
 }
 .writer-chat{
 	display: flex;
@@ -49,6 +52,9 @@
 .div-msn-send{
 	display: flex;
 	flex-direction: row-reverse;
+}
+.div-msn-response{
+	display: flex;
 }
 .msn-send{
 	padding: 5px;
