@@ -24,7 +24,7 @@
       	</div-->
       </div>
       <div class="writer-chat">
-      	<textarea id="mensaje" onkeyup="key_press(event);"></textarea>
+      	<textarea id="mensaje" onkeydown="return key_press(event);" disabled></textarea>
       <button id="btn-send">Enviar</button>
       </div>
     </div>

@@ -75,6 +75,39 @@ switch ($_GET['op']) {
 		}
 		echo json_encode(array("status"=>"ok","alumnos"=>$lista_Alumnos,"practicos"=>$arrayEvaluaciones),JSON_UNESCAPED_UNICODE);
 		break;
+		case 'eval_alu'://Se obtienen todas las evaluaciones realizadas y pendientes de los estudiantes de un tutor
+			$codusr = $_SESSION['app_user_id'];
+			$trimestre = $_SESSION['app_user_bimestre'];
+			$gestion = date("Y");
+			if(empty($codusr)){
+				echo json_encode(array("status"=>"eSession"));
+				exit();
+			}
+			require_once '../modelo/modelo_tutor.php';
+			require_once '../modelo/modelo_Alumno.php';
+			require_once '../modelo/modelo_materia.php';
+			require_once '../modelo/modelo_Evaluacion2.php';
+			
+			$alumno = new Alumno($db);
+			$materia = new Materia($db);
+			$practico = new Evaluacion_Seleccion($db);
+	
+			$lista_Alumnos = array();
+			$arrayEvaluaciones = array();
+			$datoAlumno = $alumno->getDatosAlumno($codusr);
+			if(!empty($datoAlumno)){
+				$lista_Alumnos[] = array("codalu"=>$codusr,"nombre"=>$datoAlumno["nombre"]); 
+				$codcur = $datoAlumno["codcur"];
+				$codpar = $datoAlumno["codpar"];
+				$arrayEvaluaciones[] = array(
+										"codalu"=>$codusr,
+										"realizados"=>$practico->get_evaluaciones_realizadas($codusr,$trimestre,$gestion),
+										"pendientes"=>$practico->get_evaluaciones_pendientes($codusr,$codcur,$codpar,$trimestre,$gestion),
+										"materias"=>$materia->getMateriasCurso($codcur,$codpar)
+										);
+			}
+			echo json_encode(array("status"=>"ok","alumnos"=>$lista_Alumnos,"practicos"=>$arrayEvaluaciones),JSON_UNESCAPED_UNICODE);
+			break;
 	default:
 		echo "errorGET";
 		break;

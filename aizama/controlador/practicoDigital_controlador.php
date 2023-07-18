@@ -96,6 +96,36 @@ switch ($_GET['op']) {
 		echo json_encode(array("status"=>"ok","alumnos"=>$lista_Alumnos,"practicos"=>$arrayPracticos),JSON_UNESCAPED_UNICODE);
 
 		break;
+	case 'get_practicos_alumno':
+		$codusr = isset($_SESSION['app_user_id'])?$_SESSION['app_user_id']:"";
+		if(empty($codusr)){
+			echo json_encode(["status"=>"eSession"]);
+			exit();
+		}
+		require_once '../modelo/modelo_Alumno.php';
+		require_once '../modelo/modelo_practico_digital.php';
+		require_once '../modelo/modelo_materia.php';
+		$alumno = new Alumno($db);
+		$practico = new PracticoDigital($db);
+		$materia = new Materia($db);
+		$trimestre = $_SESSION['app_user_bimestre'];
+		$gestion = date("Y");
+		$datoAlumno = $alumno->getDatosAlumno($codusr);
+		
+		if(!empty($datoAlumno)){
+		    $lista_Alumnos[] = array("codalu"=>$codusr,"nombre"=>$datoAlumno["nombre"]); 
+    		$codcur = $datoAlumno["codcur"];
+    		$codpar = $datoAlumno["codpar"];
+    		$arrayPracticos[] = array(
+    								"codalu"=>$codusr,
+    								"presentados"=>$practico->get_practicos_presentados($codusr,$trimestre,$gestion),
+    								"pendientes"=>$practico->get_practicos_pendientes($codusr,$codcur,$codpar,$trimestre,$gestion),
+    								"materias"=>$materia->getMateriasCurso($codcur,$codpar)
+    								);
+		}		
+		echo json_encode(array("status"=>"ok","alumnos"=>$lista_Alumnos,"practicos"=>$arrayPracticos),JSON_UNESCAPED_UNICODE);
+		
+		break;
 	default:
 		echo "errorGET";
 		break;

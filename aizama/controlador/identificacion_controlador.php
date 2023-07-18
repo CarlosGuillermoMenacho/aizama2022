@@ -1,6 +1,6 @@
 <?php 
 switch ($_GET['op']) {
-	case 'get_pregunta':
+	case 'get_pregunta_alu':
 			$preguntas = isset($_POST["lista"])?json_decode($_POST["lista"]):[];
             require_once"../modelo/conexion.php";
             $db = Conectar::conexion();	
@@ -30,12 +30,50 @@ switch ($_GET['op']) {
             echo json_encode(["status"=>"ok","pregunta"=>$preg]);        
 		break;
     case 'evaluar':
+        
         $preguntas = isset($_POST["preguntas"])?json_decode($_POST["preguntas"]):"";
         $respuestas = isset($_POST["respuestas"])?json_decode($_POST["respuestas"]):"";
 
         if(empty($preguntas) || empty($respuestas)){
             echo json_encode(["status" => "errorParam"]);
             exit();
+        }
+        for ($i=0; $i < count($preguntas); $i++) { 
+            $nro = $preguntas[$i];
+            switch ($nro) {
+                case '1'://La pregunta es sobre su nombre completo
+                    $respuesta = $respuestas[$i];
+                    if(empty($respuesta)){
+                        echo json_encode(["status"=>"noIde"]);
+                        exit(); 
+                    }
+                    $array_name = explode(" ",$respuesta);
+                    require_once"../modelo/conexion.php";
+                    $db = Conectar::conexion();	
+                    require_once"../modelo/modelo_Alumno.php";
+                    $Alumno = new Alumno($db);
+                    $result = $Alumno->get_alumnos();
+                    $alumnos = [];
+                    while ($row = $result->fetch_object()) {
+                        $paterno = $row->paterno;
+                        $materno = $row->materno;
+                        $nombres = $row->nombres;
+                        $alumnos[] = [$paterno,$materno,$nombres];
+                    }
+                    $match = [];
+                    for ($i=0; $i < count($array_name); $i++) { 
+                        for ($i=0; $i < count($alumnos); $i++) { 
+                            $a = $array_name[$i];
+                            
+                        }
+                    }
+                    
+                    break;
+                
+                default:
+                    # code...
+                    break;
+            }
         }
         
         break;
