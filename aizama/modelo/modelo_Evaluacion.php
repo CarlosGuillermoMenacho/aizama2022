@@ -174,5 +174,12 @@ class Evaluacion_Seleccion
 			$result = ejecutar_consulta($this->db,$sql,$type,$params);
 			return $result;
 		}
+		public function get_evaluacion_alumno_fecha($codalu,$codcur,$codpar,$fecha){
+			$sql = "SELECT codexa,bimestre,codmat,codeva,descrip,tot_preg,'Realizado' as realizado FROM evaluacion WHERE estado = 1 AND codigo = ? AND cod_par = ? AND f_inicio <= ? AND f_fin >= ? AND codexa IN (SELECT DISTINCT codexa FROM resp_alu_exa WHERE codigo = ?) UNION SELECT codexa,bimestre,codmat,codeva,descrip,tot_preg,'No realizado' as realizado FROM evaluacion WHERE estado = 1 AND codigo = ? AND cod_par = ? AND f_inicio <= ? AND f_fin >= ? AND codexa NOT IN (SELECT DISTINCT codexa FROM resp_alu_exa WHERE codigo = ?)";
+			$type = "iissiiissi";
+			$params = array($codcur,$codpar,$fecha,$fecha,$codalu,$codcur,$codpar,$fecha,$fecha,$codalu);
+			$result = ejecutar_consulta($this->db,$sql,$type,$params);
+			return $result;
+		}
 }
 ?>

@@ -148,5 +148,12 @@ class PracticoDigital{
 		$result = ejecutar_consulta($this->db,$sql,$type,$params);
 		return $result;
 	}
+	public function get_practicos_curso_fecha($codcur,$codpar,$fecha){
+		$sql = "SELECT * FROM cuestionarios WHERE estado = 1 AND cod_cur = ? AND cod_par = ? AND fecha = ?";
+		$type = "iis";
+		$params = array($codcur,$codpar,$fecha);
+		$result = ejecutar_consulta($this->db,$sql,$type,$params);
+		return $result;
+	}
 }
 ?>

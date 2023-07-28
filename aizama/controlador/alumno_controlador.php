@@ -143,7 +143,8 @@ if ($_GET) {
 			                    "codcur"=>$fila->cod_cur,
 			                    "codpar"=>$fila->cod_par,
 			                    "curso"=>$cursos[$fila->cod_cur]['nombre']." - ".$paralelos[$fila->cod_par],
-			                    "name"=>$fila->paterno." ".$fila->materno." ".$fila->nombres
+			                    "name"=>$fila->paterno." ".$fila->materno." ".$fila->nombres,
+			                    "foto"=>$fila->fotoperfil
 			                    );
 			}
 			echo json_encode(array("status"=>"ok","lista"=>$lista));
@@ -385,6 +386,39 @@ if ($_GET) {
 			}
 			echo json_encode(array("status"=>"ok","lista"=>$lista));
 		    break;
+		case 'foto_perfil':
+			$codusr = isset($_SESSION['app_user_id'])?$_SESSION['app_user_id']:"";
+			if(empty($codusr)){
+				echo json_encode(array("status"=>"eSession"));	
+				exit();		
+			}
+			$codalu = isset($_POST["codalu"])?$_POST["codalu"]:"";
+			if(empty($codalu)){
+				echo json_encode(array("status"=>"paramError"));	
+				exit();		
+			}
+			if (file_exists($_FILES["imagen"]['tmp_name'])&&is_uploaded_file($_FILES["imagen"]['tmp_name'])) 
+				{
+					$ext=explode(".",$_FILES["imagen"]["name"]);
+					if ($_FILES["imagen"]['type']=="image/jpg"||$_FILES["imagen"]['type']=="image/jpeg"||$_FILES["imagen"]['type']=="image/png") 
+					{
+						
+						$fichero="../fotoperfil/";
+						$nombreArchivo=$codalu."_".strtotime(date("Y-m-d H:i:s")).'.'.end($ext);								
+						$dato = move_uploaded_file($_FILES["imagen"]["tmp_name"],$fichero.$nombreArchivo);
+						require_once'../modelo/conexion.php';
+						require_once'../modelo/modelo_Alumno.php';
+						$db = Conectar::conexion();
+						$alumno = new Alumno($db); 
+						$alumno->set_foto_perfil($codalu,"fotoperfil/".$nombreArchivo);
+						echo json_encode(["status"=>"ok","img"=>"fotoperfil/".$nombreArchivo]);
+					}else{
+						echo "errorFile";
+						exit();
+					}
+				}
+
+			break;
 	}
 }else{
 	echo "errorGET";

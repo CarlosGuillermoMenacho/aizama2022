@@ -279,6 +279,118 @@ if ($_GET) {
 			);
 
 			break;
+		case 'calendario':
+			$gestion = date("Y");
+			require_once"../modelo/modelo_calendario.php";
+			$CA = new Calendario();
+			$hoy = [
+				"mes" => date("n",strtotime(date("Y-m-d"))),
+				"dia_mes"=>date("j",strtotime(date("Y-m-d"))),
+				"dia_sem"=>date("N",strtotime(date("Y-m-d")))
+			];
+			echo json_encode(
+				[
+					"status"=>"ok",
+					"data"=>[
+						"calendario"=>$CA->get_calendario($gestion),
+						"hoy"=>$hoy
+					]
+				]
+			);
+			break;
+		case 'get_actividades_alu':
+			$id_user = isset($_SESSION['app_user_id'])?$_SESSION['app_user_id']:"";
+			if(empty($id_user)){
+				echo json_encode(["status"=>"eSession"]);
+				exit();
+			}
+			$fecha_corta = "";
+			$fecha = isset($_POST['fecha'])?$_POST['fecha']:"";
+			if(empty($fecha))$fecha = date("Y-m-d");
+			else {
+				$fecha_corta = $fecha;
+				$fecha = date("Y")."-".$fecha;
+			}
+			require_once"../modelo/modelo_planificacion.php";
+			require_once"../modelo/modelo_Alumno.php";
+			require_once"../modelo/modelo_materia.php";
+			require_once"../modelo/modelo_practico_digital.php";
+			require_once"../modelo/modelo_practico_web.php";
+			require_once"../modelo/modelo_Evaluacion.php";
+			require_once"../modelo/modelo_diasFestivos.php";
+			$Alumno = new Alumno($db);
+			$Materia = new Materia($db);
+			$materias = $Materia->getMaterias();
+			$PracticoDigital = new PracticoDigital($db);
+			$PracticoWeb = new PracticoWeb($db);
+			$Evaluacion_Seleccion = new Evaluacion_Seleccion($db);
+			$DF = new DiasFestivos($db);
+			$data_Alumno = $Alumno->getDatosAlumno($id_user);
+			if(count($data_Alumno) == 0){
+				echo json_encode(["status"=>"noPermitido"]);
+				exit();
+			}
+			$codcur = $data_Alumno["codcur"];
+			$codpar = $data_Alumno["codpar"];
+			$gestion = date("Y");
+			$Planificacion = new Planificacion($db);
+			$result = $Planificacion->get_planificacion_curso_fecha($codcur,$codpar,$gestion,$fecha);
+			$planificaciones = [];
+			while ($row = $result->fetch_object()) {
+				$planificaciones[] = [
+					"actividad"=>$row->actividad,
+					"complemento"=>$row->actividad_complementaria,
+					"materia"=>$materias[$row->codmat]["nombre"],
+					"p"=>$row->periodo,
+					"periodo"=>json_decode($row->periodo)[0],
+					"id"=>$row->id
+				];
+			}
+			$result = $PracticoDigital->get_practicos_curso_fecha($codcur,$codpar,$fecha);
+			$practicos = [];
+			while ($row = $result->fetch_object()) {
+				$practicos[] = [
+					"descripcion"=>$row->descrip,
+					"hora"=>substr($row->hora,0,5),
+					"materia"=>$materias[$row->cod_mat]["nombre"],
+					"tipo"=>"Práctico Digital"
+				];
+			}
+			$result = $PracticoWeb->get_practicos_curso_fecha($codcur,$codpar,$fecha);
+			while ($row = $result->fetch_object()) {
+				$practicos[] = [
+					"descripcion"=>$row->descripcion,
+					"hora"=>substr($row->hora,0,5),
+					"materia"=>$materias[$row->codmat]["nombre"],
+					"tipo"=>"Práctico Web"
+				];
+			}
+			$evaluaciones = [];
+			$result = $Evaluacion_Seleccion->get_evaluacion_alumno_fecha($id_user,$codcur,$codpar,$fecha);
+			while ($row = $result->fetch_object()) {
+				$evaluaciones[] = [
+					"descripcion"=>$row->descrip,
+					"materia"=>$materias[$row->codmat]["nombre"],
+					"estado"=>$row->realizado,
+					"tipo"=>"Evaluación de selección"
+				];
+			}
+
+			$result = $DF->get_fecha($fecha_corta);
+			$dias_festivos = [];
+			while ($row = $result->fetch_object()) {
+				$dias_festivos[] = [
+					"descripcion"=>$row->descripcion
+				];
+			}
+			echo json_encode([
+				"status"=>"ok",
+				"planificaciones"=>$planificaciones,
+				"practicos"=>$practicos,
+				"evaluaciones"=>$evaluaciones,
+				"dias_festivos"=>$dias_festivos
+			]);
+			break;
 		default:
 			echo "errorOP";
 			break;

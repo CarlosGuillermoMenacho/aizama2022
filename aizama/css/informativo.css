@@ -1,0 +1,164 @@
+:root{
+	--c1 : #006581;
+	--c1a : #57A3B8;
+	--c2 : #EBF1F9; /*Gris*/
+	--c3 : #E6344A;/*Rojo institucional*/
+	--c3a: #f97d8c;
+	--c4 : #fafafa;/*Background*/
+	--c5 : #fff;
+	--c1b:#e2f8f9;
+}
+/*--------------CLASS---------------------*/
+.main-container{
+	padding: 5px;
+	display: flex;
+	gap: 20px;
+	flex-wrap: wrap;}
+.div-fecha{
+	padding: 20px;
+}
+.div-section{
+	border-radius: 5px;
+	padding: 5px;
+	background-color: var(--c2);
+	box-shadow: 0 3px 10px rgb(10 37 64 / 40%);
+	max-width: 400px;
+	width: 100%;
+}
+.div-practico-info{
+	border-radius: 5px;
+	background: white;
+	margin-top: 10px;
+	padding: 5px;
+	display: flex;
+}
+.div-img{
+	border: 1px solid gray;
+    border-radius: 50%;
+    display: flex;
+    padding: 5px;
+    max-width: 60px;
+    max-height: 60px;
+}
+.div-practico-info img{
+	width: 50px;
+}
+.practicos{
+	width: 100%;
+	padding: 5px;
+}
+/*11396178*/
+.calendar-icon {
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    display: flex;
+    z-index: 100;
+}
+.calendar-icon img {
+    width: 70px;
+    cursor: pointer;
+    transition: .5s;
+}
+.btn-close {
+    position: absolute;
+    width: 17px;
+    right: 13px;
+    top: 3px;
+    cursor: pointer;
+    z-index: 50;
+}
+.table-calendario {
+    width: calc(100% - 10px);
+    max-width: 400px;
+    border-collapse: collapse;
+    box-shadow: 0 3px 10px rgb(10 37 64 / 40%);
+    border-radius: 5px;
+    background-color: var(--c5);
+}
+.table-calendario thead tr td {
+    color: var(--c1);
+    font-size: .8em;
+    text-align: center;
+    font-weight: bold;
+    max-width: 10px;
+    padding: 5px 0;
+}
+.button-meses {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 50px;
+}
+.button-meses div {
+    width: 100px;
+}
+.mes-button {
+    cursor: pointer;
+    padding: 10px 20px;
+    color: var(--c1a);
+}
+.div-calendario {
+    width: 400px;
+    min-width: 370px;
+}
+.table-calendario tbody tr td {
+    color: var(--c1);
+    font-size: .8em;
+    text-align: center;
+    padding: 15px 0;
+    cursor: pointer;
+    position: relative;
+    height: 50px;
+    width: 50px;
+}
+.border-top {
+    border-top: 1px solid var(--c2);
+}
+.number-day {
+    position: absolute;
+    top: 3px;
+    right: 3px;
+    font-size: .8em;
+}
+.border-td {
+    border-top: 1px solid var(--c2);
+    border-left: 1px solid var(--c2);
+}
+.show-calendar {
+    display: block;
+    right: 0px;
+    bottom: 5px;
+    position: fixed;
+    z-index: 110;
+}
+.oculto{
+	display: none;
+}
+.hoy{
+	background-color: var(--c1b);
+}
+.mes-button:hover{
+	background-color: #ccc;
+}
+.table-calendario tbody tr td:hover{
+	background-color: #ccc;
+}
+/*------------------Etiquetas----------------------*/
+h2{
+	font-size: 1em;
+	text-align: center;
+	color: var(--c1);
+	padding: 5px;
+}
+h3{
+	font-size: .95em;
+	color: var(--c3a);
+	text-align: center;
+	padding: 5px;
+}
+p{
+	padding: 5px;
+	color: var(--c1);
+	font-size: .85em;
+}

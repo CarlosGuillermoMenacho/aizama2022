@@ -49,5 +49,12 @@ class PracticoWeb{
 		$result = ejecutar_consulta($this->db,$sql,$type,$params);
 		return $result;
 	}
+	public function get_practicos_curso_fecha($codcur,$codpar,$fecha){
+		$sql = "SELECT * FROM practicos_web WHERE estado = 1 AND codcur = ? AND codpar = ? AND fecha = ?";
+		$type = "iis";
+		$params = array($codcur,$codpar,$fecha);
+		$result = ejecutar_consulta($this->db,$sql,$type,$params);
+		return $result;
+	}
 }
 ?>

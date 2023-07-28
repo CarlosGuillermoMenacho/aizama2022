@@ -32,7 +32,6 @@
 									"dia"=>substr($fecha,3,2)
 									);
 				}
-
 			}
 			return $lista;
 			mysqli_stmt_close($resultado);
@@ -45,5 +44,13 @@
 			$result = ejecutar_consulta($this->db,$sql,$type,$params);
 			return $result;
 		}
+		public function get_fecha($fecha){
+			$sql = "SELECT * FROM dias_festivos WHERE estado = 1 AND fecha = ?";
+			$type = "s";
+			$params = array($fecha);
+			$result = ejecutar_consulta($this->db,$sql,$type,$params);
+			return $result;
+		}
+
 	}
 ?>

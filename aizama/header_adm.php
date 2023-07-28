@@ -51,6 +51,7 @@
         <!--li><a href="https://meet.google.com/tno-epdo-wds" ><span class="icon-open-book"></span>Evento en línea(Reuni&oacute;n gral.)</a></li-->
         <li><a href="#" id="eel"><div class="div-name-item"><span class="icon-video"></span>Evento en linea</div></a></li>
         <li><a href="ver_horario_adm.php"><div class="div-name-item"><span class="icon-mobile"></span>Horario Escolar</div></a></li>
+        <li><a href="calendario_academico.php"><div class="div-name-item"><span class="icon-mobile"></span>Calendario Académico</div></a></li>
         <li><a href="biblioteca.php"><div class="div-name-item"><span class="icon-mobile"></span>Biblioteca Digital</div></a></li>
         <li><a href="agenda_adm.php"><div class="div-name-item"><span class="icon-mobile"></span>Agenda Digital</div></a></li>
         <li><a href="lista_usuario_clave_adm.php"><div class="div-name-item"><span class="icon-mobile"></span>Lista Usuarios y Clave</div></a></li>
@@ -197,6 +198,7 @@
                 <li><a href="reg_atrazo.php" id="">Registrar Atrasos</a></li>
                 <li><a href="lista_blocked.php" id="">Preincripciones</a></li>
                 <li><a href="asistencia_alumnos.php">Asistencia Alumnos</a></li>
+                <li><a href="foto_perfil_alumnos.php">Foto Perfil</a></li>
           </ul>
 
         </li>

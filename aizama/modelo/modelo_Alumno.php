@@ -218,5 +218,12 @@ class Alumno{
 			$result=ejecutar_consulta($this->db, $sql, $type, $params);
 			return $result;
 		}
+		public function set_foto_perfil($codalu,$img){
+			$sql = "UPDATE alumno SET fotoperfil = ? WHERE codigo = ?";
+			$params = array($img,$codalu);
+			$type = "si";
+			$result=ejecutar_consulta($this->db, $sql, $type, $params);
+			return $result;
+		}
 }	
 ?>
