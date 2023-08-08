@@ -25,6 +25,7 @@
  
     <nav>
       <ul>
+        <li><a href="informativo_familia.php"><span class="icon-documents"></span>Informativo</a></li>
         <li><a href="horario_family.php"><span class="icon-documents"></span>Horario Escolar</a></li>
         <li><a href="kardex_familia.php"><span class="icon-documents"></span>Kardex</a></li>
         <!--li class="submenu">
@@ -156,5 +157,5 @@
       </ul>
     </nav>
   </header>
-  <section id="wraper">
+  <section id="wraper" style="padding-left: 250px;">
     

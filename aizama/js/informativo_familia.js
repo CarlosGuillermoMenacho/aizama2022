@@ -7,7 +7,6 @@ const close_form = () => {
 	$(".div-calendario").addClass("oculto");
 } 
 const calendar_show = () => {
-	
 	$(".div-calendario").removeClass("oculto");
 }
 const init = async () => {
@@ -20,7 +19,7 @@ const init = async () => {
 				mes_seleccionado = parseInt(hoy.mes);
 			}
 		},"json"
-		);
+	);
 }
 const mes_anterior = () => {
 	if(mes_seleccionado > 1){
@@ -183,19 +182,7 @@ const cargar_calendario = mes =>{
 	}
 
 }
-const hayActividad = (dia,mes)=>{
-	return false;
-}
-const ver_actividades = (mes,dia,dds) => {
-	$(".div-fecha").empty();
-	$(".div-fecha").append(`	
-		<h2>${__DIA[dds]} ${dia} de ${__MES[mes]}</h2>
-	`);
-	if(mes < 10)mes = "0"+ mes;
-	if(dia < 10)dia = "0" + dia;
-	get_planificaiones(`${mes}-${dia}`)
-}
-const cargarAvances = planificaciones => {
+const cargarAvances = (planificaciones,codalu) => {
 	if(planificaciones.length == 0)return;
 	let sort = [];
 	planificaciones.forEach(p => {
@@ -221,7 +208,7 @@ const cargarAvances = planificaciones => {
 			}
 		}
 	});
-	$(".main-container").append(
+	$(`#main-container${codalu}`).append(
 		`<div class="div-section">
 		<div class="div-img">
 		        <img src="svg/avances.png">
@@ -235,32 +222,6 @@ const cargarAvances = planificaciones => {
 		    </div>
 	    </div>`
 	);
-}
-const cargarDiasFestivos = df => {
-	if(df.length == 0)return;
-	let pl = "";
-	df.forEach(p => {
-		pl = `${pl}<div class="practico">
-			          <p class="descripcion">
-			            ${p.descripcion}
-			          </p>
-			        </div>`;
-	});
-	$(".main-container").append(
-			`<div class="div-section">
-			<div class="div-img">
-			        <img src="images/globos.png">
-			      </div>
-			    <h3>Hoy se celebra</h3>
-			    <div class="div-practico-info">
-			      
-			      <div class="practicos">
-			        ${pl}
-			      </div>
-
-			    </div>
-			  </div>`
-		);
 }
 const cargarCalendarioAcademico = df => {
 	if(df.length == 0)return;
@@ -277,7 +238,7 @@ const cargarCalendarioAcademico = df => {
 			          ${img}
 			        </div>`;
 	});
-	$(".main-container").append(
+	$("#dias-festivos").append(
 			`<div class="div-section">
 				<div class="div-img">
 			        <img src="images/calendario.png">
@@ -292,7 +253,34 @@ const cargarCalendarioAcademico = df => {
 			  </div>`
 		);
 }
-const cargarPracticos = practicos => {
+const cargarDiasFestivos = df => {
+	$("#dias-festivos").empty();
+	if(df.length == 0)return;
+	let pl = "";
+	df.forEach(p => {
+		pl = `${pl}<div class="practico">
+			          <p class="descripcion">
+			            ${p.descripcion}
+			          </p>
+			        </div>`;
+	});
+	$("#dias-festivos").append(
+			`<div class="div-section">
+			<div class="div-img">
+			        <img src="images/globos.png">
+			      </div>
+			    <h3>Hoy se celebra</h3>
+			    <div class="div-practico-info">
+			      
+			      <div class="practicos">
+			        ${pl}
+			      </div>
+
+			    </div>
+			  </div>`
+		);
+}
+const cargarPracticos = (practicos,codalu) => {
 	if(practicos.length == 0)return;
 	let pl = "";
 	practicos.forEach(p => {
@@ -305,11 +293,11 @@ const cargarPracticos = practicos => {
 			          <div style="text-align: right; font-size:.8em;color:var(--c3a);">${p.tipo}</div>
 			        </div>`;
 	});
-	$(".main-container").append(
+	$(`#main-container${codalu}`).append(
 			`<div class="div-section">
 				<div class="div-img">
 			        <img src="svg/practico.png">
-			     </div>
+			      </div>
 			    <h3>Prácticos</h3>
 			    <div class="div-practico-info">
 			      
@@ -321,7 +309,7 @@ const cargarPracticos = practicos => {
 			  </div>`
 		);
 }
-const cargarEvaluaciones = evaluaciones => {
+const cargarEvaluaciones = (evaluaciones,codalu) => {
 	if(evaluaciones.length == 0)return;
 	let pl = "";
 	evaluaciones.forEach(p => {
@@ -338,9 +326,9 @@ const cargarEvaluaciones = evaluaciones => {
 			          <div style="text-align: right; font-size:.8em;color:var(--c3a);">${p.tipo}</div>
 			        </div>`;
 	});
-	$(".main-container").append(
+	$(`#main-container${codalu}`).append(
 			`<div class="div-section">
-			<div class="div-img">
+				<div class="div-img">
 			        <img src="svg/evaluaciones.png">
 			      </div>
 			    <h3>Evaluaciones</h3>
@@ -354,20 +342,52 @@ const cargarEvaluaciones = evaluaciones => {
 			  </div>`
 		);
 }	
+const hayActividad = (dia,mes)=>{
+	return false;
+}
+const ver_actividades = (mes,dia,dds) => {
+	$(".div-fecha").empty();
+	$(".div-fecha").append(`	
+		<h2>${__DIA[dds]} ${dia} de ${__MES[mes]}</h2>
+	`);
+	if(mes < 10)mes = "0"+ mes;
+	if(dia < 10)dia = "0" + dia;
+	get_planificaiones(`${mes}-${dia}`)
+}
+
 const get_planificaiones = fecha => {
-	$(".main-container").empty();
+	$("#container").empty();
 	$.post(
-		"controlador/calendario_controlador.php?op=get_actividades_alu",
+		"controlador/calendario_controlador.php?op=get_actividades_familia",
 		{fecha:fecha},
 		data => {
 			if(data.status == "ok"){
-				let planificaciones = data.planificaciones;
+				let actividades = data.actividades;
 				cargarDiasFestivos(data.dias_festivos);
 				cargarCalendarioAcademico(data.calendario_academico);
-				cargarAvances(planificaciones);
-				cargarPracticos(data.practicos);
-				cargarEvaluaciones(data.evaluaciones);
-				
+				let alumnos = data.alumnos;
+				alumnos.forEach(a => {
+					for (var i = 0; i < actividades.length; i++) {
+						if(actividades[i].codalu == a.codalu){
+							let planificaciones = actividades[i].planificaciones;	
+							let practicos = actividades[i].practicos;
+							let evaluaciones = actividades[i].evaluaciones;
+							if(evaluaciones.length || practicos.length || planificaciones.length){
+								$("#container").append(
+									`<div>
+										<h3 style="text-align: center; padding:20px">${a.nombre}</h3>
+									</div>
+									<div id="main-container${a.codalu}" class="main-container">
+									</div>`
+								);
+							}
+							cargarAvances(planificaciones,a.codalu);
+							cargarPracticos(practicos,a.codalu);
+							cargarEvaluaciones(evaluaciones,a.codalu);
+
+						}
+					}
+				});
 			}
 			if (data.status == "eSession") {
 				Swal.fire("La sesión ha finalizado, vuelva a ingresar con su usuario y contraseña por favor...");
@@ -375,7 +395,6 @@ const get_planificaiones = fecha => {
 		},"json"
 	);
 }	
-
 $(document).ready(async ()=>{
 	await init();
 	get_planificaiones("");

@@ -10,8 +10,8 @@ if($_SESSION['app_user_id']==16){
     require 'header_adm.php';
 }
 ?>
-<link rel="stylesheet" type="text/css" href="css/calendario_academico.css?v=<?php echo rand()?>">
-<div class="title"><h1>Calendario Académico</h1></div>
+<link rel="stylesheet" type="text/css" href="css/gestionar_videoteca.css?v=<?php echo rand()?>">
+<div class="title"><h1>Gestionar Videos</h1></div>
 <div id="tabla_lista" class="table-lista">
     <table> 
         <tbody>
@@ -19,17 +19,14 @@ if($_SESSION['app_user_id']==16){
                 <td class="border-td" colspan="3">
                     <form id="formulario-save">
                         <div class="fecha">
-                            <div>
-                                Desde: <input type="date" class="input-data" id="desde" name="desde" value="<?php echo date("Y-m-d")?>">
-                            </div>
-                            <div>
-                                Hasta: <input type="date" class="input-data" id="hasta" name="hasta" value="<?php echo date("Y-m-d")?>">
-                            </div>
-                            <div style="display: flex; align-items: center; gap: 10px;">
-                                Imagen: <img id="img" src="svg/imagen.svg" style="width: 45px; border-radius: 5px; cursor: pointer;" onclick="select_imagen()">
-                            </div>
-                            <div style="display: flex; align-items: center; gap: 10px;">Descripción: <textarea class="input-data2" id="descripcion" name="descripcion"></textarea></div>
+                            
+                            <div style="display: flex; align-items: center; gap: 10px;"><label>Titulo: </label><textarea class="input-data2" id="titulo" name="titulo"></textarea></div>
+                            <div style="display: flex; align-items: center; gap: 10px;"><label>Descripción: </label><textarea class="input-data2" id="descripcion" name="descripcion"></textarea></div>
+                            <div style="display: flex; align-items: center; gap: 10px;"><label>Enlace: </label><textarea class="input-data2" id="enlace" name="enlace"></textarea></div>
                             <input type="file" id="imagen" name="imagen" style="display: none;" accept="image/png, image/jpg, image/jpeg">
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                                <label>Miniatura: </label><img id="img" src="svg/imagen.svg" style="width: 45px; border-radius: 5px; cursor: pointer;" onclick="select_imagen()">
+                            </div>
                         </div>
                     </form>
                 </td>
@@ -48,10 +45,12 @@ if($_SESSION['app_user_id']==16){
         <thead>
             <tr>
                 <td class="index">Nro.</td>
-                <td class="border-left">Fecha</td>
+                <td class="border-left">Título</td>
                 <td class="border-left">Descripción</td>
-                <td class="border-left">Imágen</td>
-                <td class="border-left" width="120px">Opciones</td>
+                <td class="border-left">Enlace</td>
+                <td class="border-left">Miniatura</td>
+                <td class="border-left" width="120px">Acciones</td>
+
             </tr>
         </thead>
         <tbody id="body">
@@ -87,4 +86,4 @@ if($_SESSION['app_user_id']==16){
     <p>Seleccionar imagen</p>
 </div-->
 <!--div id="btn-add" class="div-add"><img src="svg/agregar-documento.svg" style="width:30px; cursor:pointer" onclick="add_fila();">Agregar</div-->
-<script type="text/javascript" src="js/calendario_academico.js?v=<?php echo rand();?>"></script>
+<script type="text/javascript" src="js/gestionar_videoteca.js?v=<?php echo rand();?>"></script>

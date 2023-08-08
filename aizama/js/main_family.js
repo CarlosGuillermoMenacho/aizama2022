@@ -30,11 +30,13 @@ function main () {
 				left: '0'
 			});
 			contador = 0;
+			$("#wraper").animate({'padding-left':'250px'});
 		} else {
 			contador = 1;
 			$('nav').animate({
 				left: '-100%'
 			});
+			$("#wraper").animate({'padding-left':0});
 		}
 	});
     /*$('#R1').click(function(){

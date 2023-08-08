@@ -1,7 +1,7 @@
 let __lista = [];
 const __delete = id => {
 	$.post(
-		"controlador/calendario_academico_controlador.php?op=delete",
+		"controlador/videos_youtube_controlador.php?op=delete",
 		{id:id},
 		async data => {
 			switch(data.status){
@@ -9,7 +9,7 @@ const __delete = id => {
 					Swal.fire("La sesión ha finalizado, vuelva a iniciar sesión con su usuario y contraseña por favor...");
 					break;
 				case "ok":
-					await get_calendario();
+					await get_videos();
 					showTable(__lista);
 					break;
 			}
@@ -50,32 +50,31 @@ const add_fila = () => {
 }
 const update = async (tr,id) => {
 	let descripcion =  $(`#descripcion${id}`).val();
-	let desde =  $(`#desde${id}`).val();
-	let hasta =  $(`#hasta${id}`).val();
-	if(descripcion == "" || desde == "" || hasta == ""){
+	let titulo =  $(`#titulo${id}`).val();
+	let enlace =  $(`#enlace${id}`).val();
+	if(descripcion == "" || titulo == "" || enlace == ""){
 		Swal.fire("Debe llenar los campos requeridos...");
 		return;
 	}
-	await $.post(
-		"controlador/calendario_academico_controlador.php?op=update",
-		{id:id,desde:desde,hasta:hasta,descripcion:descripcion},
-		async data => {
-			switch(data.status){
-				case "eSession":
-					Swal.fire("La sesión ha finalizado, vuelva a iniciar sesión con su usuario y contraseña por favor...");
-					break;
-				case "errorFecha":
-					Swal.fire("Las fechas ingresadas son incorrectas...");
-					break;
-				case "ok":
-					await get_calendario();
-					cancelar(tr,id);
-					break;
-			}
-		},"json"
-	);
+	let formData = new FormData($("#formulario")[0]);
+	formData.append("titulo",titulo);
+	formData.append("descripcion",descripcion);
+	formData.append("enlace",enlace);
+	let response = $.ajax({
+		url:"controlador/videos_youtube_controlador.php?op=update",
+		type: "POST",
+		data:formData,
+		contentType: false, 
+		processData: false,
+		async:false
+	}).responseText;
+	let data = JSON.parse(response);
+	if(data.status == "ok"){
+		await get_videos();
+		refresh_item(tr,id);
+	}
 }
-const get_fecha = id => {
+const get_fila = id => {
 	for (var i = 0; i < __lista.length; i++) {
 		if(__lista[i].id == id)return __lista[i];
 	}
@@ -89,19 +88,15 @@ const get_descripcion = id => {
 }
 const cancelar = (tr,id) => {
 	$(`#tr${tr}`).empty();
-	let e = get_fecha(id);
+	let e = get_fila(id);
 	let img = "svg/imagen.svg";
-	if(e.file != "")img = `calendarioAcademico/${e.file}`;
+	if(e.captura != "")img = `miniaturas/${e.captura}`;
 	$(`#tr${tr}`).append(
 		`
                 <td class="border-top index">${tr}</td>
-                <td class="border-td">
-                	<div class="fecha">
-                		<div>Desde: ${e.desde}</div>
-                		<div>Hasta: ${e.hasta}</div>
-                	</div>
-                </td>
-                <td class="border-td">${get_descripcion(id)}</td>
+                <td class="border-td">${e.titulo}</td>
+                <td class="border-td">${e.descripcion}</td>
+                <td class="border-td"><a href="${e.enlace}" target="__blank">${e.enlace}</a></td>
                 <td class="border-td">
                 	<div class="div-img">
                 		<img id="img${id}" src="${img}" style="width: 45px; border-radius: 5px; cursor: pointer;" onclick="change_img(${id})">
@@ -124,11 +119,11 @@ const change_img = id => {
 	$("#img-change").click();
 }
 const show_img = id => {
-	let l = get_fecha(id);
-	if(l.file == "")return;
+	let l = get_fila(id);
+	if(l.captura == "")return;
 	Swal.fire(
 		`<div class="show-img">
-		    <img src="calendarioAcademico/${l.file}" style="width:90%;">
+		    <img src="miniaturas/${l.captura}" style="width:90%;">
 		</div>
 
 		`
@@ -136,23 +131,16 @@ const show_img = id => {
 }
 const editar = (tr,id) => {
 	$(`#tr${tr}`).empty();
-	let l = get_fecha(id);
+	let l = get_fila(id);
+	$("#id").val(id);
 	let img = "svg/imagen.svg";
-	if(l.file != "")img = `calendarioAcademico/${l.file}`;
+	if(l.file != "")img = `miniaturas/${l.captura}`;
 	$(`#tr${tr}`).append(
 		`
                 <td class="border-top index">${tr}</td>
-                <td class="border-td fecha" colspan="2">
-                	<div class="fecha">
-                		<div>
-                			Desde: <input type="date" class="input-data" id="desde${id}" name="" value="${l.desde}">
-                		</div>
-                		<div>
-                			Desde: <input type="date" class="input-data" id="hasta${id}" name="" value="${l.hasta}">
-                		</div>
-                	</div>
-                </td>
-                <td class="border-td"><textarea class="input-data2" id="descripcion${id}">${get_descripcion(id)}</textarea></td>
+                <td class="border-td"><textarea class="input-data2" id="titulo${id}">${l.titulo}</textarea></td>
+                <td class="border-td"><textarea class="input-data2" id="descripcion${id}">${l.descripcion}</textarea></td>
+                <td class="border-td"><textarea class="input-data2" id="enlace${id}">${l.enlace}</textarea></td>
                 <td class="border-td">
                 	<div class="div-img">
                 		<img id="img${id}" src="${img}" style="width: 45px; border-radius: 5px; cursor: pointer;" onclick="change_img(${id})">
@@ -172,17 +160,13 @@ const showTable = lista => {
 	let index = 1;
 	lista.forEach(l => {
 		let img = "svg/imagen.svg";
-		if(l.file != "")img = `calendarioAcademico/${l.file}`;
+		if(l.captura != "")img = `miniaturas/${l.captura}`;
 		$("#body").append(
 			`<tr id="tr${index}">
                 <td class="border-top index">${index}</td>
-                <td class="border-td">
-                	<div class="fecha">
-                		<div>Desde: ${l.desde}</div>
-                		<div>Hasta: ${l.hasta}</div>
-                	</div>
-                </td>
+                <td class="border-td">${l.titulo}</td>
                 <td class="border-td">${l.descripcion}</td>
+                <td class="border-td"><a href="${l.enlace}" target="__blank"> ${l.enlace}</a></td>
                 <td class="border-td">
                 	<div class="div-img">
                 		<img id="img${l.id}" src="${img}" style="width: 45px; border-radius: 5px; cursor: pointer;" onclick="show_img(${l.id})">
@@ -199,16 +183,16 @@ const showTable = lista => {
 		index++;
 	});
 }
-const get_calendario = async () => {
+const get_videos = async () => {
 	await $.get(
-		"controlador/calendario_academico_controlador.php?op=get_calendario_academico",
+		"controlador/videos_youtube_controlador.php?op=get_videos",
 		data => {
 			switch(data.status){
 				case "eSession":
 					Swal.fire("La sesión ha finalizado, vuelva a iniciar sesión con su usuario y contraseña por favor...");
 					break;
 				case "ok":
-					__lista = data.calendario;
+					__lista = data.data;
 					
 					break;
 			}
@@ -217,16 +201,16 @@ const get_calendario = async () => {
 }
 const save = () => {
 	let descripcion =  $("#descripcion").val();
-	let desde =  $(`#desde`).val();
-	let hasta =  $(`#hasta`).val();
-
-	if(descripcion == "" || desde == "" || hasta == ""){
+	let titulo =  $(`#titulo`).val();
+	let enlace =  $(`#enlace`).val();
+	let imagen =  $(`#imagen`).val();
+	if(descripcion == "" || titulo == "" || enlace == "" || imagen == ""){
 		Swal.fire("Debe llenar los campos requeridos...");
 		return;
 	}
 	let formData = new FormData($("#formulario-save")[0]);
 	$.ajax({
-        url: "controlador/calendario_academico_controlador.php?op=save",
+        url: "controlador/videos_youtube_controlador.php?op=save",
         data: formData,
         cache: false,
         processData: false,
@@ -238,12 +222,12 @@ const save = () => {
 				case "eSession":
 					Swal.fire("La sesión ha finalizado, vuelva a iniciar sesión con su usuario y contraseña por favor...");
 					break;
-				case "errorFecha":
-					Swal.fire("Las fechas ingresadas son incorrectas...");
+				case "errorParam":
+					Swal.fire("Faltan datos...");
 					break;
 				case "ok":
 					limpiar();
-					await get_calendario();
+					await get_videos();
 					showTable(__lista);
 					break;
 			}
@@ -253,8 +237,8 @@ const save = () => {
 
 const limpiar = () => {
 	$("#descripcion").val("");
-	$("#desde").val("");
-	$("#hasta").val("");
+	$("#titulo").val("");
+	$("#enlace").val("");
 	$("#img").attr("src","svg/imagen.svg");
 	$("#imagen").val("");
 }
@@ -266,28 +250,47 @@ const update_lista = (id,img) => {
 		}
 	}
 }
-const update_imagen = () => {
+const refresh_item = (tr,id) => {
+	$(`#tr${tr}`).empty();
+	let e = get_fila(id);
+	let img = "svg/imagen.svg";
+	if(e.captura != "")img = `miniaturas/${e.captura}`;
+	$(`#tr${tr}`).append(
+		`
+                <td class="border-top index">${tr}</td>
+                <td class="border-td">${e.titulo}</td>
+                <td class="border-td">${e.descripcion}</td>
+                <td class="border-td"><a href="${e.enlace}" target="__blank">${e.enlace}</a></td>
+                <td class="border-td">
+                	<div class="div-img">
+                		<img id="img${id}" src="${img}" style="width: 45px; border-radius: 5px; cursor: pointer;" onclick="change_img(${id})">
+                	</div>
+                </td>
+                <td class="border-td" >
+                	<div class="content-center">
+	                    <img title="Editar" class="cursor-pointer" onclick="editar(${tr},${id});" width="30px" src="images/edit.svg">
+	                    <img title="Eliminar" class="cursor-pointer" src="images/delete.png" width="30px" onclick="__delete(${id});">
+	                </div>
+                </td>
+            `
+	);
+}
+const update_imagen = e => {
 	if($("#img-change").val() != ""){
 			let id = $("#id").val();
-			let formData = new FormData($("#formulario")[0]);
-			let response = $.ajax({
-				url:"controlador/calendario_academico_controlador.php?op=set_img",
-				type: "POST",
-				data:formData,
-				contentType: false, 
-				processData: false,
-				async:false
-			}).responseText;
-			let data = JSON.parse(response);
-			if(data.status == "ok"){
-				$(`#img${id}`).attr("src","calendarioAcademico/"+data.img);
-				$("#img-change").val("");
-				update_lista(id,data.img);
+			let tgt = e.target || window.event.srcElement;
+			let files = tgt.files;
+			if(FileReader && files && files.length){
+				let fr = new FileReader();
+				fr.onload = () => {
+					$(`#img${id}`).attr("src",fr.result);
+				}
+				fr.readAsDataURL(files[0]);
 			}
 		}
 }
 $(document).ready( async ()=>{
-	await get_calendario();
+	await get_videos();
 	showTable(__lista);
 	$("#imagen").change((e)=>{
 		let tgt = e.target || window.event.srcElement;
@@ -302,6 +305,6 @@ $(document).ready( async ()=>{
 		
 	});
 	$("#img-change").change((e)=>{
-		update_imagen();		
+		update_imagen(e);		
 	});
 })

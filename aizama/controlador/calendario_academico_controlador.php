@@ -31,7 +31,9 @@ if ($_GET) {
 				$ca[] = [
 					"id"=>$row->id,
 					"descripcion"=>$row->descripcion,
-					"fecha"=>$row->fecha
+					"desde"=>$row->desde,
+					"hasta"=>$row->hasta,
+					"file"=>$row->file
 				];
 			}
 
@@ -49,10 +51,14 @@ if ($_GET) {
 				exit();
 			}
 			$descripcion = isset($_POST["descripcion"])?$_POST["descripcion"]:"";
-			$fecha = isset($_POST["fecha"])?$_POST["fecha"]:"";
-
-			if(empty($descripcion) || empty($fecha)){
+			$desde = isset($_POST["desde"])?$_POST["desde"]:"";
+			$hasta = isset($_POST["hasta"])?$_POST["hasta"]:"";
+			if(empty($descripcion) || empty($desde)|| empty($hasta)){
 				echo json_encode(["status"=>"errorParam"]);
+				exit();
+			}
+			if(strtotime($desde)>strtotime($hasta)){
+				echo json_encode(["status"=>"errorFecha"]);
 				exit();
 			}
 			require_once('../modelo/modelo_calendario_academico.php');
@@ -62,7 +68,20 @@ if ($_GET) {
 
 			$gestion = date("Y");
 			$fechareg = date("Y-m-d H:i:s");
-			$CA->save($gestion,$descripcion,$fecha,$usr,$fechareg);
+			$file = "";
+			if (file_exists($_FILES["imagen"]['tmp_name'])&&is_uploaded_file($_FILES["imagen"]['tmp_name'])){
+				$ext=explode(".",$_FILES["imagen"]["name"]);
+				if ($_FILES["imagen"]['type']=="image/jpg"||$_FILES["imagen"]['type']=="image/jpeg"||$_FILES["imagen"]['type']=="image/png"){
+						
+					$fichero="../calendarioAcademico/";
+					$file=$usr.'-'.strtotime(date("Y-m-d H:i:s")).'.'.end($ext);								
+					$dato = move_uploaded_file($_FILES["imagen"]["tmp_name"],$fichero.$file);
+				}else{
+					echo json_encode(["status"=>"errorFileFormat"]);
+					exit();
+				}
+			}
+			$CA->save($gestion,$descripcion,$file,$desde,$hasta,$usr,$fechareg);
 			echo json_encode(["status"=>"ok"]);
 			break;
 		case 'update':
@@ -72,10 +91,15 @@ if ($_GET) {
 				exit();
 			}
 			$descripcion = isset($_POST["descripcion"])?$_POST["descripcion"]:"";
-			$fecha = isset($_POST["fecha"])?$_POST["fecha"]:"";
+			$desde = isset($_POST["desde"])?$_POST["desde"]:"";
+			$hasta = isset($_POST["hasta"])?$_POST["hasta"]:"";
 			$id = isset($_POST["id"])?$_POST["id"]:"";
-			if(empty($descripcion) || empty($fecha) || empty($id)){
+			if(empty($descripcion) || empty($desde)|| empty($hasta) || empty($id)){
 				echo json_encode(["status"=>"errorParam"]);
+				exit();
+			}
+			if(strtotime($desde)>strtotime($hasta)){
+				echo json_encode(["status"=>"errorFecha"]);
 				exit();
 			}
 			require_once('../modelo/modelo_calendario_academico.php');
@@ -84,8 +108,43 @@ if ($_GET) {
 			$CA = new Calendario_Academico($db);
 
 			$fechareg = date("Y-m-d H:i:s");
-			$CA->update($id,$descripcion,$fecha,$usr,$fechareg);
+			$CA->update($id,$descripcion,$desde,$hasta,$usr,$fechareg);
 			echo json_encode(["status"=>"ok"]);
+			break;
+		case 'set_img':
+			$usr = isset($_SESSION["app_user_id"])?$_SESSION["app_user_id"]:"";
+			if(empty($usr)){
+				echo json_encode(["status"=>"eSession"]);
+				exit();
+			}
+			$file = isset($_POST["file"])?$_POST["file"]:"";
+			$id = isset($_POST["id"])?$_POST["id"]:"";
+			if(empty($id)){
+				echo json_encode(["status"=>"errorParam"]);
+				exit();
+			}
+			if (file_exists($_FILES["imagen"]['tmp_name'])&&is_uploaded_file($_FILES["imagen"]['tmp_name'])){
+				$ext=explode(".",$_FILES["imagen"]["name"]);
+				if ($_FILES["imagen"]['type']=="image/jpg"||$_FILES["imagen"]['type']=="image/jpeg"||$_FILES["imagen"]['type']=="image/png"){
+						
+					$fichero="../calendarioAcademico/";
+					$nombreArchivo=$usr.'-'.strtotime(date("Y-m-d H:i:s")).'.'.end($ext);								
+					$dato = move_uploaded_file($_FILES["imagen"]["tmp_name"],$fichero.$nombreArchivo);
+					require_once('../modelo/modelo_calendario_academico.php');
+					require_once'../modelo/conexion.php';
+					$db = Conectar::conexion();
+					$CA = new Calendario_Academico($db);
+					$fechareg = date("Y-m-d H:i:s");
+					$CA->set_imagen($id,$nombreArchivo,$usr,$fechareg);
+					echo json_encode(["status"=>"ok","img"=>$nombreArchivo]);
+				}else{
+					echo json_encode(["status"=>"errorFileFormat"]);
+					exit();
+				}
+			}else{
+				echo json_encode(["status"=>"errorFile"]);
+				exit();
+			}
 			break;
 		case 'delete':
 			$usr = isset($_SESSION["app_user_id"])?$_SESSION["app_user_id"]:"";

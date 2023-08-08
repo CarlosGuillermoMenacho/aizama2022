@@ -283,6 +283,9 @@ p{
 	color: var(--c1);
 	font-size: .9em;
 }
+label{
+	width: 70px;
+}
 .div-inputss {
     margin: 5px 0px;
 }
