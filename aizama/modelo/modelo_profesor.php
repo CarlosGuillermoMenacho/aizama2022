@@ -79,5 +79,40 @@ class Profesor{
 		}
 		return $profesores;
 	}
+	public function get_foto_perfil($codprof){
+		$sql="SELECT * FROM foto_perfil_docente WHERE codprof = ?";
+		$type="s";
+		$params=array($codprof);
+		$result=ejecutar_consulta($this->db,$sql,$type,$params);
+		return $result;
+	}
+	public function save_foto_perfil($codprof,$file,$usr,$fechareg){
+		$sql="INSERT INTO foto_perfil_docente(codprof,imagen,estado,usr,createdAt) 
+			  VALUES(?,?,1,?,?)";
+		$type="ssss";
+		$params=array($codprof,$file,$usr,$fechareg);
+		$result=ejecutar_consulta($this->db,$sql,$type,$params);
+		return $result;
+	}
+	public function delete_foto_perfil($codprof,$usr,$fechareg){
+		$sql="UPDATE foto_perfil_docente SET estado = 0,usr = ?, updateAt = ? WHERE codprof = ?";
+		$type="sss";
+		$params=array($usr,$fechareg,$codprof);
+		$result=ejecutar_consulta($this->db,$sql,$type,$params);
+		return $result;
+	}
+	public function set_foto_perfil($imagen,$codprof,$usr,$fechareg){
+		$result = $this->get_foto_perfil($codprof);
+		if($row = $result->fetch_object()){
+			$sql="UPDATE foto_perfil_docente SET imagen = ? ,usr = ?, updateAt = ? WHERE codprof = ?";
+			$type="ssss";
+			$params=array($imagen,$usr,$fechareg,$codprof);
+			$result=ejecutar_consulta($this->db,$sql,$type,$params);
+			
+		}else{
+			$this->save_foto_perfil($codprof,$imagen,$usr,$fechareg);
+		}
+		return ;
+	}
 }
 ?>

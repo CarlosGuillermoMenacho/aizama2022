@@ -419,6 +419,36 @@ if ($_GET) {
 				}
 
 			break;
+		case 'get_kardex_all':
+			if(!cliente_activo()||empty($_SESSION['app_user_id'])){
+		        echo json_encode(array("status"=>"eSession"));
+		        exit();
+		    }
+		    
+		    require '../modelo/modelo_Alumno.php';
+		    require '../modelo/modelo_kardex.php';
+			require_once'../modelo/conexion.php';
+			$db = Conectar::conexion();
+			
+			$alumno = new Alumno($db);
+			$Kardex = new Kardex($db);	
+			$gestion = date("Y");
+			$result = $alumno->get_all();
+			$lista = array();
+			while($fila = $result->fetch_object()){
+				$codalu = $fila->codigo;
+				$result_kardex = $Kardex->get_kardex($codalu,$gestion);
+				$kardex = [];
+				while ($row_kardex = $result_kardex->fetch_object()) {
+					$kardex[] = $row_kardex;
+				}
+			    $lista[] = array(
+			                    "codalu"=>$codalu,
+			                    "kardex"=>$kardex
+			                    );
+			}
+			echo json_encode(array("status"=>"ok","lista"=>$lista));
+			break;
 	}
 }else{
 	echo "errorGET";

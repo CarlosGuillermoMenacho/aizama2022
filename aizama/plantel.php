@@ -20,105 +20,36 @@
 			<label>Asignaturas</label>
 		</div>
 	</div>
-	<div class="card-div">
-		<div class="cuadro-div">
-			<img src="img/user.svg">
-		</div>
-		<div class="info-div">
-			<p class="nombre">Luis Dennar Carrillo</p>
-			<label>Asignaturas</label>
+	
+</div>
+<div class="car-asignatura oculto">
+	<div class="btn-close">
+        <img src="images/close.svg" onclick="close_form();">
+    </div>
+	<div class="div-perfil-docente">
+		<img src="img/user.svg">
+	</div>
+	<div class="nombre-docente">
+		Luis Dennar Carrillo
+	</div>
+	<div class="info-asignaturas">
+		<h3>Primero de Secundaria - A</h3>
+		<div class="materias">
+			<p>Matematicas</p>
+			<p>Matematicas</p>
+			<p>Matematicas</p>
 		</div>
 	</div>
-	<div class="card-div">
-		<div class="cuadro-div">
-			<img src="img/user.svg">
-		</div>
-		<div class="info-div">
-			<p class="nombre">Luis Dennar Carrillo</p>
-			<label>Asignaturas</label>
-		</div>
-	</div>
-	<div class="card-div">
-		<div class="cuadro-div">
-			<img src="img/user.svg">
-		</div>
-		<div class="info-div">
-			<p class="nombre">Luis Dennar Carrillo</p>
-			<label>Asignaturas</label>
-		</div>
-	</div>
-	<div class="card-div">
-		<div class="cuadro-div">
-			<img src="img/user.svg">
-		</div>
-		<div class="info-div">
-			<p class="nombre">Luis Dennar Carrillo</p>
-			<label>Asignaturas</label>
-		</div>
-	</div>
-	<div class="card-div">
-		<div class="cuadro-div">
-			<img src="img/user.svg">
-		</div>
-		<div class="info-div">
-			<p class="nombre">Luis Dennar Carrillo</p>
-			<label>Asignaturas</label>
-		</div>
-	</div>
-	<div class="card-div">
-		<div class="cuadro-div">
-			<img src="img/user.svg">
-		</div>
-		<div class="info-div">
-			<p class="nombre">Luis Dennar Carrillo</p>
-			<label>Asignaturas</label>
-		</div>
-	</div>
-	<div class="card-div">
-		<div class="cuadro-div">
-			<img src="img/user.svg">
-		</div>
-		<div class="info-div">
-			<p class="nombre">Luis Dennar Carrillo</p>
-			<label>Asignaturas</label>
-		</div>
-	</div>
-	<div class="card-div">
-		<div class="cuadro-div">
-			<img src="img/user.svg">
-		</div>
-		<div class="info-div">
-			<p class="nombre">Luis Dennar Carrillo</p>
-			<label>Asignaturas</label>
-		</div>
-	</div>
-	<div class="card-div">
-		<div class="cuadro-div">
-			<img src="img/user.svg">
-		</div>
-		<div class="info-div">
-			<p class="nombre">Luis Dennar Carrillo</p>
-			<label>Asignaturas</label>
-		</div>
-	</div>
-	<div class="card-div">
-		<div class="cuadro-div">
-			<img src="img/user.svg">
-		</div>
-		<div class="info-div">
-			<p class="nombre">Luis Dennar Carrillo</p>
-			<label>Asignaturas</label>
-		</div>
-	</div>
-	<div class="card-div">
-		<div class="cuadro-div">
-			<img src="img/user.svg">
-		</div>
-		<div class="info-div">
-			<p class="nombre">Luis Dennar Carrillo</p>
-			<label>Asignaturas</label>
+	<div class="info-asignaturas">
+		<h3>Primero de Secundaria - A</h3>
+		<div class="materias">
+			<p>Matematicas</p>
+			<p>Matematicas</p>
+			<p>Matematicas</p>
 		</div>
 	</div>
 </div>
+<script type="text/javascript" src="js/jquery.min.js"></script>
+<script type="text/javascript" src="js/plantel.js?v=<?php echo rand();?>"></script>
 </body>
 </html>

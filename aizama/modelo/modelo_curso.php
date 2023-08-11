@@ -283,47 +283,12 @@ class Curso{
 	}
 
 	public function get_imagen($codcur,$codpar){
-
-		$sql= "SELECT img 
-
-			   FROM cur_par_img 
-
-			   WHERE codcur = ? and codpar = ? and estado = 1" ;
-
-
-
-		$resultado=mysqli_prepare($this->db, $sql);
-
-		$ok=mysqli_stmt_bind_param($resultado,"ii", $codcur,$codpar);
-
-			
-
-		$ok=mysqli_stmt_execute($resultado);
-
-		if ($ok) {
-
-			$ok= mysqli_stmt_bind_result($resultado,$img);
-
-			if(mysqli_stmt_fetch($resultado)){
-
-				return $img;
-
-			}
-
-			
-
-			return false;
-
-			mysqli_stmt_close($resultado);
-
-		}else{
-
-			mysqli_stmt_close($resultado);
-
-			return false;
-
-		}
-
+		$consulta ="SELECT img FROM cur_par_img WHERE codcur = ? and codpar = ? and estado = 1";
+		$type = "ii";
+		$params = array($codcur,$codpar);
+		$result = ejecutar_consulta($this->db,$consulta,$type,$params);	
+		if($row = $result->fetch_object())return $row->img;
+		return "";
 	}
 	public function get_cursos(){
 		$consulta ="SELECT * FROM cursos";
@@ -381,7 +346,13 @@ class Curso{
 		$result = ejecutar_consulta($this->db,$consulta,$type,$params);
 		return $result;
 	}
-
+	public function get_cursos_alu(){
+		$sql ="SELECT * FROM alumno where estado = 1 GROUP BY cod_cur,cod_par";
+		$type = "";
+		$params = array();
+		$result = ejecutar_consulta($this->db,$sql,$type,$params);
+		return $result;
+	}
 }	
 
 ?>

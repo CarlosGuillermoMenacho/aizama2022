@@ -74,6 +74,7 @@
           <a href="#"><div class="div-name-item"><span class="icon-new-message"></span>Reportes</div><div class="downarrow"><span class="caret icon-chevron-down"></span></div></a>
           <ul class="children">
             <li><a href="reportes_adm.php">Lista De Tutores</a></li>
+            <li><a href="reporte_mensualidades.php">Reporte de Mensualidades</a></li>
           </ul>
         </li>
         <li><a href="ver_agenda_adm.php"><div class="div-name-item"><span class="icon-open-book"></span>Ver Agenda</div></a></li>

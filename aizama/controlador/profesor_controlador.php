@@ -14,7 +14,7 @@ if (empty($_tipo_user)){
 	echo "errorGET";
 	exit();
 }
-if(!cliente_activo()){
+/*if(!cliente_activo()){
 	if ($_tipo_user=='doc') {
 		header("location: ../docentes.php");
 	}
@@ -25,7 +25,7 @@ if(!cliente_activo()){
 		header("location: ../administracion.php");
 	}
 	exit();
-}
+}*/
 switch ($_GET['op']) {
 	case 'get_cursos':
 		$codprof = $_SESSION['app_user_id'];
@@ -229,6 +229,113 @@ switch ($_GET['op']) {
 			exit;
 		}
 		echo json_encode(["status"=>"ok","data"=>$lista]);
+		break;
+	case 'get_profesores':
+		/*$codusr = isset($_SESSION['app_user_id'])?$_SESSION['app_user_id']:"";
+		if (empty($codusr)) {
+			echo json_encode(array('status' => "eSession"));
+			exit();
+		}*/
+		require_once'../modelo/conexion.php';
+		$db = Conectar::conexion();
+		require_once'../modelo/modelo_profesor.php';
+		$Profesor = new Profesor($db);
+		$result = $Profesor->get_profesores();
+		$lista = [];
+		while ($fetch = $result->fetch_object()) {
+			$codprof = $fetch->CODPROF;
+			$r2 = $Profesor->get_foto_perfil($codprof);
+			$fotoperfil = "";
+			if($row = $r2->fetch_object())$fotoperfil = $row->imagen;
+			$lista[] = [
+				"codprof"=>$codprof,
+				"apeprof"=>$fetch->APEPRO,
+				"nompro"=>$fetch->NOMPRO,
+				"perfil"=>$fotoperfil
+			];
+		}
+		if(empty($lista)){
+			echo json_encode(["status"=>"noData"]);
+			exit;
+		}
+		echo json_encode(["status"=>"ok","data"=>$lista]);
+		break;
+	case 'set_foto_perfil':
+		$codusr = isset($_SESSION['app_user_id'])?$_SESSION['app_user_id']:"";
+		if (empty($codusr)) {
+			echo json_encode(array('status' => "eSession"));
+			exit();
+		}
+		$codprof = isset($_POST["codprof"])?$_POST["codprof"]:"";
+		if (empty($codprof)) {
+			echo json_encode(array('status' => "errorParam"));
+			exit();
+		}
+
+		require_once'../modelo/conexion.php';
+		$db = Conectar::conexion();
+		require_once'../modelo/modelo_profesor.php';
+		$Profesor = new Profesor($db);
+		$fechareg = date("Y-m-d H:i:s");
+		if (file_exists($_FILES["imagen"]['tmp_name'])&&is_uploaded_file($_FILES["imagen"]['tmp_name'])) 
+				{
+					$ext=explode(".",$_FILES["imagen"]["name"]);
+					if ($_FILES["imagen"]['type']=="image/jpg"||$_FILES["imagen"]['type']=="image/jpeg"||$_FILES["imagen"]['type']=="image/png") 
+					{
+						
+						$fichero="../fotoperfil/";
+						$nombreArchivo=$codprof."_".strtotime(date("Y-m-d H:i:s")).'.'.end($ext);								
+						$dato = move_uploaded_file($_FILES["imagen"]["tmp_name"],$fichero.$nombreArchivo);
+						require_once'../modelo/conexion.php';
+						require_once'../modelo/modelo_Alumno.php';
+						
+						$Profesor->set_foto_perfil($nombreArchivo,$codprof,$codusr,$fechareg);
+						echo json_encode(["status"=>"ok","img"=>"fotoperfil/".$nombreArchivo]);
+					}else{
+						echo "errorFile";
+						exit();
+					}
+				}else{
+					echo json_encode(["status"=>"noFile"]);
+					exit();
+				}
+		//echo json_encode(["status"=>"ok"]);
+		break;
+	case 'asignatura':
+		$codprof = isset($_POST["codprof"])?$_POST["codprof"]:"";
+		if (empty($codprof)) {
+			echo json_encode(array('status' => "errorParam"));
+			exit();
+		}
+		$gestion = date("Y");
+		$db = Conectar::conexion();
+		require_once'../modelo/modelo_profesor.php';
+		require_once'../modelo/modelo_curso.php';
+		require_once'../modelo/modelo_paralelo.php';
+		require_once'../modelo/modelo_materia.php';
+		$Profesor = new Profesor($db);
+		$Curso = new Curso($db);
+		$Paralelo = new Paralelo($db);
+		$Materia = new Materia($db);
+		$pcm = $Profesor->get_prof_cur_mat($codprof,$gestion);
+		$result = $Profesor->get_cursos_prof($gestion,$codprof);
+		$cursos = $Curso->getCursosIndex();
+		$paralelos = $Paralelo->getParalelosIndex();
+		$materias = $Materia->getMaterias();
+		$__cursos = [];
+		while ($row = $result->fetch_object()) {
+			$__cursos[] = [
+				"codcur"=>$row->codcur,
+				"codpar"=>$row->codpar,
+				"curso"=>$cursos[$row->codcur]["nombre"]." - ".$paralelos[$row->codpar]
+			];
+		}
+		$__materias = [];
+		foreach ($pcm as $f) {
+			$f["materia"] = $materias[$f["codmat"]]["nombre"]; 
+			$__materias[] = $f;
+		}
+		echo json_encode(["status"=>"ok","cursos"=>$__cursos,"materias_curso"=>$__materias]);
 		break;
 }
 function getActividades($codmat,$acti){

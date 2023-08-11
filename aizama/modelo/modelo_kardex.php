@@ -19,5 +19,12 @@ class Kardex{
 
 		return $result;
 	}
+	public function get_kardex($codalu,$gestion){
+		$sql = "SELECT * FROM kar_alu WHERE estado=1 AND codigo= ? and ano_pago = ? ORDER BY acreedor Desc";
+		$params = array($codalu,$gestion);
+		$type = "ii";
+		$result=ejecutar_consulta($this->db, $sql, $type, $params);
+		return $result;
+	}
 }
 ?>

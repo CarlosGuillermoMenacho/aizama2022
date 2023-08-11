@@ -76,6 +76,33 @@ switch ($_GET['op']) {
 		$Curso->quitar_de_lista($codalu);
 		echo json_encode(["status"=>"ok"]);
 		break;
+	case 'get_cursos_a':
+		$codusr = $_SESSION['app_user_id'];
+		if(empty($codusr)){
+			echo json_encode(array("status"=>"eSession"));	
+			exit();			
+		}
+		require_once'../modelo/conexion.php';
+		$db = Conectar::conexion();
+		require_once'../modelo/modelo_curso.php';
+		require_once'../modelo/modelo_paralelo.php';
+		$Curso = new Curso($db);
+		$Paralelo = new Paralelo($db);
+		$cursos = $Curso->getCursosIndex();
+		$paralelos = $Paralelo->getParalelosIndex();
+		$result = $Curso->get_cursos_alu();
+		$__cursos = [];
+		while ($row = $result->fetch_object()) {
+			$imagen = $Curso->get_imagen($row->cod_cur,$row->cod_par);
+			$__cursos[] = [
+				"codcur"=>$row->cod_cur,
+				"codpar"=>$row->cod_par,
+				"curso"=>$cursos[$row->cod_cur]["nombre"]." - ".$paralelos[$row->cod_par],
+				"imagen"=>$imagen
+			];
+		}
+		echo json_encode(["status"=>"ok","cursos"=>$__cursos]);
+		break;
 	default:
 		echo json_encode(array("status"=>"errorOP"));
 		break;
