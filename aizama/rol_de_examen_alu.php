@@ -6,12 +6,7 @@ if (!cliente_activo()) {
   header("Location: usuario.php");
   exit();
 }
-if($_SESSION['app_user_perfil'] == 'SECUNDARIA') {
-    require 'header_sec.php';
-} 
-if($_SESSION['app_user_perfil'] == 'PRIMARIA' || $_SESSION['app_user_perfil'] == 'INICIAL' ) {
-  require 'header_prim.php';
-} 
+require 'new_header.php';
 ?>
 <link rel="stylesheet" type="text/css" href="css/rol_de_examenes_doc.css?v=<?php echo rand();?>">
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />

@@ -6,60 +6,16 @@ if (!cliente_activo()) {
   header("Location: usuario.php");
   exit();
 }
-if($_SESSION['app_user_perfil'] == 'SECUNDARIA') {
-    require 'header_sec.php';
-} 
-if($_SESSION['app_user_perfil'] == 'PRIMARIA' || $_SESSION['app_user_perfil'] == 'INICIAL' ) {
-  require 'header_prim.php';
-} 
-//$_SESSION['app_user_bimestre']= 2;
-
-$_SESSION['codpre'] = 0;
-$_SESSION['app_user_materia']= '';
-$_SESSION['app_user_evaluacion']= 0; // nro de evaluacion (1 o 2)
-$_SESSION['app_user_examen']= 0;
-$_SESSION['cod_examen']= 0;  // codigo de examen = codexa
-$_SESSION['app_user_res']= 0;
-$_SESSION['cuenta_pre']= 0;  // contador de preguntas
-$_SESSION['app_nom_materia'] = '';
-$_SESSION['app_user_h_ini'] = '';
-$_SESSION['app_user_h_fin'] = '';
-$_SESSION['e_pregunta'] = '';
-$_SESSION['e_valor'] = 0;
-$_SESSION['e_tiempo'] = 0;
-$_SESSION['e_o1'] = 0;
-$_SESSION['e_op1'] = '';
-$_SESSION['e_o2'] = 0;
-$_SESSION['e_op2'] = '';
-$_SESSION['e_o3'] = 0;
-$_SESSION['e_op3'] = '';
-$_SESSION['e_resp'] = '';
-$_SESSION['e_resp_2'] = '';
-$_SESSION['e_nota_final'] = 0;
-$_SESSION['e_nota_pre'] = 0;
-$_SESSION['e_fecha'] = '';
-$_SESSION['e_numero'] = 0;
+require 'new_header.php';
 ?>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta http-equiv="Expires" content="0">
-  <meta http-equiv="Last-Modified" content="0"> 
-  <meta http-equiv="Cache-Control" content="no-cache, mustrevalidate">
-  <meta http-equiv="Pragma" content="no-cache">
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Lista de videos</title>
-  <!-- Sweet alert 2 -->
-  <link rel="stylesheet" href="node_modules/sweetalert2/dist/sweetalert2.css">
-  <script src="node_modules/sweetalert2/dist/sweetalert2.all.min.js"></script>
+<link rel="stylesheet" href="node_modules/sweetalert2/dist/sweetalert2.css">
+<script src="node_modules/sweetalert2/dist/sweetalert2.all.min.js"></script>
   <!-- Normalize -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" integrity="sha512-NhSC1YmyruXifcj/KFRWoC561YpHpc5Jtzgvbuzx5VozKpWvQ+4nXhPdFgmx8xqexRcpAglTj9sIBWINXa8x5w==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" integrity="sha512-NhSC1YmyruXifcj/KFRWoC561YpHpc5Jtzgvbuzx5VozKpWvQ+4nXhPdFgmx8xqexRcpAglTj9sIBWINXa8x5w==" crossorigin="anonymous" />
   <!-- Estilos css -->
-  <link rel="stylesheet" href="css/style_clases_virtuales.css">
-  
-</head>
+<link rel="stylesheet" href="css/style_clases_virtuales.css">
+
 <style>
     .archivo label {
       width: 100%;
@@ -110,7 +66,7 @@ $_SESSION['e_numero'] = 0;
       } 
     }
 </style>
-<body>
+
 	<input type="hidden" name="id_usr" id="id_usr" value="<?=$_SESSION['app_user_id'];?>" readonly="readonly" size="3">
 	<input type="hidden" name="id_nombre" id="id_nombre" value="<?=$_SESSION['app_user_name'];?>" readonly="readonly" size="3">
 
@@ -266,6 +222,3 @@ $_SESSION['e_numero'] = 0;
   });
 </script>
 <script type="text/javascript" src="js/app_practicos.js?v=<?php echo(rand()); ?>"></script>
-
-</body>
-</html>

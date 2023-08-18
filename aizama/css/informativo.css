@@ -15,7 +15,7 @@
 	gap: 20px;
 	flex-wrap: wrap;}
 .div-fecha{
-	padding: 20px;
+	padding: 0;
 }
 .div-section{
 	border-radius: 5px;
@@ -59,26 +59,18 @@
 /*11396178*/
 .calendar-icon {
     position: fixed;
-    right: 20px;
-    bottom: 20px;
+    right: 5px;
+    bottom: 5px;
     display: flex;
-    z-index: 100;
+    z-index: 1;
 }
 .calendar-icon img {
-    width: 70px;
+    width: 50px;
     cursor: pointer;
     transition: .5s;
 }
-.btn-close {
-    position: absolute;
-    width: 17px;
-    right: 13px;
-    top: 3px;
-    cursor: pointer;
-    z-index: 50;
-}
 .table-calendario {
-    width: calc(100% - 10px);
+    width: 100%;
     max-width: 400px;
     border-collapse: collapse;
     box-shadow: 0 3px 10px rgb(10 37 64 / 40%);
@@ -108,9 +100,15 @@
     color: var(--c1a);
 }
 .div-calendario {
-    width: 400px;
-    min-width: 370px;
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    padding: 5px;
+    width: 97%;
+    max-width: 400px;
+    z-index: 200;
 }
+
 .table-calendario tbody tr td {
     color: var(--c1);
     font-size: .8em;
@@ -118,8 +116,7 @@
     padding: 15px 0;
     cursor: pointer;
     position: relative;
-    height: 50px;
-    width: 50px;
+    height: 25px;
 }
 .border-top {
     border-top: 1px solid var(--c2);
@@ -135,11 +132,11 @@
     border-left: 1px solid var(--c2);
 }
 .show-calendar {
-    display: block;
+    /*display: block;
     right: 0px;
-    bottom: 5px;
+    bottom: 0px;
     position: fixed;
-    z-index: 110;
+    z-index: 109;*/
 }
 .oculto{
 	display: none;

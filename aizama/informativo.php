@@ -1,10 +1,10 @@
 <?php
 session_start();
 if($_SESSION['app_user_perfil'] == 'SECUNDARIA') {
-    require 'header_sec.php';
+    require 'new_header.php';
 } 
 if($_SESSION['app_user_perfil'] == 'PRIMARIA' || $_SESSION['app_user_perfil'] == 'INICIAL' ) {
-  require 'header_prim.php';
+  require 'new_header.php';
 } 
 ?>
 <link rel="stylesheet" type="text/css" href="css/informativo.css?v=<?php echo rand()?>">
@@ -94,11 +94,13 @@ if($_SESSION['app_user_perfil'] == 'PRIMARIA' || $_SESSION['app_user_perfil'] ==
     </div>
   </div-->
 </div>
-<div class="div-calendario show-calendar oculto">
+<div class="div-calendario oculto">
+  <div>
     <div class="btn-close">
-          <img src="images/close.svg" onclick="close_form();">
-      </div><table class="table-calendario">
-    
+      <img src="images/close.svg" onclick="close_form();">
+    </div>
+    <table class="table-calendario">
+      
       <thead>
         <tr>
           <td colspan="7">
@@ -121,6 +123,8 @@ if($_SESSION['app_user_perfil'] == 'PRIMARIA' || $_SESSION['app_user_perfil'] ==
       </thead>
       <tbody id="body-calendario"></tbody>
     </table>
+    
+  </div>
   </div>
 <div class="calendar-icon">
   <img src="img/calendario.png" onclick="calendar_show();">

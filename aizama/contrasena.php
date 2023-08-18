@@ -6,8 +6,16 @@ require 'includes/config.php';
 
 require 'includes/functions.php';
 
-
-
+require_once"modelo/conexion.php";
+require_once"modelo/modelo_trimestre.php";
+			 	   	$db = Conectar::conexion();
+			 	   	$Trimestre = new Trimestre($db);
+			 	   	$result = $Trimestre->get_trimestre_actual();
+			 	   	if($row = $result->fetch_object()){
+			 	   		$_SESSION["app_user_bimestre"] = $row->trimestre;
+			 	   	}else{
+			 	   		$_SESSION["app_user_bimestre"] = 1;
+			 	   	}
 //if(isset($_POST['vf_usuario']) && isset($_POST['vf_clave']))
 
 if(isset($_POST['vf_clave']))
@@ -138,7 +146,7 @@ if(!empty(trim($vUsuario))&& !empty(trim($_POST['vf_clave'])))
 
 			   $_SESSION['bdesktop'] = $row[11];  // ESTO ES PARA BRINDAR ACCESO AL BOLETIN--- SI ES VERDADERO VE EL BOLETIN
 
-			   $_SESSION['app_user_bimestre']= 0;
+			   //$_SESSION['app_user_bimestre']= 0;
 
 			   $_SESSION['app_user_materia']= '';
 

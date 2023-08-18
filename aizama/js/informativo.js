@@ -4,11 +4,14 @@ let mes_seleccionado = 0;
 const __DIA = ["","Lunes","Martes","Miércoles","Jueves","Viernes","Sábado","Domingo"];
 const __MES = ["","Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"];
 const close_form = () => {
-	$(".div-calendario").addClass("oculto");
+	$(".div-calendario").slideToggle("disappear");
+	//$(".div-calendario").addClass("oculto");
 } 
 const calendar_show = () => {
 	
-	$(".div-calendario").removeClass("oculto");
+	//$(".div-calendario").removeClass("oculto");
+	
+	$(".div-calendario").slideToggle("disappear");
 }
 const init = async () => {
 	await $.get(

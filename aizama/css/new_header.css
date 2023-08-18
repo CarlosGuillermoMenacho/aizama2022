@@ -1,0 +1,321 @@
+html,body {
+    height:100%;
+    font-family: "Roboto",arial,sans-serif;
+    margin: 0;
+    padding: 0;
+}
+a{
+    text-decoration: none;
+    color: var(--text-description);
+}
+nav{
+    position: relative;
+    overflow-y: auto;
+    background: var(--background-green-dark);
+}
+.navegation tbody{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    padding: 30px;
+    gap: 20px;
+    margin-bottom: 64px;
+}
+header {    
+    
+    background:white;
+    padding: 5px 0;
+    position: fixed;
+    width: 100%;
+    height: 52px;
+    display: flex;
+    align-items: center;
+    background: var(--background-green-dark);
+    z-index: 130;
+    color: white;
+}
+section {
+    width: 100%;
+    float: left;
+    overflow: auto;
+    padding-bottom: 60px;
+    margin-top: 62px;
+}
+
+aside {
+    float: right;
+    border: 1px solid red;
+    width: 19%;
+    border: 1px solid red;
+    /*Si quisieramos ocultar el contenido relacionado pondriamos visibility a hidden*/
+    /*visibility: hidden;*/
+}
+footer {
+    position: relative;
+    margin-top: -50px;
+    height: 40px; 
+    padding:5px 0px;
+    clear: both;
+    background: #286af0;
+    text-align: center;
+    color: #fff;
+}
+figure {
+    display: table; margin: 0 auto;
+}
+
+
+
+/*------------------Clases------------------*/
+/*----------header-------------------------*/
+.div-user {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    column-gap: 5px;
+    right: 5px;
+    top: 5px;
+    padding: 1px;
+    cursor: pointer;
+}
+
+.user-perfil{
+    display: flex;
+}
+.user-perfil img{
+    width: 50px;
+    max-height: 50px;
+    border-radius: 50%;
+}
+.div-nombre-plataforma{
+    padding: 0 10px;
+    display: flex;
+    align-items: center;
+    column-gap: 10px;
+}
+.div-menu{
+    position: fixed;
+    bottom: 5px;
+    left: 5px;
+    box-shadow: 0 3px 10px rgb(10 37 64 / 40%);
+    display: flex;
+    border-radius: 50%;
+    background: white;
+    cursor: pointer;
+}
+.div-menu-item{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 70px;
+    cursor: pointer;
+}
+.div-menu-item:hover{
+    background: #ccc;
+}
+.name-item{
+    font-size: .7em;
+    text-align: center;
+}
+.div-menu img{
+    border-radius: 50%;
+    width: 50px;
+}
+.icon-colegio{
+    display: flex;
+}
+.icon-colegio img{
+    width: 45px;
+}
+/*---------Navegacion-----------*/
+.navegation{
+    transition: opacity 0.2s;
+    position: fixed;
+    margin-top: 50px;
+    background: white;
+    width: 100%;
+    height: calc(100% - 50px);
+    margin-bottom: 64px;
+    z-index: 110;
+}
+.oculto{
+    display: none;
+}
+.disappear{
+    opacity: 0;
+}
+.div-icon-menu{
+    display: flex;
+    border-radius: 50%;
+    padding: 2px;
+}
+.circle{
+    border-radius: 50%;
+}
+.div-icon-menu img{
+    width: 50px;
+    border-radius: 50%;
+    box-shadow: 0 3px 10px rgb(10 37 64 / 40%);
+}
+.div-info-user-card{
+    position: absolute;
+    transition: opacity 0.2s;
+    right: 0;
+    top: 64px;
+    background: #ffffff;
+    padding: 10px;
+    border-radius: 0 0 0 5px;
+}
+.info-user-card{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+.close-session a{
+    color: var(--danger) !important;
+}
+/*------------Selector de Trimestre--------------*/
+.title{
+    font-size: 1em;
+    color: var(--title);
+}
+.select-trimestre{
+    position: fixed;
+    background: var(--background-blocked);
+    width: 100%;
+    height: 100%;
+    transition: opacity 0.2s;
+    z-index: 200;
+}
+.content-select-trimestre{
+    position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    box-shadow: 0 3px 10px rgb(10 37 64 / 40%);
+    width: 75%;
+    padding: 10px;
+    border-radius: 5px;
+    max-width: 500px;
+    background: var(--background-green-dark);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.div-trimestres{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.div-trimestre{
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    row-gap: 5px;
+    border-radius: 10px;
+    background: white;
+    cursor: pointer;
+    font-size: .75em;
+    font-weight: 600;
+}
+.div-trimestre:hover{
+    background: var(--background-cursor-hover);
+    color: black;
+
+}
+.img-trimestre{
+    display: flex;
+    justify-content: center;
+    align-items: center;font-size: .75em;
+}
+.img-trimestre img{
+    border-radius: 50%;
+    width: 50px;
+}
+.trimestre-selected{
+    border-radius: 10px;
+    background: var(--background-green-selected);
+    color: white;
+}
+.btn-close{
+    position: absolute;
+    right: 5px;
+}
+.btn-close img {
+    position: absolute;
+    width: 20px;
+    right: 5px;
+    top: 5px;
+    cursor: pointer;
+    z-index: 50;
+}
+.btn-close1 img {
+    position: absolute;
+    width: 20px;
+    right: 5px;
+    top: 5px;
+    cursor: pointer;
+    z-index: 50;
+}
+/*Para pantallas mayores a 768px*/
+@media screen and (min-width: 769px){
+    .div-info-user{
+        font-size: .8em;
+    }
+    .navegation{
+        transition: opacity 0.2s;
+        position: fixed;
+        margin-top: 50px;
+        width: 400px;
+        height: calc(100% - 50px);
+        margin-bottom: 64px;
+    }
+    .name-item{
+        font-size: .75em;
+        text-align: center;
+    }
+    .navegation tbody{
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        padding: 30px;
+        gap: 20px;
+        margin-bottom: 64px;
+    }
+    .div-trimestres{
+        display: flex;
+        flex-direction: row;
+        gap: 10px;
+    }
+
+}
+@media screen and (min-width: 361px) and (  max-width:768px){
+    .div-menu-item{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100px;
+        height: 100px;
+    }
+    .name-item{
+        font-size: .8em;
+        text-align: center;
+    }
+    .div-info-user{
+        font-size: .7em;
+    }
+    .div-trimestres{
+        display: flex;
+        flex-direction: row;
+        gap: 10px;
+    }
+
+}
+@media screen and (max-width: 360px){
+    .div-nombre-plataforma{
+        font-size: .75em;
+    }
+    .div-info-user{
+        display: none;
+    }
+}
