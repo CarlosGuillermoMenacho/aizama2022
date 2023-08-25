@@ -121,7 +121,52 @@
 						echo "error";
 					}
 					break;
+				case 'update':
+					$fecha_ini = isset($_POST["fecha_ini"])? $_POST["fecha_ini"]:"";
+					$id = isset($_POST["id"])? $_POST["id"]:"";
+                    if(empty($fecha_ini) || empty($id)){
+						echo "errorParam";
+						exit();
+					}
+					require('../modelo/modelo_imagen_inicio.php');
+					require_once('../modelo/conexion.php');
+                    $db = Conectar::conexion();
+					$imageninicio = new imagen_de_inicio($db);
+					$fechaReg = date("Y-m-d H:i:s"); 
+					$usr = $_SESSION['app_user_id'];
+					if(!cliente_activo()||empty($usr)){
+						echo "eSession";
+						exit();
+					}
+					$result = $imageninicio->get_by_md(substr($fecha_ini,5,9));
+					if($row = $result->fetch_object()){
+						$id_r = $row->id;
+						if($id != $id_r){
+							echo json_encode(["status"=>"noDisponible"]);
+							exit();
+						}
+					}
+					$imageninicio->set_fecha($id,$fecha_ini,$fechaReg,$usr);
 
+					if (file_exists($_FILES["imagen"]['tmp_name'])&&is_uploaded_file($_FILES["imagen"]['tmp_name'])) 
+					{
+						$ext=explode(".",$_FILES["imagen"]["name"]);
+						if ($_FILES["imagen"]['type']=="image/jpg"||$_FILES["imagen"]['type']=="image/jpeg"||$_FILES["imagen"]['type']=="image/png") 
+						{
+							$fechaNueva= str_replace(":","-",$fechaReg);
+							$fechaNueva= str_replace(" ","-",$fechaNueva);
+							$fichero="../resources/";
+							$nombreArchivo=$usr.'-'.$fechaNueva.'-'.generateFileName().'.'.end($ext);								
+							$dato = move_uploaded_file($_FILES["imagen"]["tmp_name"],$fichero.$nombreArchivo);
+							$imageninicio->set_imagen($id,$nombreArchivo);
+						}else{
+							echo "errorFile";
+							exit();
+						}
+					}
+					echo json_encode(["status"=>"ok"]);
+					
+					break;	
                 case 'eliminar_imagen':
                     $fecha_ini = isset($_POST["fecha_ini"])? $_POST["fecha_ini"]:"";
 					if ( empty($fecha_ini) ){
@@ -191,6 +236,53 @@
                     }else{
                         echo "Error";
                     }
+                    break;
+                case 'get_all_imagen_inicio':
+                    require('../modelo/modelo_imagen_inicio.php');
+                    require_once('../modelo/conexion.php');
+                    $db = Conectar::conexion();
+                    $imageninicio = new imagen_de_inicio($db);
+					$result = $imageninicio->get_all();
+                    $data = [];
+                    $md = [];
+                    $meses = ["01"=>"ene","02"=>"feb","03"=>"mar","04"=>"abr","05"=>"may","06"=>"jun","07"=>"jul","08"=>"ago","09"=>"sep","10"=>"oct","11"=>"nov","12"=>"dic"];
+                    while ($row = $result->fetch_object()) {
+                    	$mdc = substr($row->fecha_ini,5);
+                    	$mdy = $meses[substr($mdc, 0,2)].substr($mdc,2,4);
+                    	$md[] = $mdc;
+                    	$data[] = [
+                    		"id"=>$row->id,
+                    		"fecha"=>$row->fecha_ini,
+                    		"mdy"=> $mdy,
+                    		"imagen"=>$row->imagen,
+                    		"md"=>$mdc
+                    	];
+                    }
+                    sort($md);
+                    echo json_encode(["status"=>"ok","data"=>$data,"md"=>$md]);
+                    break;
+                case 'delete':
+                    $id = isset($_POST["id"])? $_POST["id"]:"";
+					if ( empty($id) ){
+						echo "errorParam";
+						exit();
+					}
+
+					$fechaReg = date("Y-m-d H:i:s"); 
+					$usr = $_SESSION['app_user_id'];
+					if(!cliente_activo()||empty($usr)){
+						echo "eSession";
+						exit();
+					}
+					require('../modelo/modelo_imagen_inicio.php');
+					require_once('../modelo/conexion.php');
+                    $db = Conectar::conexion();
+					$imageninicio = new imagen_de_inicio($db);
+					if( $imageninicio->delete($id)){
+						echo "ok";
+					}else{
+						echo "error";
+					}
                     break;
 
 		default:

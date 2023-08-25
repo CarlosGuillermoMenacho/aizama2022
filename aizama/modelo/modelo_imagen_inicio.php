@@ -15,7 +15,55 @@ use function PHPSTORM_META\sql_injection_subst;
             //$this->db = Conectar::conexion();
             $this->db = $conexion;
         }
-
+        public function get_all()
+        {
+            $sql = "SELECT * FROM imagen_inicio WHERE estado = 1";
+            $type = "";
+            $params = array();
+            $result = ejecutar_consulta($this->db,$sql,$type,$params);
+            return $result;
+        }
+        public function get_by_id($id)
+        {
+            $sql = "SELECT * FROM imagen_inicio WHERE estado = 1 AND id = ?";
+            $type = "i";
+            $params = array($id);
+            $result = ejecutar_consulta($this->db,$sql,$type,$params);
+            return $result;
+        }
+        public function get_by_md($md)
+        {
+        	$f = "%$md";
+            $sql = "SELECT * FROM imagen_inicio WHERE estado = 1 AND fecha_ini LIKE ?";
+            $type = "s";
+            $params = array($f);
+            $result = ejecutar_consulta($this->db,$sql,$type,$params);
+            return $result;
+        }
+        public function delete($id)
+        {
+            $sql = "UPDATE imagen_inicio SET estado = 0 WHERE id = ?";
+            $type = "i";
+            $params = array($id);
+            $result = ejecutar_consulta($this->db,$sql,$type,$params);
+            return true;
+        }
+        public function set_fecha($id,$fecha_ini,$fechareg,$usr)
+        {
+            $sql = "UPDATE imagen_inicio SET fecha_ini = ?, fechaReg = ? , usr = ? WHERE id = ?";
+            $type = "sssi";
+            $params = array($fecha_ini,$fechareg,$usr,$id);
+            $result = ejecutar_consulta($this->db,$sql,$type,$params);
+            return true;
+        }
+        public function set_imagen($id,$imagen)
+        {
+            $sql = "UPDATE imagen_inicio SET imagen = ? WHERE id = ?";
+            $type = "si";
+            $params = array($imagen,$id);
+            $result = ejecutar_consulta($this->db,$sql,$type,$params);
+            return true;
+        }
         public function guardar_imagen($fecha_ini, $imagen, $usr, $fechaReg)
         {
             $sql = "INSERT INTO imagen_inicio (fecha_ini,

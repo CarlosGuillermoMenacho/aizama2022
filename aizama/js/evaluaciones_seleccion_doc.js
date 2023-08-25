@@ -641,7 +641,63 @@ const save_evaluacion = () => {
 		  }  
 		});
 }
+const print = (evaluacion,preguntas) => {
+
+    var printWindow = window.open("", "", "height=900,width=600");
+    printWindow.document.write("<html><head>");
+    printWindow.document.write("</head>");
+    printWindow.document.write('<link rel="stylesheet" type="text/css" href="css/reporte_mensualidades.css?v=8">');
+    //Print the DIV contents i.e. the HTML Table.
+    printWindow.document.write(`<body><table class="table-print">
+								    	<div class="print__header">
+								      <img src="http://www.aizama.net/images/logo.png" width="50px">
+								      <h1 style="margin-left: 100px">Evaluación</h1>
+								      <img src="./images/escudo-bolivia.svg" style="margin-left: 100px;" width="50px">
+								    </div>
+								    <div class="print__info">
+								      <div style="margin-right: 10px">
+								        <div class="print__info-curso">
+								          <label>Curso: </label><span>${evaluacion.curso}</span>
+								        </div>
+								        <div class="print__info-turno">
+								          <label>Materia: </label><span>${evaluacion.materia}</span>
+								        </div>
+								      </div>
+								      <div style="display: flex;flex-direction: column;align-items: flex-end;">
+								        <div class="info-label">
+								          <label>Unidad Educativa: </label><span>Aizama</span>
+								        </div>
+								        <div class="info-label"><label>Gestión: </label><span>${evaluacion.gestion}</span></div>
+								        <div class="info-label">
+								          <label>Departamento: </label><span>Santa Cruz</span>
+								        </div>
+								      </div>
+								    </div>`);
+    let index = 1;
+    preguntas.forEach(p => {
+    	printWindow.document.write(`<div style="padding:10px;">${index}.- ${p.pregunta}</div>`);
+    	if(p.imagen != ""){
+    		printWindow.document.write(`<div><img src="resources/${p.imagen}" width="350px" style="margin-left:20px;"></div>`);    		
+    	}
+    	index++;
+    });
+    printWindow.document.write("</table></body>");
+    printWindow.document.write("</html>");
+    printWindow.document.close();
+}
+const print_eval = codexa => {
+	$.post(
+		"controlador/evaluacionSeleccion_controlador.php?op=print-eval&usr=doc",
+		{codexa:1},
+		data => {
+			if(data.status == "ok"){
+				print(data.evaluacion,data.preguntas);
+			}
+		},"json"
+	);
+}
 $(document).ready(() =>{
 	init();
 	$("#title-pag").click(()=>{init()});
+	print_eval(3);
 });

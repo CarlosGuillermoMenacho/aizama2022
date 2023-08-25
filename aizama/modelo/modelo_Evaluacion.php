@@ -134,6 +134,20 @@ class Evaluacion_Seleccion
 			$result = ejecutar_consulta($this->db,$sql,$type,$params);
 			return $result;	
 		}
+		public function get_evaluacion($id){
+			$sql = "SELECT * FROM evaluacion WHERE estado = 1 AND id = ? ";
+			$type = "i";
+			$params = array($id);
+			$result = ejecutar_consulta($this->db,$sql,$type,$params);
+			return $result;	
+		}
+		public function get_preguntas($id){
+			$sql = "SELECT * FROM preguntas WHERE codexa = ? ";
+			$type = "i";
+			$params = array($id);
+			$result = ejecutar_consulta($this->db,$sql,$type,$params);
+			return $result;	
+		}
 		public function get_evaluaciones_prof($gestion,$trimestre,$codprof){
 			$sql = "SELECT e.id,e.codexa,e.codmat,e.codigo,e.cod_par,e.codeva,e.descrip,e.f_inicio,e.f_fin,e.horai,e.horaf,e.fecha,e.hora,e.tot_preg,e.visible FROM evaluacion e INNER JOIN prof_cur_mat p ON e.gestion = ? AND e.bimestre = ? AND e.codmat = p.codmat AND e.codigo = p.codcur AND e.cod_par = p.codpar AND e.estado = 1 AND p.prof = ? AND p.estado = 'activo' AND p.gestion = ?";
 			$type = "iisi";

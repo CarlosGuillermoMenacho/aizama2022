@@ -288,6 +288,65 @@ switch ($_GET['op']) {
 		$Evaluacion->delete($codexa,$codusr,$fecha,$hora);
 		echo json_encode(["status"=>"ok"]);
 		break;
+	case 'print-eval':
+		$codusr = $_SESSION["app_user_id"];
+		if(empty($codusr)){
+			echo json_encode(["status"=>"eSession"]);
+			exit();
+		}
+		$codexa =  isset($_POST["codexa"])?$_POST["codexa"]:"";
+		if(empty($codexa)){
+			echo json_encode(["status"=>"errorParam"]);
+			exit();
+		}
+		require_once"../modelo/modelo_Evaluacion.php";
+		require_once"../modelo/modelo_materia.php";
+		require_once"../modelo/modelo_curso.php";
+		require_once"../modelo/modelo_paralelo.php";
+		$Evaluacion = new Evaluacion_Seleccion($db);
+		$Materia = new Materia($db);
+		$Curso = new Curso($db);
+		$Paralelo = new Paralelo($db);
+		$result = $Evaluacion->get_evaluacion($codexa);
+		if($row = $result->fetch_object()){
+			$materias = $Materia->getMaterias();
+			$cursos = $Curso->getCursosIndex();
+			$paralelos = $Paralelo->getParalelosIndex();
+			$tot_preg = $row->tot_preg;
+			$evaluacion = [
+				"descripcion"=>$row->descrip,
+				"materia"=>$materias[$row->codmat]["nombre"],
+				"curso"=>$cursos[$row->codigo]["nombre"]." - ".$paralelos[$row->cod_par],
+				"gestion"=>date("Y")
+			];
+			$result = $Evaluacion->get_preguntas($codexa);
+			$preguntas = [];
+			while ($row_preg = $result->fetch_object()) {
+				$preguntas[] = $row_preg;
+			}
+			if(count($preguntas)<$tot_preg){
+				echo json_encode(["status"=>"bancoIncomplet"]);
+				exit();
+			}
+			$b = [];
+			while (count($b) < $tot_preg) {
+				$b[] = array_splice($preguntas, rand(0,count($preguntas)-1),1);
+			}
+
+			$response = [];
+			foreach ($b as $r) {
+				$response[] = [
+					"pregunta"=>$r[0]->pregunta,
+					"imagen"=>$r[0]->dir_imagen
+				];
+			}
+			echo json_encode(["status"=>"ok","preguntas"=>$response,"evaluacion"=>$evaluacion]);
+		}else{
+			echo json_encode(["status"=>"noEval"]);
+			exit();
+		}
+		
+		break;
 	default:
 		echo "errorGET";
 		break;
