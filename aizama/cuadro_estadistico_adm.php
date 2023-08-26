@@ -13,7 +13,7 @@ if($_SESSION['app_user_id']==16){
 ?>
 <link rel="stylesheet" type="text/css" href="css/cuadro_estadistico_adm.css?v=<?php echo rand();?>">
 <link rel="stylesheet" type="text/css" href="css/select2.min.css">
-<div class="title"><h1>Cuadro Estadístico</h1></div>
+<div class="title"><h1>Estadísticas</h1></div>
 <div class="div-main-content">
     <div class="div-lista-alumnos">
         <div class="div-search">
@@ -39,18 +39,36 @@ if($_SESSION['app_user_id']==16){
                 <div class="grafic-background">
                     <table class="table-grafic">
                         <tbody>
-                            <tr><td></td></tr>
-                            <tr><td></td></tr>
-                            <tr><td></td></tr>
-                            <tr><td></td></tr>
-                            <tr><td></td></tr>
-                            <tr><td></td></tr>
-                            <tr><td></td></tr>
-                            <tr><td></td></tr>
-                            <tr><td></td></tr>
-                            <tr><td></td></tr>
+                            <tr><td><div>100</div></td></tr>
+                            <tr><td><div>90</div></td></tr>
+                            <tr><td><div>80</div></td></tr>
+                            <tr><td><div>70</div></td></tr>
+                            <tr><td><div>60</div></td></tr>
+                            <tr><td><div>50</div></td></tr>
+                            <tr><td><div>40</div></td></tr>
+                            <tr><td><div>30</div></td></tr>
+                            <tr><td><div>20</div></td></tr>
+                            <tr><td><div>10</div></td></tr>
                         </tbody>
                     </table>
+                    <table class="table-grafic-bar">
+                        <tbody>
+                            <tr>
+                                <td><div>Matematicas</div></td>
+                                <td><div>Ciencias Sociales</div></td>
+                                <td><div>Lenguaje</div></td>
+                                <td><div>Ciencias Naturales</div></td>
+                                <td><div>Ed. Física</div></td>
+                                <td><div>Valores</div></td>
+                                <td><div>Inglés</div></td>
+                                <td><div>Computación</div></td>
+                                <td><div>Artes Plásticas</div></td>
+                                <td><div>Ortografía</div></td>
+                            </tr>
+                        </tbody>
+
+                    </table>
+                    <div class="title-grafico">1er Trimestre</div>
                 </div>
             </div>
         </div>

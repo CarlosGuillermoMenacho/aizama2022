@@ -97,8 +97,8 @@ switch ($_GET['op']) {
 		$materia = new Materia($db);
 
 		$materias = $materia->getMateriasCurso($codcur,$codpar);
-		// $trimestre = $_SESSION['app_user_bimestre'];
-		$trimestre = 3;
+		$trimestre = $_SESSION['app_user_bimestre'];
+		//$trimestre = 3;
 		require_once'../modelo/modelo_cuaderno_pedagogico.php';
 		$CP = new CuadernoPedagogico($db);
 		$rows = [];
@@ -126,6 +126,83 @@ switch ($_GET['op']) {
 		}
 
 		echo json_encode(["status"=>"ok","header"=>$header,"row"=>$rows]);
+		break;
+	case 'get_notas_to_centralizador_alu':
+		$codprof = $_SESSION['app_user_id'];
+		if(!cliente_activo()||empty($codprof)){
+			echo json_encode(["status"=>"eSession"]);
+			exit();
+		}
+
+		$codalu = isset($_POST["codalu"])?$_POST["codalu"]:"";
+		if(empty($codalu)){
+			echo json_encode(array("status"=>"paramError"));	
+			exit();		
+		}
+		require '../modelo/modelo_Alumno.php';
+		require '../modelo/modelo_curso.php';
+		require '../modelo/modelo_paralelo.php';
+		require_once'../modelo/conexion.php';
+		$db = Conectar::conexion();
+		$alumno = new Alumno($db);
+		$Curso = new Curso($db);
+		$Paralelo = new Paralelo($db);
+		$datosAlumno = $alumno->getDatosAlumno($codalu);
+		$codcur = $datosAlumno["codcur"];
+		$codpar = $datosAlumno["codpar"];
+		$cursos = $Curso->getCursosIndex();
+		$paralelos = $Paralelo->getParalelosIndex();
+		$dA = [
+			"foto"=>$datosAlumno["foto"],
+			"nombre"=>$datosAlumno["nombre"],
+			"codalu"=>$codalu,
+			"curso"=>$cursos[$codcur]["nombre"]." - ".$paralelos[$codpar]
+		];
+		$gestion = date("Y");
+		require_once'../modelo/modelo_materia.php';
+		$materia = new Materia($db);
+
+		$materias = $materia->getMateriasCurso($codcur,$codpar);
+		// $trimestre = $_SESSION['app_user_bimestre'];
+		$trimestre = 1;
+		require_once'../modelo/modelo_cuaderno_pedagogico.php';
+		$CP = new CuadernoPedagogico($db);
+		$rows = [];
+		$NotasTrimestrales = [];
+		$header = [];
+		foreach ($materias as $materia) {
+			$header[] = $materia['nombre'];
+			$RES = $CP->get_cuaderno_pedagogico_alumno($gestion,$trimestre,$codcur,$codpar,$materia['codmat'],$codalu);
+			$lista_notas = $RES['lista_notas'];
+			foreach ($lista_notas as $fila) {
+				$nota = $fila['nota_final'];
+				$rows[] = $nota;
+			}
+		}
+		$NotasTrimestrales[] = $rows;
+		$rows = [];
+		$trimestre = 2;
+		foreach ($materias as $materia) {
+			$RES = $CP->get_cuaderno_pedagogico_alumno($gestion,$trimestre,$codcur,$codpar,$materia['codmat'],$codalu);
+			$lista_notas = $RES['lista_notas'];
+			foreach ($lista_notas as $fila) {
+				$nota = $fila['nota_final'];
+				$rows[] = $nota;
+			}
+		}
+		$NotasTrimestrales[] = $rows;
+		$rows = [];
+		$trimestre = 3;
+		foreach ($materias as $materia) {
+			$RES = $CP->get_cuaderno_pedagogico_alumno($gestion,$trimestre,$codcur,$codpar,$materia['codmat'],$codalu);
+			$lista_notas = $RES['lista_notas'];
+			foreach ($lista_notas as $fila) {
+				$nota = $fila['nota_final'];
+				$rows[] = $nota;
+			}
+		}
+		$NotasTrimestrales[] = $rows;
+		echo json_encode(["status"=>"ok","header"=>$header,"row"=>$NotasTrimestrales,"alumno"=>$dA]);
 		break;
 	default:
 		// code...
