@@ -785,6 +785,19 @@
 
 			return $result;
 		}
+		public function get_evaluaciones_alumno($gestion,$trimestre,$codcur,$codpar,$codmat,$codalu){
+			$sql = "SELECT * FROM em_alumno WHERE estado = 1 AND codalu = ? AND codeva IN (SELECT em_id 
+																					 FROM evaluacion_mixta 
+																					 WHERE em_gestion = ? AND em_trimestre = ? AND 
+																					 	   em_codcur = ? AND em_codpar = ? AND 
+																					 	   em_codmat = ? AND em_estado = 1)";
+			$type = "iiiiis";
+			$params = array($codalu,$gestion,$trimestre,$codcur,$codpar,$codmat);
+
+			$result = ejecutar_consulta($this->db,$sql,$type,$params);
+
+			return $result;
+		}
 		public function get_evaluacion_fechas($profe,$fi,$ff){
 			$sql = "SELECT * FROM evaluacion_mixta WHERE em_estado = 1 AND em_codprof = ? AND em_fechaReg >= ? AND em_fechaReg < ?";
 			$type = "sss";

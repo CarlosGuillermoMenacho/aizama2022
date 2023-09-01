@@ -134,6 +134,18 @@ class PracticoDigital{
 
 		return $result;
 	}
+	public function get_practicos_alumno($gestion,$trimestre,$codcur,$codpar,$codmat,$codalu){
+	    $sql = "SELECT c.cod_cuest,pa.codalumno,pa.archivo,pa.fecha,pa.hora,pa.nota,pa.observacion,pa.fechaCalif,pa.codprof
+	            FROM cuestionarios c INNER JOIN practico_alumno pa ON pa.codalumno = ? AND
+	            c.cod_cuest = pa.codpractico AND c.gestion = ? AND c.bimestre = ? AND c.cod_cur = ? AND c.cod_par = ? AND 
+	            c.cod_mat = ? AND c.estado = 1 AND pa.estado > 0 ORDER BY c.cod_cuest ASC";
+		$type = "iiiiis";
+		$params = array($codalu,$gestion,$trimestre,$codcur,$codpar,$codmat);
+
+		$result = ejecutar_consulta($this->db,$sql,$type,$params);
+
+		return $result;
+	}
 	public function get_practicos_fechas($profe,$fi,$ff){
 		$sql = "SELECT * FROM cuestionarios WHERE estado = 1 AND codprof = ? AND fechaReg >= ? AND fechaReg < ?";
 		$type = "sss";

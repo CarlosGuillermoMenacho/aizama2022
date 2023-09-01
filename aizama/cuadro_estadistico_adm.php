@@ -14,17 +14,34 @@ if($_SESSION['app_user_id']==16){
 <link rel="stylesheet" type="text/css" href="css/cuadro_estadistico_adm.css?v=<?php echo rand();?>">
 <link rel="stylesheet" type="text/css" href="css/select2.min.css">
 <div class="title"><h1>Estadísticas</h1></div>
+<div class="div-main-content-options">
+    <div class="div-options-avanced">
+        <div class="btn-est-alumnos">
+            <button class="btn-options" onclick="esta_alumnos();">Estudiantes</button>
+            <div id="sAlu" class="selecter selected"></div>
+        </div>
+        <div class="btn-est-alumnos">
+            <button class="btn-options" onclick="esta_cursos();">Cursos</button>
+            <div id="sCur" class="selecter"></div>
+        </div>
+    </div>
+</div>
 <div class="div-main-content">
     <div class="div-lista-alumnos">
-        <div class="div-search">
-            <input type="text" id="input-search" class="input-date" placeholder="Buscar...">
+        <div class="div-options">
+            <div class="div-search">
+                <input type="text" id="input-search" class="input-date" placeholder="Buscar...">
+            </div>
+            <div class="select-curso">
+                <select id="seleccionar_curso"><option value="0">-- Seleccionar Curso --</option></select>
+            </div>
         </div>
         <div class="div-content-lista">
             
         </div>
     </div>
     <div class="div-cuadro-estadisticas">
-        <h2 class="t-estadisticas">Estadísticas Generales</h2>
+        <!--h2 class="t-estadisticas">Estadísticas Generales</h2>
         <div class="div-head-info">
             <div>
                 <h3>Estudiante: Carlos Guillermo</h3>
@@ -71,7 +88,7 @@ if($_SESSION['app_user_id']==16){
                     <div class="title-grafico">1er Trimestre</div>
                 </div>
             </div>
-        </div>
+        </div-->
     </div>
 </div>
 <script type="text/javascript" src="js/select2.min.js"></script>

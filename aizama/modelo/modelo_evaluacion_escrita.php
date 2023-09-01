@@ -40,6 +40,20 @@ class EvaluacionEscrita
 
 			return $result;
 		}
+		public function get_evaluaciones_alumno($gestion,$trimestre,$codcur,$codpar,$codmat,$codalu){
+
+			$sql = "SELECT * FROM evaluacion_proceso WHERE codalu = ? AND estado = 1 AND codeva IN (SELECT id 
+																					 FROM evaluacion_escrita 
+																					 WHERE gestion = ? AND trimestre = ? AND 
+																					 	   codcur = ? AND codpar = ? AND 
+																					 	   codmat = ? AND estado = 1)";
+			$type = "iiiiis";
+			$params = array($codalu,$gestion,$trimestre,$codcur,$codpar,$codmat);
+
+			$result = ejecutar_consulta($this->db,$sql,$type,$params);
+
+			return $result;
+		}
 		public function get_evaluacion($codeva){
 			$sql = "SELECT * FROM evaluacion_escrita WHERE estado = 1 AND id = ? ";
 			$type = "i";

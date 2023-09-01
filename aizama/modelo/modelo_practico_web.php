@@ -35,6 +35,17 @@ class PracticoWeb{
 
 		return $result;
 	}
+	public function get_practicos_web_alumno($gestion,$trimestre,$codcur,$codpar,$codmat,$codalu){
+	    $sql = "SELECT id, codpractweb, codalumno, fecha, hora, nota 
+	            FROM practicos_web_alumno WHERE codpractweb IN (SELECT id FROM practicos_web WHERE gestion = ? AND trimestre = ? AND codcur = ? AND codpar = ? AND 
+	            codmat = ? AND estado = 1) AND estado > 0 ORDER BY codpractweb ASC";
+		$type = "iiiis";
+		$params = array($gestion,$trimestre,$codcur,$codpar,$codmat);
+
+		$result = ejecutar_consulta($this->db,$sql,$type,$params);
+
+		return $result;
+	}
 	public function get_practicos_fechas($profe,$fi,$ff){
 		$sql = "SELECT * FROM practicos_web WHERE estado = 1 AND codprof = ? AND fechaReg >= ? AND fechaReg < ?";
 		$type = "sss";

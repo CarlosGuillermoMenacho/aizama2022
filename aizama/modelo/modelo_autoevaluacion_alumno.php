@@ -26,13 +26,33 @@
 			return $result;
 		}
 		public function get_autoevaluacioines($gestion,$trimestre,$codcur,$codpar,$codmat){
-			$sql = "SELECT * FROM auto_evaluaciones_alu WHERE estado = 1 AND cod_autoevaluacion IN (SELECT id 
-																									FROM auto_evaluaciones 
-																									WHERE gestion = ? AND trimestre = ? AND 
-																										  codcur = ? AND codpar = ? AND 
-																										  codmat = ? AND estado = 1)";
+			$sql = "SELECT * 
+				    FROM auto_evaluaciones_alu 
+				    WHERE estado = 1 AND 
+				    	cod_autoevaluacion IN (
+				    		SELECT id 
+							FROM auto_evaluaciones 
+							WHERE gestion = ? AND trimestre = ? AND 
+								  codcur = ? AND codpar = ? AND 
+								  codmat = ? AND estado = 1)";
 			$type = "iiiis";
 			$params = array($gestion,$trimestre,$codcur,$codpar,$codmat);
+
+			$result = ejecutar_consulta($this->db,$sql,$type,$params);
+			return $result;
+		}
+		public function get_autoevaluaciones_alu($gestion,$trimestre,$codcur,$codpar,$codmat,$codalu){
+			$sql = "SELECT * 
+				    FROM auto_evaluaciones_alu 
+				    WHERE codalu = ? AND estado = 1 AND 
+				    	cod_autoevaluacion IN (
+				    		SELECT id 
+							FROM auto_evaluaciones 
+							WHERE gestion = ? AND trimestre = ? AND 
+								  codcur = ? AND codpar = ? AND 
+								  codmat = ? AND estado = 1)";
+			$type = "iiiiis";
+			$params = array($codalu,$gestion,$trimestre,$codcur,$codpar,$codmat);
 
 			$result = ejecutar_consulta($this->db,$sql,$type,$params);
 			return $result;

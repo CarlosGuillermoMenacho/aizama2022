@@ -238,6 +238,7 @@
 
 
 		}
+		
 		public function get_cuaderno_pedagogico_alumno($gestion,$trimestre,$codcur,$codpar,$codmat,$codalu){
 	  
 
@@ -257,7 +258,7 @@
 		    $nivel = $codcur > 10?"SECUNDARIA":"";
 		    $nivel = $codcur < 11?"PRIMARIA":$nivel;
 		    $nivel = $codcur < 5?"INICIAL":$nivel;
-		    $result_practicos_digital_alumnos = $practico_digital->get_practicos_alumnos($gestion,$trimestre,$codcur,$codpar,$codmat);
+		    $result_practicos_digital_alumnos = $practico_digital->get_practicos_alumno($gestion,$trimestre,$codcur,$codpar,$codmat,$codalu);
 		    $lista_practicos_digitales_alumnos = array();
 		    while($fila = $result_practicos_digital_alumnos->fetch_object()){
 		    	$lista_practicos_digitales_alumnos[] = $fila;
@@ -280,7 +281,7 @@
 		    $total_practicos = count($lista_practicos_web) + count($lista_practicos_digitales);
 
 		    //Obteniendo la lista de practicos web realidos por los estudiantes
-		    $result_practicos_web_alumnos = $practico_web->get_practicos_web_alumnos($gestion,$trimestre,$codcur,$codpar,$codmat);
+		    $result_practicos_web_alumnos = $practico_web->get_practicos_web_alumno($gestion,$trimestre,$codcur,$codpar,$codmat,$codalu);
 		    $lista_practicos_web_alumnos = array();
 		    while ($fila = $result_practicos_web_alumnos->fetch_object()) {
 		    	$lista_practicos_web_alumnos[] = $fila;
@@ -293,7 +294,7 @@
 		    	$lista_evaluaciones_seleccion[] = $fila;
 		    }
 		    //Obteniendo la lista de evaluaciones realizadas por los estudiantes
-		    $result_evaluaciones_alumnos = $evaluacion->get_evaluaciones_alumnos($gestion,$trimestre,$codcur,$codpar,$codmat);
+		    $result_evaluaciones_alumnos = $evaluacion->get_evaluaciones_alumno($gestion,$trimestre,$codcur,$codpar,$codmat,$codalu);
 		    $lista_evaluaciones_seleccion_alumnos = array();
 		    while ($fila = $result_evaluaciones_alumnos->fetch_object()) {
 		    	$lista_evaluaciones_seleccion_alumnos[] = $fila;
@@ -308,7 +309,7 @@
 		    
 		    
 		    //Obteniendo la lista de evaluciones escritas realizadas por los estudiantes 
-		    $result_eval_escrito_alumno = $eval_escrito->get_evaluaciones_alumnos($gestion,$trimestre,$codcur,$codpar,$codmat);
+		    $result_eval_escrito_alumno = $eval_escrito->get_evaluaciones_alumno($gestion,$trimestre,$codcur,$codpar,$codmat,$codalu);
 		    $lista_evaluaciones_escritas_alumnos = array();
 		    while ($fila = $result_eval_escrito_alumno->fetch_object()) {
 		    	$lista_evaluaciones_escritas_alumnos[] = $fila;
@@ -317,29 +318,23 @@
 		    $eval_mixta = new Evaluacion_mixta($this->db);
 		    $lista_eval_mixtas = $eval_mixta->EvaluacionesCursoMaterias2($codcur,$codpar,$codmat,$trimestre,$gestion);
 		    //Obteniendo la lista de evaluaciones mixtas realizadas por los estudiantes
-		    $result_em_alumno = $eval_mixta->get_evaluaciones_alumnos($gestion,$trimestre,$codcur,$codpar,$codmat);
+		    $result_em_alumno = $eval_mixta->get_evaluaciones_alumno($gestion,$trimestre,$codcur,$codpar,$codmat,$codalu);
 		    $lista_em_alumnos = array();
 		    while ($fila = $result_em_alumno->fetch_object()) {
 		    	$lista_em_alumnos[] = $fila;
 		    }
-            //Obteniendo indicadores de las actividades
-		    $Indicador = new Indicador($this->db);
-		    $result_indicadores = $Indicador->get_indicadores($gestion,$trimestre,$codcur,$codpar,$codmat);
-		    $indicadores = array();
-		    while ($fila = $result_indicadores->fetch_object()) {
-		    	$indicadores[] = $fila;
-		    }
+           
             $total_evaluaciones = count($lista_evaluaciones_escritas)+count($lista_evaluaciones_seleccion)+count($lista_eval_mixtas);
 		    //Obteniendo el ser y decidir
 		    $Ser_decidir = new SerDecidir($this->db);
-		    $result_ser_decidir_alumnos = $Ser_decidir->get_ser_decidir_materia($gestion,$trimestre,$codmat);
+		    $result_ser_decidir_alumnos = $Ser_decidir->get_ser_decidir_materia_alu($gestion,$trimestre,$codmat,$codalu);
 		    $lista_ser_decidir_alumnos = array();
 		    while ($fila = $result_ser_decidir_alumnos->fetch_object()) {
 		    	$lista_ser_decidir_alumnos[] = $fila;
 		    }
 		    //Obteniendo la autoevaluaciones relizadas por los estudiantes
 		    $autoEvalAlumno = new Autoevaluacion_alumno($this->db);
-		    $result_autoeval_alumno = $autoEvalAlumno->get_autoevaluacioines($gestion,$trimestre,$codcur,$codpar,$codmat);
+		    $result_autoeval_alumno = $autoEvalAlumno->get_autoevaluaciones_alu($gestion,$trimestre,$codcur,$codpar,$codmat,$codalu);
 		    $lista_auto_eval_alumno = array();
 		    while ($fila = $result_autoeval_alumno->fetch_object()) {
 		    	$lista_auto_eval_alumno[] = $fila;

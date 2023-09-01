@@ -127,6 +127,18 @@ class Evaluacion_Seleccion
 
 			return $result;
 		}
+		public function get_evaluaciones_alumno($gestion,$trimestre,$codcur,$codpar,$codmat,$codalu){
+
+			$type = "iiisii";
+			$sql = "SELECT codigo, sum(nota) as nota, codexa FROM resp_alu_exa WHERE codigo = ? AND codexa IN (SELECT id FROM evaluacion WHERE gestion = ? AND bimestre = ? AND 
+																								codmat = ? AND codigo =? AND 
+																								cod_par = ? AND estado = 1) GROUP BY codigo,codexa";
+			$params = array($codalu,$gestion,$trimestre,$codmat,$codcur,$codpar);
+
+			$result = ejecutar_consulta($this->db,$sql,$type,$params);
+
+			return $result;
+		}
 		public function get_evaluacion_fechas($profe,$fi,$ff){
 			$sql = "SELECT * FROM evaluacion WHERE estado = 1 AND usr = ? AND fecha >= ? AND fecha < ?";
 			$type = "sss";

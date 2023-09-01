@@ -79,5 +79,13 @@
 			$result = ejecutar_consulta($this->db,$sql,$type,$params);
 			return $result;
 		}
+		public function get_ser_decidir_materia_alu($gestion,$trimestre,$codmat,$codalu){
+			$sql = "SELECT * FROM ser_decidir WHERE codalu = ? AND gestion = ? AND trimestre = ?  AND codmat = ? AND estado = 1";
+			$type = "iiis";
+			$params = array($codalu,$gestion,$trimestre,$codmat);
+
+			$result = ejecutar_consulta($this->db,$sql,$type,$params);
+			return $result;
+		}
 	}
 ?>

@@ -103,6 +103,27 @@ switch ($_GET['op']) {
 		}
 		echo json_encode(["status"=>"ok","cursos"=>$__cursos]);
 		break;
+	case 'get_materias_curso':
+		$codusr = $_SESSION['app_user_id'];
+		if(empty($codusr)){
+			echo json_encode(array("status"=>"eSession"));	
+			exit();
+					
+		}
+		$codcur = isset($_POST["codcur"])?$_POST["codcur"]:"";
+		$codpar = isset($_POST["codpar"])?$_POST["codpar"]:"";
+
+		if(empty($codcur) || empty($codpar)){
+			echo json_encode(array("status"=>"errorParam"));	
+			exit();
+		}
+		require_once'../modelo/conexion.php';
+		require_once'../modelo/modelo_materia.php';
+		$db = Conectar::conexion();
+		$materia = new Materia($db);	
+		$materias = $materia->getMateriasCurso($codcur,$codpar);
+		echo json_encode(["status"=>"ok","materias"=>$materias]);	
+		break;
 	default:
 		echo json_encode(array("status"=>"errorOP"));
 		break;
