@@ -55,7 +55,7 @@ class Profesor{
 		return $result;
 	}
 	public function get_profesores(){
-		$sql="SELECT * FROM profe WHERE estado = 'activo'";
+		$sql="SELECT * FROM profe WHERE estado = 'activo' ORDER BY APEPRO,NOMPRO ASC";
 		$type="";
 		$params=array();
 		$result=ejecutar_consulta($this->db,$sql,$type,$params);

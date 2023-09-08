@@ -337,6 +337,75 @@ switch ($_GET['op']) {
 		}
 		echo json_encode(["status"=>"ok","cursos"=>$__cursos,"materias_curso"=>$__materias]);
 		break;
+	case 'est_practicos':
+		// Se obtendrá el número de prácticos creados por los profesores
+		$codusr = isset($_SESSION['app_user_id'])?$_SESSION['app_user_id']:"";
+		if (empty($codusr)) {
+			echo json_encode(array('status' => "eSession"));
+			exit();
+		}
+		$gestion = date("Y");
+		$db = Conectar::conexion();
+		require_once'../modelo/modelo_profesor.php';
+		require_once'../modelo/modelo_practico.php';
+		$Profesor = new Profesor($db);
+		$Practico = new Practico($db);
+		$result = $Profesor->get_profesores();
+		$profesores = [];
+		while ($row = $result->fetch_object()) {
+			$result_p = $Practico->get_practicos_profesor($gestion,$row->CODPROF);
+			$pf = [];
+			while ($row_p = $result_p->fetch_object()) {
+				$pf[] = $row_p;
+			}
+			$profesores[] = [
+				"codprof"=>$row->CODPROF,
+				"nombre"=>$row->APEPRO." ".$row->NOMPRO,
+				"practicos"=>$pf
+			];
+		}
+		echo json_encode(["status"=>"ok","profesores"=>$profesores]);
+		break;
+	case 'est_practicos_fecha':
+		// Se obtendrá el número de prácticos creados por los profesores
+		$codusr = isset($_SESSION['app_user_id'])?$_SESSION['app_user_id']:"";
+		if (empty($codusr)) {
+			echo json_encode(array('status' => "eSession"));
+			exit();
+		}
+		$fecha_i = isset($_POST["fecha_i"])?$_POST["fecha_i"]." 00:00:00":date("Y-m-d")." 00:00:00";
+		$fecha_f = isset($_POST["fecha_f"])?$_POST["fecha_f"]." 23:59:59":"";
+		
+		if (empty($fecha_f)) {
+			$fecha_f = $fecha_i;
+			exit();
+		}
+		if(strtotime($fecha_i)>strtotime($fecha_f)){
+			echo json_encode(["status"=>"errorFecha"]);
+			exit();
+		}
+		$gestion = date("Y");
+		$db = Conectar::conexion();
+		require_once'../modelo/modelo_profesor.php';
+		require_once'../modelo/modelo_practico.php';
+		$Profesor = new Profesor($db);
+		$Practico = new Practico($db);
+		$result = $Profesor->get_profesores();
+		$profesores = [];
+		while ($row = $result->fetch_object()) {
+			$result_p = $Practico->get_practicos_profesor_fecha($gestion,$row->CODPROF,$fecha_i,$fecha_f);
+			$pf = 0;
+			if ($row_p = $result_p->fetch_object()) {
+				$pf = $row_p->total;
+			}
+			$profesores[] = [
+				"codprof"=>$row->CODPROF,
+				"nombre"=>$row->APEPRO." ".$row->NOMPRO,
+				"practicos"=>$pf
+			];
+		}
+		echo json_encode(["status"=>"ok","profesores"=>$profesores]);
+		break;
 }
 function getActividades($codmat,$acti){
 	for ($i=0; $i < count($acti); $i++) { 

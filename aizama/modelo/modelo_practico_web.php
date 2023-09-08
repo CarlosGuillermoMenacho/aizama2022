@@ -60,6 +60,15 @@ class PracticoWeb{
 		$result = ejecutar_consulta($this->db,$sql,$type,$params);
 		return $result;
 	}
+	public function get_practicos_profesor($gestion,$codprof){
+		$sql = "SELECT trimestre,count(total) FROM (SELECT trimestre,count(*) as total FROM practicos_web WHERE estado = 1 AND gestion = ? AND codprof = ? 		GROUP BY trimestre
+				UNION
+				SELECT bimestre as trimestre,count(bimestre) as total FROM cuestionarios WHERE estado = 1 AND gestion = ? AND codprof = ? GROUP BY trimestre) as t GROUP BY trimestre";
+		$type = "isis";
+		$params = array($gestion,$codprof,$gestion,$codprof;
+		$result = ejecutar_consulta($this->db,$sql,$type,$params);
+		return $result;
+	}
 	public function get_practicos_curso_fecha($codcur,$codpar,$fecha){
 		$sql = "SELECT * FROM practicos_web WHERE estado = 1 AND codcur = ? AND codpar = ? AND fecha = ?";
 		$type = "iis";

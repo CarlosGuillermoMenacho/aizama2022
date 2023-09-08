@@ -50,11 +50,18 @@
       <ul>
         <li><a href="#" id="eel"><div class="div-name-item"><span class="icon-video"></span>Evento en linea</div></a></li>
         <li><a href="ver_horario_adm.php"><div class="div-name-item"><span class="icon-mobile"></span>Horario Escolar</div></a></li>
-        <li><a href="cuadro_estadistico_adm.php"><div class="div-name-item"><span class="icon-mobile"></span>Estadísticas</div></a></li>
+        <!--li><a href="cuadro_estadistico_adm.php"><div class="div-name-item"><span class="icon-mobile"></span>Estadísticas</div></a></li-->
         <li><a href="calendario_academico.php"><div class="div-name-item"><span class="icon-mobile"></span>Calendario Académico</div></a></li>
         <li><a href="biblioteca.php"><div class="div-name-item"><span class="icon-mobile"></span>Biblioteca Digital</div></a></li>
         <li><a href="agenda_adm.php"><div class="div-name-item"><span class="icon-mobile"></span>Agenda Digital</div></a></li>
         <li><a href="lista_usuario_clave_adm.php"><div class="div-name-item"><span class="icon-mobile"></span>Lista Usuarios y Clave</div></a></li>
+        <li class="submenu">
+          <a href="#"><div class="div-name-item"><span class="icon-new-message"></span>Estadísticas</div><div class="downarrow"><span class="caret icon-chevron-down"></span></div></a>
+          <ul class="children">
+            <li><a href="cuadro_estadistico_adm.php">Estudiantes</a></li>
+            <li><a href="estadisticas_docentes_adm.php">Docentes</a></li>
+          </ul>
+        </li>
         <li class="submenu">
           <a href="#"><div class="div-name-item"><span class="icon-new-message"></span>Mejores Notas</div><div class="downarrow"><span class="caret icon-chevron-down"></span></div></a>
           <ul class="children">

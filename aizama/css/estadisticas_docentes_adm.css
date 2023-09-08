@@ -1,0 +1,409 @@
+:root {
+    --c1: #006581;
+    --c1a: #57A3B8;
+    --c2: #EBF1F9;
+    --c3: #E6344A;
+    --c3a: #f97d8c;
+    --c4: #fafafa;
+    --c5: #fff;
+}
+.title {
+    width: 300px;
+    margin: 25px auto;
+    border-radius: 5px;
+    box-shadow: 0 3px 10px rgb(10 37 64 / 40%);
+    background-color: var(--c5);
+}
+.title h1 {
+    text-align: center;
+    font-size: .9em;
+    text-transform: uppercase;
+    padding: 15px 0;
+    color: var(--c1);
+}
+h2{
+    text-align: center;
+    color: var(--c1);
+    font-size: .85em;
+}
+h3{
+    color: var(--c1);
+}
+
+@media screen and (min-width: 361px){
+    .title {
+        width: 360px;
+        margin: 10px auto;
+        border-radius: 5px;
+        box-shadow: 0 3px 10px rgb(10 37 64 / 40%);
+        background-color: var(--c5);
+    }
+    .title h1 {
+        text-align: center;
+        font-size: 1em;
+        text-transform: uppercase;
+        padding: 15px 0;
+        color: var(--c1);
+    }
+    .div-lista-alumnos{
+        box-shadow: 0 3px 10px rgb(10 37 64 / 40%);
+        padding: 10px;
+        border-radius: 5px;
+        margin-right: 10px;
+    }
+}
+@media screen and (max-width: 800px){
+    .div-cuadro-estadisticas{
+        display: none;
+    }   
+}
+.div-selects {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
+    text-align: center;
+    font-size: .8em;
+}
+.input-date{
+    padding: 8px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+    color: var(--c1);
+    width: 120px;
+}
+.div-options{
+    display: flex;
+    flex-direction: column;
+    row-gap: 10px;
+    padding-bottom: 10px;
+}
+.div-options-avanced{
+    box-shadow: 0 3px 10px rgb(10 37 64 / 40%);
+    padding-top: 10px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    border-radius: 5px;
+    padding-bottom: 6px;
+}
+.selected{
+    background-color: #2fc6c7;
+}
+.selecter{
+    height: 5px;
+}
+.item-materia{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 20px;
+    padding: 5px;
+    cursor: pointer;
+}
+.item-materia:hover{
+    background-color: #ccc;
+}
+.div-input-fech{
+    display: flex;
+    align-items: center;
+    color: var(--c1);
+    gap: 5px;
+    justify-content: flex-end;
+    margin-top: 20px;
+}
+.btn-options{
+    width: 150px;
+    padding: 10px;
+    /*border: 1px solid #138e8f;*/
+    border: none;
+    color: white;
+    background: #138e8f;
+    cursor: pointer;
+    text-transform: uppercase;
+}
+.btn-options:hover{
+    background: #129c9d;
+}
+.div-main-content-options{
+    padding: 0 10px;
+}
+.input-date:focus {
+    outline-color: #ccc;
+}  
+.select-curso{
+    text-align: center;
+} 
+.oculto{
+    display: none;
+}
+.item_alumnos{
+    font-size: .72em;
+    display: flex;
+    padding: 5px;
+    cursor: pointer;
+}
+.item_alumnos:hover {
+    background-color: #ccc;
+}
+.div-content-lista{
+    height: calc(100vh - 307px);
+    overflow-y: auto;
+}
+.div-lista-alumnos{
+    max-width: 300px;
+    width: 100%;
+    box-shadow: 0 3px 10px rgb(10 37 64 / 40%);
+    border-radius: 5px;
+    padding: 5px;
+    color: var(--c1);
+}
+.div-search{
+    text-align: end;
+}
+.div-codalu{
+    width: 40px;
+}
+.div-main-content{
+    display: flex;
+    padding: 10px;
+    align-items: flex-start;
+}
+.div-cuadro-estadisticas{
+    box-shadow: 0 3px 10px rgb(10 37 64 / 40%);
+    border-radius: 5px;
+    padding: 10px;
+    width: 100%;
+    position: relative;
+    height: calc(100vh - 216px);
+}
+.div-head-info{
+    position: absolute;
+    right: 0;
+    top: 0;
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    font-size: .7em;
+    width: 100%;
+    justify-content: space-between;
+    border-bottom: 1px solid #ccc;
+    min-height: 120px;
+}
+.div-head-info2{
+    position: absolute;
+    right: 0;
+    top: 0;
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    font-size: .7em;
+    width: 100%;
+    justify-content: space-between;
+    border-bottom: 1px solid #ccc;
+    min-height: 65px;
+}
+.t-estadisticas{
+    text-align: center;
+    color: var(--c1);
+    font-size: 1em;
+}
+.div-content-graficos{
+    display: flex;
+    height: 100%;
+    margin-top: 100px;
+}
+.div-content-graficos2 {
+    display: flex;
+    height: 100%;
+    margin-top: 50px;
+}
+.grafico-notas-materias{
+    width: 100%;
+    position: relative;
+}
+.div-img-est{
+    max-height: 100px; 
+    overflow-y: hidden;
+    border-radius: 5px;
+}
+.img-est{
+    border-radius: 5px;
+}
+.table-grafic-fecha{
+    border-collapse: collapse;
+    width: 100%;
+    margin-top: 15px;
+}
+.table-grafic-fecha tbody tr td{
+    width: 100%;
+    height: 30px;
+    border-top: 1px solid #ccc;
+    font-size: .75em;
+    color: #9d9c9c;
+    position: relative;
+}
+.table-grafic-fecha tbody tr td div{
+    position: absolute;
+    top: -7px;
+    background: white;
+    padding: 0 4px 0 0px;
+}
+.table-grafic{
+    border-collapse: collapse;
+    width: 100%;
+    margin-top: 20px;
+}
+.table-grafic tbody tr td{
+    width: 100%;
+    height: 30px;
+    border-top: 1px solid #ccc;
+    font-size: .75em;
+    color: #9d9c9c;
+    position: relative;
+}
+.table-grafic tbody tr td div{
+    position: absolute;
+    top: -7px;
+    background: white;
+    padding: 0 4px 0 0px;
+}
+.table-grafic-bar{
+    display: flex;
+    position: absolute;
+    bottom: 11px;
+    width: 100%;
+}
+.table-grafic-bar-fecha{
+    display: flex;
+    position: absolute;
+    bottom: 11px;
+    width: 100%;
+}
+.table-grafic-bar tbody{
+    width: 100%;
+    display: flex;
+}
+.table-grafic-bar-fecha tbody{
+    width: 100%;
+    display: flex;
+}
+.table-grafic-bar tbody tr td div{
+    writing-mode: vertical-lr;
+    transform: rotate(180deg);
+    border-collapse: collapse;
+    padding: 5px;
+    color: #c1c1c1;
+    border-radius: 2px;
+    background-color: blue;
+    letter-spacing: .1em;
+    white-space: nowrap;
+    cursor: pointer;
+}
+.table-grafic-bar-fecha tbody tr td div{
+    writing-mode: vertical-lr;
+    transform: rotate(180deg);
+    border-collapse: collapse;
+    padding: 5px;
+    color: #c1c1c1;
+    border-radius: 2px;
+    background-color: blue;
+    letter-spacing: .1em;
+    white-space: nowrap;
+    cursor: pointer;
+}
+.table-grafic-bar2 tbody tr td div {
+    writing-mode: vertical-lr;
+    transform: rotate(180deg);
+    border-collapse: collapse;
+    padding: 5px;
+    color: #c1c1c1;
+    border-radius: 2px;
+    background-color: blue;
+    letter-spacing: .1em;
+    white-space: nowrap;
+    cursor: pointer;
+    font-size: .75em;
+}
+.table-grafic-bar tbody tr{
+    display: flex;
+    width: 90%;
+    align-items: flex-end;
+    justify-content: space-around;
+    margin: 0 auto 0px 20px;
+}
+.table-grafic-bar-fecha tbody tr{
+    display: flex;
+    width: 90%;
+    align-items: flex-end;
+    justify-content: space-around;
+    margin: 0 auto 0px 20px;
+}
+.table-grafic-bar tbody tr td{
+    height: 360px;
+    display: flex;
+    font-size: .75em;
+    align-items: flex-end;
+}
+.table-grafic-bar-fecha tbody tr td{
+    height: 300px;
+    display: flex;
+    font-size: .75em;
+    align-items: flex-end;
+}
+.title-grafico{
+    text-align: center;
+    color: var(--c1);
+    letter-spacing: .1em;
+    position: absolute;
+    top: 4px;
+    font-size: .8em;
+    left: 0;
+    right: 0;
+    margin: auto;
+}
+.title-grafico-fecha{
+    text-align: center;
+    color: var(--c1);
+    letter-spacing: .1em;
+    position: absolute;
+    top: 10px;
+    font-size: .8em;
+    left: 0;
+    right: 0;
+    margin: auto;
+}
+.grafic-background{
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    position: relative;
+    width: 550px;
+}
+.grafic-background2 {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    position: relative;
+    width: 100%;
+}
+.content-graficos{
+    margin-top: 20px;
+    display: flex;
+    position: relative;
+    flex-wrap: wrap;
+    gap: 20px;
+    height: calc(100vh - 392px);
+    overflow-y: auto;
+}
+.content-graficos2 {
+    margin-top: 20px;
+    display: flex;
+    position: relative;
+    flex-wrap: wrap;
+    gap: 20px;
+    height: calc(100vh - 350px);
+    overflow-y: auto;
+    overflow-x: hidden;
+}   
