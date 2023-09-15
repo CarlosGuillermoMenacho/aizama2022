@@ -1,0 +1,236 @@
+:root{
+	--c1 : #006581;
+	--c1a : #57A3B8;
+	--c2 : #EBF1F9; /*Gris*/
+	--c3 : #E6344A;/*Rojo institucional*/
+	--c3a: #f97d8c;
+	--c4 : #fafafa;/*Background*/
+	--c5 : #fff;
+	--c1b:#e2f8f9;
+}
+.main-container{
+	padding: 5px;
+	font-family: 'Segoe UI', Tahoma, sans-serif;
+}
+.title h1{
+	color: var(--c1);
+    font-size: 1em;
+    text-align: center;
+    padding: 10px;
+}
+.head-actividad h2{
+	color: var(--c1);
+    font-size: 1em;
+    text-align: center;
+    padding: 10px;
+}
+.boxs{
+	display: flex;
+    flex-wrap: nowrap;
+    gap: 5px;
+}
+
+.box-menu{
+	min-width: 210px;
+    border-radius: 5px;
+    box-shadow: 0 1px 3px rgb(10 37 64 / 40%);
+    height: calc(100vh - 122px);
+    padding: 5px;
+    display: flex;
+    flex-direction: column;
+    row-gap: 5px;
+    position: relative;
+}
+.box-content{
+	border-radius: 5px;
+    box-shadow: 0 1px 3px rgb(10 37 64 / 40%);
+    height: calc(100vh - 122px);
+    width: 100%;
+}
+.div-select{
+	padding: 5px;
+	text-align: center;
+	color: var(--c1);
+}
+.oculto{
+	display: none;
+}
+.div-categoria h2{
+	text-align: center;
+    color: var(--c1);
+    font-size: 1em;
+    padding: 5px;
+}
+.item-curso{
+	color: var(--c1);
+    display: flex;
+    padding: 5px 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: .8em;
+    justify-content: space-between;
+    cursor: pointer;
+    gap: 5px;
+    align-items: center;
+}
+.item-curso label{
+	cursor: pointer;
+}
+.item-curso:hover{
+	background: #ccc;
+}
+.lista-alumnos{
+	padding: 0 50px;
+}
+.table{
+	margin: auto;
+    border-collapse: collapse;
+    font-size: .9em;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+.table thead tr td{
+	padding: 10px 20px;
+	background: #02898f;
+	font-weight: 700;
+	color: white;
+	display: flex;
+    align-items: center;
+}
+.table thead tr{
+	display: flex;
+}
+.table thead tr td:first-child {
+	border-radius: 5px 0 0 5px;
+}
+.table thead tr td:last-child {
+	border-radius:0 5px 5px 0;
+}
+.table tbody tr td:not(:last-child){
+	padding: 10px 20px;
+	font-weight: 400;
+	color: var(--c1);
+}
+.table tbody{
+	display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+.table tbody tr{
+	display: flex;
+	box-shadow: 0 1px 3px rgb(10 37 64 / 40%);
+	border-radius: 5px;
+    align-items: center;
+}
+.table tbody tr:hover {
+	background-color: #ccc;
+}
+.table tbody tr td:first-child {
+	border-radius: 5px 0 0 5px;
+}
+.table tbody tr td:last-child {
+	border-radius:0 5px 5px 0;
+	position: relative;
+}
+.div-textarea{
+	display: flex;
+    align-items: center;
+}
+.selected{
+	background-color: #02898f;
+	color: white;
+    padding: 5px 10px;
+    border: 1px solid #ccc;
+    display: flex;
+    border-radius: 5px;
+    font-size: .8em;
+    justify-content: space-between;
+    cursor: pointer;
+}
+.selecteds{
+	background-color: #02898f;
+	color: white;
+    padding: 5px 10px;
+    border: 1px solid #ccc;
+    display: flex;
+    border-radius: 5px;
+    font-size: .8em;
+    justify-content: space-between;
+    cursor: pointer;
+}
+textarea{
+	width: 100%;
+    height: 58px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 5px;
+    color: var(--c1);
+    resize: none;
+}
+textarea:focus{
+	outline-color: #ccc;
+}
+.div-button-add{
+	position: absolute;
+    bottom: 10px;
+    left: 50%;
+    margin: auto;
+    transform: translate(-50%);
+    cursor: pointer;
+}
+.div-formulario{
+	position: absolute;
+    width: 100%;
+    height: 100%;
+    background: #00000082;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+}
+.formulario{
+	position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    border-radius: 5px;
+    width: 100%;
+    max-width: 500px;
+    color: var(--c1);
+    padding: 10px;
+}
+.label-form{
+	margin-left: 10px; 
+	font-size:.85em; 
+	font-weight:bold; 
+	margin-top: 20px;
+}
+.div-button-form{
+	display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 30px;
+    padding: 10px 0;
+}
+.div-button-form img{
+	cursor: pointer;
+}
+.div-checks-eval{
+	border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+.div-check-label{
+	display: flex;
+    align-items: center;
+    gap: 5px;
+    width: 100%;
+    max-width: 100px;
+}
+.div-check-label div input{
+	cursor: pointer;
+}
