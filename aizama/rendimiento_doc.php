@@ -43,68 +43,132 @@ require 'header.php';
                 <img width="30px" src="images/plus.png" title="Agregar actividad" onclick="nueva_actividad()">
             </div-->
         </div>
-        <div class="box-content">            
-            <div class="head-actividad">
-                <h2>Carrera de 100 m. planos.</h2>
+        <div class="box-content">    
+            <div class="header-actividad">
             </div>
-            <div class="lista-alumnos">
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <td style="width:5%">No.</td>
-                            <td style="width:35%">Estudiante</td>
-                            <td style="width:15%">Marca Actual</td>
-                            <td style="width:15%">Evaluar</td>
-                            <td style="width:30%">Observación</td>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td style="width:5%">1</td>
-                            <td style="width:35%">ALBA DERMITH MARIOLY ALEJANDRA</td>
-                            <td style="width:15%">57.350 seg</td>
-                            <td style="width:15%"><img style="cursor: pointer;" width="40px" src="img/cronometro.png"></td>
-                            <td style="width:30%">
-                                <div class="div-textarea">
-                                    <textarea>Buen rendimiento</textarea>                                
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td style="width:5%">2</td>
-                            <td style="width:35%">ALBA DERMITH MARIOLY ALEJANDRA</td>
-                            <td style="width:15%">102.18 segundos</td>
-                            <td style="width:15%"><img style="cursor: pointer;" width="40px" src="img/cronometro.png"></td>
-                            <td style="width:30%">
-                                <div class="div-textarea">
-                                    <textarea>Buen rendimiento</textarea>                                
-                                </div></td>
-                        </tr>
-                        <tr>
-                            <td style="width:5%">3</td>
-                            <td style="width:35%">ALBA DERMITH MARIOLY ALEJANDRA</td>
-                            <td style="width:15%">150.23 seg</td>
-                            <td style="width:15%"><img style="cursor: pointer;" width="40px" src="img/cronometro.png"></td>
-                            <td style="width:30%">
-                                <div class="div-textarea">
-                                    <textarea>Buen rendimiento</textarea>                                
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td style="width:5%">4</td>
-                            <td style="width:35%">ALBA DERMITH MARIOLY ALEJANDRA</td>
-                            <td style="width:15%">57.350 seg</td>
-                            <td style="width:15%"><img style="cursor: pointer;" width="40px" src="img/cronometro.png"></td>
-                            <td style="width:30%">
-                                <div class="div-textarea">
-                                    <textarea>Buen rendimiento</textarea>                                
-                                </div>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+            <div class="div-lista-alumnos">
+                <!--div class="head-actividad">
+                    <h2>Carrera de 100 m. planos.</h2>
+                </div>
+                <div class="lista-alumnos">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <td style="width:5%">No.</td>
+                                <td style="width:35%">Estudiante</td>
+                                <td style="width:15%">Marca Actual</td>
+                                <td style="width:15%">Evaluar</td>
+                                <td style="width:30%">Observación</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td style="width:5%">1</td>
+                                <td style="width:35%">ALBA DERMITH MARIOLY ALEJANDRA</td>
+                                <td style="width:15%">57.350 seg</td>
+                                <td style="width:15%"><img style="cursor: pointer;" width="40px" src="img/cronometro.png"></td>
+                                <td style="width:30%">
+                                    <div class="div-textarea">
+                                        <textarea>Buen rendimiento</textarea>                                
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="width:5%">2</td>
+                                <td style="width:35%">ALBA DERMITH MARIOLY ALEJANDRA</td>
+                                <td style="width:15%">102.18 segundos</td>
+                                <td style="width:15%"><img style="cursor: pointer;" width="40px" src="img/cronometro.png"></td>
+                                <td style="width:30%">
+                                    <div class="div-textarea">
+                                        <textarea>Buen rendimiento</textarea>                                
+                                    </div></td>
+                            </tr>
+                            <tr>
+                                <td style="width:5%">3</td>
+                                <td style="width:35%">ALBA DERMITH MARIOLY ALEJANDRA</td>
+                                <td style="width:15%">150.23 seg</td>
+                                <td style="width:15%"><img style="cursor: pointer;" width="40px" src="img/cronometro.png"></td>
+                                <td style="width:30%">
+                                    <div class="div-textarea">
+                                        <textarea>Buen rendimiento</textarea>                                
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="width:5%">4</td>
+                                <td style="width:35%">ALBA DERMITH MARIOLY ALEJANDRA</td>
+                                <td style="width:15%">57.350 seg</td>
+                                <td style="width:15%"><img style="cursor: pointer;" width="40px" src="img/cronometro.png"></td>
+                                <td style="width:30%">
+                                    <div class="div-textarea">
+                                        <textarea>Buen rendimiento</textarea>                                
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="width:5%">4</td>
+                                <td style="width:35%">ALBA DERMITH MARIOLY ALEJANDRA</td>
+                                <td style="width:15%">57.350 seg</td>
+                                <td style="width:15%"><img style="cursor: pointer;" width="40px" src="img/cronometro.png"></td>
+                                <td style="width:30%">
+                                    <div class="div-textarea">
+                                        <textarea>Buen rendimiento</textarea>                                
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="width:5%">4</td>
+                                <td style="width:35%">ALBA DERMITH MARIOLY ALEJANDRA</td>
+                                <td style="width:15%">57.350 seg</td>
+                                <td style="width:15%"><img style="cursor: pointer;" width="40px" src="img/cronometro.png"></td>
+                                <td style="width:30%">
+                                    <div class="div-textarea">
+                                        <textarea>Buen rendimiento</textarea>                                
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="width:5%">4</td>
+                                <td style="width:35%">ALBA DERMITH MARIOLY ALEJANDRA</td>
+                                <td style="width:15%">57.350 seg</td>
+                                <td style="width:15%"><img style="cursor: pointer;" width="40px" src="img/cronometro.png"></td>
+                                <td style="width:30%">
+                                    <div class="div-textarea">
+                                        <textarea>Buen rendimiento</textarea>                                
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="width:5%">4</td>
+                                <td style="width:35%">ALBA DERMITH MARIOLY ALEJANDRA</td>
+                                <td style="width:15%">57.350 seg</td>
+                                <td style="width:15%"><img style="cursor: pointer;" width="40px" src="img/cronometro.png"></td>
+                                <td style="width:30%">
+                                    <div class="div-textarea">
+                                        <textarea>Buen rendimiento</textarea>                                
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="width:5%">4</td>
+                                <td style="width:35%">ALBA DERMITH MARIOLY ALEJANDRA</td>
+                                <td style="width:15%">57.350 seg</td>
+                                <td style="width:15%"><img style="cursor: pointer;" width="40px" src="img/cronometro.png"></td>
+                                <td style="width:30%">
+                                    <div class="div-textarea">
+                                        <textarea>Buen rendimiento</textarea> 
+                                        <div class="div-option-text">
+                                            <img src="images/check.svg" title="Guardar" width="25px" style="cursor:pointer;">                               
+                                            <img src="images/close.svg" title="Cancelar" width="25px" style="cursor:pointer;">
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div-->
+            </div>        
+                
         </div>
     </div>
 </div>
@@ -153,6 +217,22 @@ require 'header.php';
             <img width="35px" src="images/close.svg" title="Cancelar" onclick="close_form()">
         </div>
     </form>
+</div>
+<div class="div-formulario2 oculto">
+
+    <div class="div-main-crono">
+        <div class="div-crono-display formulario">
+            <div class="btn-close">
+                <img src="images/close.svg" onclick="close_cronometro();">
+            </div>
+            <h2 style="text-align:center;">CRONÓMETRO</h2>
+            <p style="text-align:center;" id="Alumno">Carlos Guillermo Menacho Zárate</p>
+            <div class="crono-display"><h2 id="Minutos">00</h2>:<h2 id="Segundos">00</h2>:<h2 id="Centesimas">00</h2></div>
+            <div class="div-button-crono">
+                <button class="btn-submit" onclick="iniciar_reloj()">Iniciar</button>                
+            </div>
+        </div>
+    </div>
 </div>
 <script type="text/javascript" src="js/select2.min.js"></script>
 <script type="text/javascript" src="js/rendimiento_doc.js?v=<?php echo rand();?>"></script>

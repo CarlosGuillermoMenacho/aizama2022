@@ -84,6 +84,68 @@ switch ($_GET['op']) {
 		];
 		echo json_encode(["status"=>"ok","data"=>$response]);
 		break;
+	case 'get_registros':
+		$codprof =isset($_SESSION["app_user_id"])?$_SESSION["app_user_id"]:"";
+		if(empty($codprof)){
+			echo json_encode(array("status"=>"eSession"));
+			exit();
+		}
+		$id_eva = isset($_POST['id_eva'])?$_POST['id_eva']:"";
+		if(empty($id_eva)){
+			echo json_encode(array("status"=>"errorParam"));
+			exit();
+		}
+		require_once'../modelo/modelo_rendimiento_fisico.php';
+		$AF = new Actividad_fisica($db);
+		$result = $AF->get_registro_rendimiento_curso($id_eva);
+		$response = [];
+		while ($row = $result->fetch_object()) {
+			$response[] = [
+				"id"=>$row->id,
+				"codalu"=>$row->codalu,
+				"evaluacion"=>$row->evaluacion,
+				"observacion"=>$row->observacion
+			];
+		}
+		echo json_encode(["status"=>"ok","data"=>$response]);
+		break;
+	case 'save_actividad_alumno':
+		$codprof =isset($_SESSION["app_user_id"])?$_SESSION["app_user_id"]:"";
+		if(empty($codprof)){
+			echo json_encode(array("status"=>"eSession"));
+			exit();
+		}
+		$id_eva = isset($_POST['id_eva'])?$_POST['id_eva']:"";
+		$id = isset($_POST['id'])?$_POST['id']:"";
+		$codalu = isset($_POST['codalu'])?$_POST['codalu']:"";
+		$evaluacion = isset($_POST['evaluacion'])?$_POST['evaluacion']:"";
+		if(empty($id_eva)||empty($codalu)||empty($evaluacion)){
+			echo json_encode(array("status"=>"errorParam"));
+			exit();
+		}
+		require_once'../modelo/modelo_rendimiento_fisico.php';
+		$AF = new Actividad_fisica($db);
+		$createdAt = date("Y-m-d H:i:s");
+		$data = "";
+		if(empty($id)){
+			$last_id = $AF->save_rendimiento($codalu,$id_eva,$evaluacion,"",$codprof,$createdAt);
+			$data = [
+				"codalu"=>$codalu,
+				"evaluacion"=>$evaluacion,
+				"id"=>$last_id,
+				"observacion"=>""
+			];
+		}else {
+			$AF->set_evaluacion($id,$evaluacion,$codprof,$createdAt);
+			$data = [
+				"codalu"=>$codalu,
+				"evaluacion"=>$evaluacion,
+				"id"=>$id,
+				"observacion"=>""
+			];
+		}
+		echo json_encode(["status"=>"ok","data"=>$data]);
+		break;
 	default:
 		echo json_encode(array("status"=>"errorOP"));
 		break;

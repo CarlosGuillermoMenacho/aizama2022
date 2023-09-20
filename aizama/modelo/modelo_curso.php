@@ -353,6 +353,13 @@ class Curso{
 		$result = ejecutar_consulta($this->db,$sql,$type,$params);
 		return $result;
 	}
+	public function get_lista($codcur,$codpar){
+		$sql ="SELECT * FROM alumno where cod_cur = ? AND cod_par = ? AND estado = 1 ORDER BY paterno,materno ASC";
+		$type = "ii";
+		$params = array($codcur,$codpar);
+		$result = ejecutar_consulta($this->db,$sql,$type,$params);
+		return $result;
+	}
 }	
 
 ?>

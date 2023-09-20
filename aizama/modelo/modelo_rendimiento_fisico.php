@@ -29,6 +29,14 @@ class Actividad_fisica{
 
 		return $result;
 	}
+	public function get_registro_rendimiento_curso($id){
+		$sql = "SELECT * FROM actividad_fisica_alumno WHERE id_actividad_fisica = ? AND estado = 1";
+		$type = "i";
+		$params = array($id);
+		$result = ejecutar_consulta($this->db,$sql,$type,$params);
+
+		return $result;
+	}
 	public function save($gestion,$descripcion,$id_evaluacion,$codcur,$codpar,$codprof,$createdAt){
 	    $sql = "INSERT INTO actividad_fisica(gestion,descripcion,id_evaluacion,codcur,codpar,codprof,estado,createdAt) VALUES(?,?,?,?,?,?,1,?)";
 		$type = "isiiiss";
@@ -42,7 +50,7 @@ class Actividad_fisica{
 		$params = array($codalu,$id_actividad_fisica,$evaluacion,$observacion,$codprof,$createdAt);
 		$result = ejecutar_consulta($this->db,$sql,$type,$params);
 
-		return $result;
+		return $this->db->insert_id;
 	}
 	public function update($descripcion,$evaluacion,$codprof,$updateAt,$id){
 	    $sql = "UPDATE actividad_fisica SET descripcion = ? , evaluacion = ? , codprof = ? , updateAt = ? WHERE id = ?";
@@ -75,5 +83,21 @@ class Actividad_fisica{
 		$result = ejecutar_consulta($this->db,$sql,$type,$params);
 		return $result;
 	}
+	public function set_observacion($id,$observacion,$codprof,$updateAt){
+	    $sql = "UPDATE actividad_fisica_alumno SET observacion = ?,codprof = ? , updateAt = ? WHERE id = ?";
+		$type = "sssi";
+		$params = array($observacion,$codprof,$updateAt,$id);
+		$result = ejecutar_consulta($this->db,$sql,$type,$params);
+		return $result;
+	}
+	public function set_evaluacion($id,$evaluacion,$codprof,$updateAt){
+	    $sql = "UPDATE actividad_fisica_alumno SET evaluacion = ? ,codprof = ? , updateAt = ? WHERE id = ?";
+		$type = "sssi";
+		$params = array($evaluacion,$codprof,$updateAt,$id);
+		$result = ejecutar_consulta($this->db,$sql,$type,$params);
+		return $result;
+	}
+
+
 }
 ?>

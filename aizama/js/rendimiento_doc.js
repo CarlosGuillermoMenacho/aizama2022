@@ -1,10 +1,18 @@
 let lista_cursos = [];
 let lista_actividades = [];
 let lista_evaluaciones = [];
+let lista_alumnos = [];
+let registros = [];
 let __codcur = "";
 let __codpar = "";
 let __curso = 0;
-
+let centesimas = 0;
+let segundos = 0;
+let minutos = 0;
+let __codalu = "";
+let __cronometrando = false;
+let __id_actividad = "";
+let __id_registro = "";
 const save_actividad = () => {
 	let actividad = $("#ta-actividad").val();
 	let cb = document.getElementsByName("acti");
@@ -39,6 +47,9 @@ const save_actividad = () => {
 const close_form = () => {
 	$(".div-formulario").slideToggle()
 }
+const close_form2 = () => {
+	$(".div-formulario2").slideToggle();
+}
 const nueva_actividad = () => {
 	$(".div-formulario").empty();
 	let html = "";
@@ -70,11 +81,227 @@ const nueva_actividad = () => {
 	);
 	$(".div-formulario").slideToggle();
 }
-const ver_actividad = a => {
+const get_registro = codalu => {
+	for (var i = 0; i < registros.length; i++) {
+		if(registros[i].codalu == codalu)return registros[i];
+	}
+	return "";
+}
+const get_actividad = id => {
+	for (var i = 0; i < lista_actividades.length; i++) {
+		if(lista_actividades[i].id == id)return lista_actividades[i];
+	}
+	return "";
+}
+const cronometro = () => {
+	if (centesimas < 99) {
+		centesimas++;
+		if (centesimas < 10) { centesimas = "0"+centesimas }
+		Centesimas.innerHTML = centesimas;
+	}
+	if (centesimas == 99) {
+		centesimas = -1;
+	}
+	if (centesimas == 0) {
+		segundos ++;
+		if (segundos < 10) { segundos = "0"+segundos }
+		Segundos.innerHTML = segundos;
+	}
+	if (segundos == 59) {
+		segundos = -1;
+	}
+	if ( (centesimas == 0)&&(segundos == 0) ) {
+		minutos++;
+		if (minutos < 10) { minutos = "0"+minutos }
+		Minutos.innerHTML = minutos;
+	}
+	if (minutos == 59) {
+		minutos = -1;
+	}
+}
+const restablecer_reloj = () => {
+	clearInterval(control);
+	__cronometrando = false;
+	centesimas = 0;
+	minutos = 0;
+	segundos = 0;
+	$(".div-button-crono").empty();
+	$(".div-button-crono").append('<button class="btn-submit" onclick="iniciar_reloj()">Iniciar</button>')
+	document.getElementById("Minutos").innerHTML = "00";
+	document.getElementById("Segundos").innerHTML = "00";
+	document.getElementById("Centesimas").innerHTML = "00";
+}
+const guardar_reloj = () => {
+	let evaluacion = `${minutos}:${segundos}:${centesimas}`;
+	$.post(
+		"controlador/actividad_fisica_controlador.php?op=save_actividad_alumno",
+		{id_eva:__id_actividad,codalu:__codalu,evaluacion:evaluacion,id:__id_registro},
+		data => {
+			if(data.status == "eSession"){
+				Swal.fire("La sesión ha finalizado, vuelva a iniciar sesión con su usuario y contraseña por favor...");
+				return;
+			}
+			if (data.status == "ok") {
+				for (var i = 0; i < lista_evaluaciones.length; i++) {
+					if(lista_evaluaciones[i].codalu == __codalu){
+						lista_evaluaciones[i].evaluacion = data.data.evaluacion;
+						$(`#eva${__codalu}`).text(data.data.evaluacion);
+						close_cronometro();
+						return;
+					}
+				}
+				lista_evaluaciones.push(data.data);
+				$(`#eva${__codalu}`).text(data.data.evaluacion);
+				$(`#ta${__codalu}`).append(`<div class="div-textarea">
+				                                <textarea id="ta${__codalu}"></textarea> 
+				                                <div class="div-option-text">
+				                                    <img src="images/check.svg" title="Guardar" width="20px" style="cursor:pointer;">                               
+				                                    <img src="images/close.svg" title="Cancelar" width="20px" style="cursor:pointer;">
+				                                </div>
+				                            </div>`);
+				close_cronometro();
+			}
+		},"json"
+	);
+}
+const detener_reloj = () => {
+	clearInterval(control);
+	__cronometrando = false;
+	$(".div-button-crono").empty();
+	$(".div-button-crono").append('<button class="btn-submit" onclick="reanudar_reloj()">Reanudar</button>')
+	$(".div-button-crono").append('<button class="btn-danger" onclick="restablecer_reloj()">Restablecer</button>')
+	$(".div-button-crono").append('<button class="btn-submit2" onclick="guardar_reloj()">Guardar</button>')
+}
+const close_cronometro = () => {
+	if (__cronometrando) {
+		__cronometrando = false;
+		clearInterval(control)
+	}
+	close_form2();
+
+}
+const iniciar_reloj = () => {
+	document.getElementById("Minutos").innerHTML = "00";
+	document.getElementById("Segundos").innerHTML = "00";
+	document.getElementById("Centesimas").innerHTML = "00";
+	$(".div-button-crono").empty();
+	$(".div-button-crono").append('<button class="btn-danger" onclick="detener_reloj()">Detener</button>')
+	control = setInterval(cronometro,10);
+	__cronometrando = true;
+	//cronometro();
+}
+const reanudar_reloj = () => {
+	control = setInterval(cronometro,10);
+	__cronometrando = true;
+	$(".div-button-crono").empty();
+	$(".div-button-crono").append('<button class="btn-danger" onclick="detener_reloj()">Detener</button>')
+}
+
+const mostrar_cronometro = (a,n,i) => {
+	__codalu = a;
+	__id_registro = i;
+	Alumno.innerHTML = `${n}`;
+	centesimas = 0;
+	minutos = 0;
+	segundos = 0;
+	$(".div-button-crono").empty();
+	$(".div-button-crono").append('<button class="btn-submit" onclick="iniciar_reloj()">Iniciar</button>')
+	document.getElementById("Minutos").innerHTML = "00";
+	document.getElementById("Segundos").innerHTML = "00";
+	document.getElementById("Centesimas").innerHTML = "00";
+	close_form2();
+
+}
+const mostrar_lista = (id_eva) => {
+	let act = get_actividad(id_eva);
+	console.log(act)
+	$(".div-lista-alumnos").empty();
+	let html = "";
+	let index = 1;
+	lista_alumnos.forEach(a => {
+		//console.log(a)
+		let codalu = a.codigo;
+		let nombre = `${a.paterno} ${a.materno} ${a.nombres}`;
+		let reg = get_registro(codalu);
+		if(reg != ""){
+			let html_input = `<div class="div-input-data"><input class="input-data" type="text" id="in${codalu}"><div class="div-option-text">
+                                    <img src="images/check.svg" title="Guardar" width="20px" style="cursor:pointer;">                               
+                                    <img src="images/close.svg" title="Cancelar" width="20px" style="cursor:pointer;">
+                                </div></div>`;
+			if(act.id == 1)html_input = `<img style="cursor: pointer;" width="35px" src="img/cronometro.png" onclick="mostrar_cronometro(${codalu},'${nombre}',${reg.id})">`;
+			html = `${html}<tr>
+                        <td style="width:5%">${index}</td>
+                        <td style="width:30%">${nombre}</td>
+                        <td style="width:10%" id="eva${codalu}">${reg.evaluacion}</td>
+                        <td style="width:25%">${html_input}</td>
+                        <td style="width:30%">
+                        	<div class="div-textarea">
+                                <textarea id="ta${codalu}">${reg.observacion}</textarea> 
+                                <div class="div-option-text">
+                                    <img src="images/check.svg" title="Guardar" width="20px" style="cursor:pointer;">                               
+                                    <img src="images/close.svg" title="Cancelar" width="20px" style="cursor:pointer;">
+                                </div>
+                            </div>
+                        </td>
+                    </tr>`;
+		}else{
+			let html_input = `<div class="div-input-data"><input class="input-data" type="text" id="in${codalu}"><div class="div-option-text">
+                                    <img src="images/check.svg" title="Guardar" width="20px" style="cursor:pointer;">                               
+                                    <img src="images/close.svg" title="Cancelar" width="20px" style="cursor:pointer;">
+                                </div></div>`;
+			if(act.id == 1)html_input = `<img style="cursor: pointer;" width="35px" src="img/cronometro.png" onclick="mostrar_cronometro(${codalu},'${nombre}',${reg.id})">`;
+			html = `${html}<tr>
+                        <td style="width:5%">${index}</td>
+                        <td style="width:30%">${a.paterno} ${a.materno} ${a.nombres}</td>
+                        <td style="width:10%" id="eva${codalu}"> Sin registro</td>
+                        <td style="width:25%">${html_input}</td>
+                        <td style="width:30%" id="ta${codalu}">
+                        	
+                        </td>
+                    </tr>`;
+		}
+		index++;
+	});
+	$(".div-lista-alumnos").append(`<div class="head-actividad">
+					                    <h2>${act.descripcion}</h2>
+					                </div>
+					                <div class="lista-alumnos">
+					                    <table class="table">
+					                        <thead>
+					                            <tr>
+					                                <td style="width:5%">No.</td>
+					                                <td style="width:30%">Estudiante</td>
+					                                <td style="width:10%">Marca Actual</td>
+					                                <td style="width:25%">Evaluar</td>
+					                                <td style="width:30%">Observación</td>
+					                            </tr>
+					                        </thead>
+					                        <tbody>
+					                            ${html}
+					                        </tbody>
+					                    </table>
+					                </div>`);
+}
+const ver_actividad = (a,c,p) => {
 	$(".selecteds").addClass("item-curso");
 	$(".selecteds").removeClass("selecteds");
 	$(`#a${a}`).removeClass("item-curso");
 	$(`#a${a}`).addClass("selecteds");
+	__id_actividad = a;
+	$.post(
+		"controlador/actividad_fisica_controlador.php?op=get_registros",
+		{id_eva:a},
+		data => {
+			if(data.status == "eSession"){
+				Swal.fire("La sesión ha finalizado, vuelva a iniciar sesión con su usuario y contraseña por favor...");
+				return;
+			}
+			if (data.status == "ok") {
+				registros = data.data;
+				mostrar_lista(a);
+			}
+		},"json"
+	);
 }
 const mostrar_actividades = lista => {
 	$("#actividades").empty();
@@ -103,6 +330,19 @@ const ver_curso = (c,p,i) => {
 	$(".selected").removeClass("selected");
 	$(`#c${c}${p}`).removeClass("item-curso");
 	$(`#c${c}${p}`).addClass("selected");
+	$.post(
+		"controlador/cursos_controlador.php?op=get_lista",
+		{codcur:__codcur,codpar:__codpar},
+		data => {
+			if(data.status == "eSession"){
+				Swal.fire("La sesión ha finalizado, vuelva a iniciar sesión con su usuario y contraseña por favor...");
+				return;
+			}
+			if (data.status == "ok") {
+				lista_alumnos = data.data;
+			}
+		},"json"
+	);
 	$.post(
 		"controlador/actividad_fisica_controlador.php?op=get_actividades",
 		{codcur:__codcur,codpar:__codpar},
