@@ -53,6 +53,7 @@
         <!--li><a href="cuadro_estadistico_adm.php"><div class="div-name-item"><span class="icon-mobile"></span>Estadísticas</div></a></li-->
         <li><a href="calendario_academico.php"><div class="div-name-item"><span class="icon-mobile"></span>Calendario Académico</div></a></li>
         <li><a href="biblioteca.php"><div class="div-name-item"><span class="icon-mobile"></span>Biblioteca Digital</div></a></li>
+        <li><a href="control_whatsapp_api.php"><div class="div-name-item"><span class="icon-mobile"></span>WhatsGO API</div></a></li>
         <li><a href="agenda_adm.php"><div class="div-name-item"><span class="icon-mobile"></span>Agenda Digital</div></a></li>
         <li><a href="lista_usuario_clave_adm.php"><div class="div-name-item"><span class="icon-mobile"></span>Lista Usuarios y Clave</div></a></li>
         <li class="submenu">
