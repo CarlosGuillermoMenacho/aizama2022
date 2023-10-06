@@ -212,6 +212,57 @@ const mostrar_cronometro = (a,n,i) => {
 	close_form2();
 
 }
+const save_registro = (codalu,codeva,reg) => {
+	let calif = $(`#in${codalu}`).val();
+	if(calif.trim() == "")return;
+	$.post(
+		"controlador/actividad_fisica_controlador.php?op=save_actividad_alumno",
+		{id_eva:codeva,codalu:codalu,evaluacion:calif,id:reg},
+		data => {
+			if(data.status == "eSession"){
+				Swal.fire("La sesión ha finalizado, vuelva a iniciar sesión con su usuario y contraseña por favor...");
+				return;
+			}
+			if (data.status == "ok") {
+				$(`#eva${codalu}`).text(data.data.evaluacion);
+				$(`#dta${codalu}`).empty();
+				$(`#dta${codalu}`).append(`
+					<div class="div-textarea">
+                                <textarea id="ta${codalu}">${data.data.observacion}</textarea> 
+                                <div class="div-option-text">
+                                    <img src="images/check.svg" title="Guardar" width="20px" style="cursor:pointer;">                               
+                                    <img src="images/close.svg" title="Cancelar" width="20px" style="cursor:pointer;">
+                                </div>
+                            </div>
+				`);
+				$(`#in${codalu}`).val("");
+			}
+		},"json"
+	);
+}
+const clear_calif = codalu => {
+	$(`#in${codalu}`).val("");
+}
+const save_obs = (codalu,id) => {
+	let obs = $(`#ta${codalu}`).val();
+	if(obs.trim() == "")return;
+	$.post(
+		"controlador/actividad_fisica_controlador.php?op=save_obs",
+		{id:id,observacion:obs},
+		data => {
+			if(data.status == "eSession"){
+				Swal.fire("La sesión ha finalizado, vuelva a iniciar sesión con su usuario y contraseña por favor...");
+				return;
+			}
+			if (data.status == "ok") {
+				Swal.fire("Guardado con éxito...");
+			}
+		},"json"
+	);
+}
+const clear_obs = codalu => {
+	$(`#ta${codalu}`).val("");
+}
 const mostrar_lista = (id_eva) => {
 	let act = get_actividad(id_eva);
 	console.log(act)
@@ -225,8 +276,8 @@ const mostrar_lista = (id_eva) => {
 		let reg = get_registro(codalu);
 		if(reg != ""){
 			let html_input = `<div class="div-input-data"><input class="input-data" type="text" id="in${codalu}"><div class="div-option-text">
-                                    <img src="images/check.svg" title="Guardar" width="20px" style="cursor:pointer;">                               
-                                    <img src="images/close.svg" title="Cancelar" width="20px" style="cursor:pointer;">
+                                    <img src="images/check.svg" title="Guardar" width="20px" style="cursor:pointer;" onclick="save_registro(${codalu},${id_eva},${reg.id})">                               
+                                    <img src="images/close.svg" title="Cancelar" width="20px" style="cursor:pointer;" onclick="clear_calif(${codalu})">
                                 </div></div>`;
 			if(act.id == 1)html_input = `<img style="cursor: pointer;" width="35px" src="img/cronometro.png" onclick="mostrar_cronometro(${codalu},'${nombre}',${reg.id})">`;
 			html = `${html}<tr>
@@ -238,24 +289,24 @@ const mostrar_lista = (id_eva) => {
                         	<div class="div-textarea">
                                 <textarea id="ta${codalu}">${reg.observacion}</textarea> 
                                 <div class="div-option-text">
-                                    <img src="images/check.svg" title="Guardar" width="20px" style="cursor:pointer;">                               
-                                    <img src="images/close.svg" title="Cancelar" width="20px" style="cursor:pointer;">
+                                    <img src="images/check.svg" title="Guardar" width="20px" style="cursor:pointer;" onclick="save_obs(${codalu},${reg.id})">                               
+                                    <img src="images/close.svg" title="Cancelar" width="20px" style="cursor:pointer;" onclick="clear_obs(${codalu})">
                                 </div>
                             </div>
                         </td>
                     </tr>`;
 		}else{
 			let html_input = `<div class="div-input-data"><input class="input-data" type="text" id="in${codalu}"><div class="div-option-text">
-                                    <img src="images/check.svg" title="Guardar" width="20px" style="cursor:pointer;">                               
-                                    <img src="images/close.svg" title="Cancelar" width="20px" style="cursor:pointer;">
+                                    <img src="images/check.svg" title="Guardar" width="20px" style="cursor:pointer;" onclick="save_registro(${codalu},${id_eva},'')">                               
+                                    <img src="images/close.svg" title="Cancelar" width="20px" style="cursor:pointer;" onclick="clear_calif(${codalu})">
                                 </div></div>`;
-			if(act.id == 1)html_input = `<img style="cursor: pointer;" width="35px" src="img/cronometro.png" onclick="mostrar_cronometro(${codalu},'${nombre}',${reg.id})">`;
+			if(act.id == 1)html_input = `<img style="cursor: pointer;" width="35px" src="img/cronometro.png" onclick="mostrar_cronometro(${codalu},'${nombre}','')">`;
 			html = `${html}<tr>
                         <td style="width:5%">${index}</td>
                         <td style="width:30%">${a.paterno} ${a.materno} ${a.nombres}</td>
                         <td style="width:10%" id="eva${codalu}"> Sin registro</td>
                         <td style="width:25%">${html_input}</td>
-                        <td style="width:30%" id="ta${codalu}">
+                        <td style="width:30%" id="dta${codalu}">
                         	
                         </td>
                     </tr>`;
