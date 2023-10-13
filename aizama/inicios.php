@@ -1,15 +1,7 @@
 <?php
-
 session_start();
-require 'header.php';
-//require 'includes/config.php';
-$_SESSION['app_bimestre'] = 0;
-$_SESSION['app_user_id'] = $_SESSION['auxiliar'];
-
+require 'new_header_doc.php';
 ?>
 <div align="center">
 	<img src="images/graf1.png" width="40%">
 </div>
-<?php
-require 'footer.php';
-?>

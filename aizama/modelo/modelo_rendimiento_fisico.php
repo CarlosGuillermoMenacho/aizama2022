@@ -22,7 +22,7 @@ class Actividad_fisica{
 	}
 	public function get_actividad_curso($gestion,$codcur,$codpar){
 	    $sql = "SELECT af.id,af.descripcion,af.id_evaluacion,eaf.descripcion as eval
-	            FROM actividad_fisica af INNER JOIN evaluacion_actividad_fisica eaf ON af.estado = 1 AND af.gestion = ? AND af.codcur = ? AND af.codpar = ? AND af.id_evaluacion = eaf.id";
+	            FROM actividad_fisica af INNER JOIN evaluacion_actividad_fisica eaf ON af.estado = 1 AND af.gestion = ? AND af.codcur = ? AND af.codpar = ? AND af.id_evaluacion = eaf.id ORDER BY af.id ASC";
 		$type = "iii";
 		$params = array($gestion,$codcur,$codpar);
 		$result = ejecutar_consulta($this->db,$sql,$type,$params);
@@ -97,7 +97,20 @@ class Actividad_fisica{
 		$result = ejecutar_consulta($this->db,$sql,$type,$params);
 		return $result;
 	}
-
+	public function set_descripcion($id,$descripcion,$codprof,$updateAt){
+	    $sql = "UPDATE actividad_fisica SET descripcion = ? ,codprof = ? , updateAt = ? WHERE id = ?";
+		$type = "sssi";
+		$params = array($descripcion,$codprof,$updateAt,$id);
+		$result = ejecutar_consulta($this->db,$sql,$type,$params);
+		return $result;
+	}
+	public function set_type($id,$tipe,$codprof,$updateAt){
+	    $sql = "UPDATE actividad_fisica SET id_evaluacion = ? ,codprof = ? , updateAt = ? WHERE id = ?";
+		$type = "issi";
+		$params = array($tipe,$codprof,$updateAt,$id);
+		$result = ejecutar_consulta($this->db,$sql,$type,$params);
+		return $result;
+	}
 
 }
 ?>

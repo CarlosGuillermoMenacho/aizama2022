@@ -265,7 +265,7 @@ const clear_obs = codalu => {
 }
 const mostrar_lista = (id_eva) => {
 	let act = get_actividad(id_eva);
-	console.log(act)
+	
 	$(".div-lista-alumnos").empty();
 	let html = "";
 	let index = 1;
@@ -279,7 +279,7 @@ const mostrar_lista = (id_eva) => {
                                     <img src="images/check.svg" title="Guardar" width="20px" style="cursor:pointer;" onclick="save_registro(${codalu},${id_eva},${reg.id})">                               
                                     <img src="images/close.svg" title="Cancelar" width="20px" style="cursor:pointer;" onclick="clear_calif(${codalu})">
                                 </div></div>`;
-			if(act.id == 1)html_input = `<img style="cursor: pointer;" width="35px" src="img/cronometro.png" onclick="mostrar_cronometro(${codalu},'${nombre}',${reg.id})">`;
+			if(act.eval == 1)html_input = `<img style="cursor: pointer;" width="35px" src="img/cronometro.png" onclick="mostrar_cronometro(${codalu},'${nombre}',${reg.id})">`;
 			html = `${html}<tr>
                         <td style="width:5%">${index}</td>
                         <td style="width:30%">${nombre}</td>
@@ -300,7 +300,7 @@ const mostrar_lista = (id_eva) => {
                                     <img src="images/check.svg" title="Guardar" width="20px" style="cursor:pointer;" onclick="save_registro(${codalu},${id_eva},'')">                               
                                     <img src="images/close.svg" title="Cancelar" width="20px" style="cursor:pointer;" onclick="clear_calif(${codalu})">
                                 </div></div>`;
-			if(act.id == 1)html_input = `<img style="cursor: pointer;" width="35px" src="img/cronometro.png" onclick="mostrar_cronometro(${codalu},'${nombre}','')">`;
+			if(act.eval == 1)html_input = `<img style="cursor: pointer;" width="35px" src="img/cronometro.png" onclick="mostrar_cronometro(${codalu},'${nombre}','')">`;
 			html = `${html}<tr>
                         <td style="width:5%">${index}</td>
                         <td style="width:30%">${a.paterno} ${a.materno} ${a.nombres}</td>
@@ -333,12 +333,82 @@ const mostrar_lista = (id_eva) => {
 					                    </table>
 					                </div>`);
 }
+const update_descripcion = id => {
+	let descripcion = $("#ta-descripcion").val();
+	if (descripcion.trim() == "")return;
+	$.post(
+		"controlador/actividad_fisica_controlador.php?op=set_descripcion",
+		{id:id,descripcion:descripcion},
+		async data => {
+			if(data.status == "eSession"){
+				Swal.fire("La sesión ha finalizado, vuelva a iniciar sesión con su usuario y contraseña por favor...");
+				return;
+			}
+			if (data.status == "ok") {
+				Swal.fire("Guardado con éxito...");
+				await get_evaluaciones();
+				$(`#a${id}`).text(descripcion.trim());
+			}
+		},"json"
+	);
+}
+const cancel_descripcion = id => {
+	let act = get_actividad(id);
+	$("#ta-descripcion").val(act.descripcion);
+}
+const set_tipe = (id,tipe) => {
+	$.post(
+		"controlador/actividad_fisica_controlador.php?op=set_type",
+		{id:id,type:tipe},
+		async data => {
+			if(data.status == "eSession"){
+				Swal.fire("La sesión ha finalizado, vuelva a iniciar sesión con su usuario y contraseña por favor...");
+				return;
+			}
+			if (data.status == "ok") {
+				Swal.fire("Asignado con éxito...");
+				await request_evaluaciones(__codcur,__codpar);
+				ver_actividad(id,__codcur,__codpar);
+				return;
+			}
+		},"json"
+	);
+}
 const ver_actividad = (a,c,p) => {
 	$(".selecteds").addClass("item-curso");
 	$(".selecteds").removeClass("selecteds");
 	$(`#a${a}`).removeClass("item-curso");
 	$(`#a${a}`).addClass("selecteds");
 	__id_actividad = a;
+	let act = get_actividad(a);
+
+	$(".header-actividad").empty();
+	let html = "";
+	let checke = "";
+	lista_evaluaciones.forEach(l => {
+		if(act.eval == l.id)checke = "checked";
+		else checke = "";
+		html = `${html}<div class="div-check-label">
+			                <p style="padding-bottom: 5px; font-size :.85em; font-weight: 500;">${l.descripcion}</p>
+			                <div>
+			                    <input type="radio" name="activ" value="Tiempo" ${checke} onclick="set_tipe(${act.id},${l.id})">
+			                </div>
+			            </div>
+		`;
+	});
+	$(".header-actividad").append(
+		`<div class="div-descrip">
+                    <textarea id="ta-descripcion" style="max-width:300px">${act.descripcion}</textarea>
+                    <div class="div-option-text">
+                        <img src="images/check.svg" title="Guardar" width="25px" style="cursor:pointer;" onclick="update_descripcion(${act.id})">                               
+                        <img src="images/close.svg" title="Cancelar" width="25px" style="cursor:pointer;" onclick="cancel_descripcion(${act.id})">
+                    </div>
+                    <div class="div-checks-eval" style="width: 100%; max-width:480px"> 
+                        ${html}
+                    </div> 
+
+                </div>`
+	);
 	$.post(
 		"controlador/actividad_fisica_controlador.php?op=get_registros",
 		{id_eva:a},
@@ -373,6 +443,22 @@ const mostrar_actividades = lista => {
 		`);
 
 }
+const request_evaluaciones = async (c,p) => {
+	await $.post(
+		"controlador/actividad_fisica_controlador.php?op=get_actividades",
+		{codcur:c,codpar:p},
+		data => {
+			if(data.status == "eSession"){
+				Swal.fire("La sesión ha finalizado, vuelva a iniciar sesión con su usuario y contraseña por favor...");
+				return;
+			}
+			if (data.status == "ok") {
+				lista_actividades = data.data;
+				mostrar_actividades(lista_actividades);
+			}
+		},"json"
+	);
+}
 const ver_curso = (c,p,i) => {
 	__codcur = c;
 	__codpar = p;
@@ -394,20 +480,7 @@ const ver_curso = (c,p,i) => {
 			}
 		},"json"
 	);
-	$.post(
-		"controlador/actividad_fisica_controlador.php?op=get_actividades",
-		{codcur:__codcur,codpar:__codpar},
-		data => {
-			if(data.status == "eSession"){
-				Swal.fire("La sesión ha finalizado, vuelva a iniciar sesión con su usuario y contraseña por favor...");
-				return;
-			}
-			if (data.status == "ok") {
-				lista_actividades = data.data;
-				mostrar_actividades(lista_actividades);
-			}
-		},"json"
-	);
+	request_evaluaciones(c,p);
 }
 const get_gursos_prof = async () => {
 	await $.get(

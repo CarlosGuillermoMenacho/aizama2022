@@ -45,6 +45,40 @@ require 'header.php';
         </div>
         <div class="box-content">    
             <div class="header-actividad">
+                <!--div class="div-descrip">
+                    <textarea id="ta-descripcion" style="max-width:300px">Lorem ipsum dolor sit amet</textarea>
+                    <div class="div-option-text">
+                        <img src="images/check.svg" title="Guardar" width="25px" style="cursor:pointer;">                               
+                        <img src="images/close.svg" title="Cancelar" width="25px" style="cursor:pointer;">
+                    </div>
+                    <div class="div-checks-eval" style="width: 100%; max-width:480px"> 
+                        <div class="div-check-label">
+                            <p style="padding-bottom: 5px; font-size :.85em; font-weight: 500;">Tiempo</p>
+                            <div>
+                                <input type="radio" name="acti" value="Tiempo" onclick="update_check(1);">
+                            </div>
+                        </div>
+                        <div class="div-check-label">
+                            <p style="padding-bottom: 5px; font-size :.85em; font-weight: 500;">Puntuación</p>
+                            <div>
+                                <input type="radio" name="acti" value="Tiempo" onclick="update_check(2);">
+                            </div>
+                        </div>
+                        <div class="div-check-label">
+                            <p style="padding-bottom: 5px; font-size :.85em; font-weight: 500;">Peso</p>
+                            <div>
+                                <input type="radio" name="acti" value="Tiempo" onclick="update_check(3);">
+                            </div>
+                        </div>
+                        <div class="div-check-label">
+                            <p style="padding-bottom: 5px; font-size :.85em; font-weight: 500;">Longitud</p>
+                            <div>
+                                <input type="radio" name="acti" value="Tiempo" onclick="update_check(4);">
+                            </div>
+                        </div>
+                    </div> 
+
+                </div-->      
             </div>
             <div class="div-lista-alumnos">
                 <!--div class="head-actividad">

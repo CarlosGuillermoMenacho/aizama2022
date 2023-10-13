@@ -164,6 +164,43 @@ switch ($_GET['op']) {
 		$AF->set_observacion($id,$observacion,$codprof,$updateAt);
 		echo json_encode(["status"=>"ok"]);
 		break;
+	case 'set_descripcion':
+		$codprof =isset($_SESSION["app_user_id"])?$_SESSION["app_user_id"]:"";
+		if(empty($codprof)){
+			echo json_encode(array("status"=>"eSession"));
+			exit();
+		}
+		$id = isset($_POST['id'])?$_POST['id']:"";
+		$descripcion = isset($_POST['descripcion'])?$_POST['descripcion']:"";
+		if(empty($id)||empty($descripcion)){
+			echo json_encode(array("status"=>"errorParam"));
+			exit();
+		}
+		require_once'../modelo/modelo_rendimiento_fisico.php';
+		$AF = new Actividad_fisica($db);
+		$updateAt = date("Y-m-d H:i:s");
+		$AF->set_descripcion($id,$descripcion,$codprof,$updateAt);
+		echo json_encode(["status"=>"ok"]);
+		break;
+	case 'set_type':
+		$codprof =isset($_SESSION["app_user_id"])?$_SESSION["app_user_id"]:"";
+		if(empty($codprof)){
+			echo json_encode(array("status"=>"eSession"));
+			exit();
+		}
+		$id = isset($_POST['id'])?$_POST['id']:"";
+		$tipe = isset($_POST['type'])?$_POST['type']:"";
+		if(empty($id)||empty($tipe)){
+			echo json_encode(array("status"=>"errorParam"));
+			exit();
+		}
+		require_once'../modelo/modelo_rendimiento_fisico.php';
+		$AF = new Actividad_fisica($db);
+		$updateAt = date("Y-m-d H:i:s");
+		$AF->set_type($id,$tipe,$codprof,$updateAt);
+		echo json_encode(["status"=>"ok"]);
+		break;
+		
 	default:
 		echo json_encode(array("status"=>"errorOP"));
 		break;
