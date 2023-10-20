@@ -1,6 +1,6 @@
 <?php 
 session_start();
-require_once"session_verify.php";
+/*require_once"session_verify.php";
 if($_SESSION['app_user_type'] != "adm"){
 	header("Location: ../perfil.php");
 }
@@ -8,7 +8,8 @@ if($_SESSION['app_user_id']==16){
     require 'header_dir.php';
 }else{
     require 'header_adm.php';
-}
+}*/
+//require 'header_adm.php';
 ?>
 <link rel="stylesheet" type="text/css" href="css/control_whatsapp_api.css?v=<?php echo rand();?>">
 <div class="div-main-content">
@@ -62,6 +63,13 @@ if($_SESSION['app_user_id']==16){
                     <td id="e5">Desconectado</td>
                     <td><div><button class="submit" onclick="iniciar(5);">Iniciar</button></div></td>
                 </tr>
+                <tr>
+                    <td>6</td>
+                    <td><div><input type="text" id="s6" name="" value="59176078338"></div></td>
+                    <td><div><textarea type="text" id="t6" name="">$2b$10$LpyyYtecS4qlWBcpMrQtDuoW3cIf629IZHtFIQnYkItI.4exSG.5W</textarea></div></td>
+                    <td id="e6">Desconectado</td>
+                    <td><div><button class="submit" onclick="iniciar(6);">Iniciar</button></div></td>
+                </tr>
             </tbody>
         </table>
     </div>
@@ -76,6 +84,7 @@ if($_SESSION['app_user_id']==16){
         </div>
     </div>
 </div>
+<script type="text/javascript" src="js/jquery.min.js"></script>
 <script type="text/javascript">
     let dominio = "http://190.186.185.118:21465/api/";
     let qr_vivsible = false;
@@ -88,6 +97,7 @@ if($_SESSION['app_user_id']==16){
         estado(3);
         estado(4);
         estado(5);
+        estado(6);
     }
     const estado = i => {
         let s = $(`#s${i}`).val();
