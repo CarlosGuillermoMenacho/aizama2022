@@ -70,6 +70,13 @@ if($_SESSION['app_user_id']==16){
                     <td id="e6">Desconectado</td>
                     <td><div><button class="submit" onclick="iniciar(6);">Iniciar</button></div></td>
                 </tr>
+                <tr>
+                    <td>7</td>
+                    <td><div><input type="text" id="s7" name="" value="59176078338COR"></div></td>
+                    <td><div><textarea type="text" id="t7" name="">$2b$10$5g2QJx5krpuwXFEKmvhKf.1X_4kPQBZLQU7NC8rK5My1kkVOrE2ru</textarea></div></td>
+                    <td id="e7">Desconectado</td>
+                    <td><div><button class="submit" onclick="iniciar(7);">Iniciar</button></div></td>
+                </tr>
             </tbody>
         </table>
     </div>
@@ -98,6 +105,7 @@ if($_SESSION['app_user_id']==16){
         estado(4);
         estado(5);
         estado(6);
+        estado(7);
     }
     const estado = i => {
         let s = $(`#s${i}`).val();

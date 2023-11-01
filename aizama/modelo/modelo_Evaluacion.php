@@ -153,8 +153,29 @@ class Evaluacion_Seleccion
 			$result = ejecutar_consulta($this->db,$sql,$type,$params);
 			return $result;	
 		}
+		public function get_evaluacion_by_codexa($codexa){
+			$sql = "SELECT * FROM evaluacion WHERE estado = 1 AND codexa = ? ";
+			$type = "i";
+			$params = array($codexa);
+			$result = ejecutar_consulta($this->db,$sql,$type,$params);
+			return $result;	
+		}
 		public function get_preguntas($id){
 			$sql = "SELECT * FROM preguntas WHERE codexa = ? ";
+			$type = "i";
+			$params = array($id);
+			$result = ejecutar_consulta($this->db,$sql,$type,$params);
+			return $result;	
+		}
+		public function get_n_preguntas($id){
+			$sql = "SELECT count(*) as total FROM preguntas WHERE codexa = ? ";
+			$type = "i";
+			$params = array($id);
+			$result = ejecutar_consulta($this->db,$sql,$type,$params);
+			return $result;	
+		}
+		public function get_opciones($id){
+			$sql = "SELECT * FROM opciones WHERE codpre = ? ";
 			$type = "i";
 			$params = array($id);
 			$result = ejecutar_consulta($this->db,$sql,$type,$params);
@@ -181,10 +202,10 @@ class Evaluacion_Seleccion
 			$result = ejecutar_consulta($this->db,$sql,$type,$params);
 			return $result;
 		}
-		public function save($gestion,$trimestre,$codmat,$codcur,$nro,$descripcion,$fechai,$fechaf,$horai,$horaf,$usr,$fecha,$hora,$codpar,$preguntas,$visible){
-			$sql = "INSERT INTO evaluacion(gestion,bimestre,codmat,codigo,codeva,descrip,f_inicio,f_fin,horai,horaf,usr,fecha,hora,cod_par,estado,tot_preg,visible) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,1,?,?)";
-			$type = "iisiissssssssiii";
-			$params = array($gestion,$trimestre,$codmat,$codcur,$nro,$descripcion,$fechai,$fechaf,$horai,$horaf,$usr,$fecha,$hora,$codpar,$preguntas,$visible);
+		public function save($gestion,$trimestre,$codmat,$codcur,$nro,$descripcion,$fechai,$fechaf,$horai,$horaf,$usr,$fecha,$hora,$codpar,$preguntas){
+			$sql = "INSERT INTO evaluacion(gestion,bimestre,codmat,codigo,codeva,descrip,f_inicio,f_fin,horai,horaf,usr,fecha,hora,cod_par,estado,tot_preg,visible) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,1,?,0)";
+			$type = "iisiissssssssii";
+			$params = array($gestion,$trimestre,$codmat,$codcur,$nro,$descripcion,$fechai,$fechaf,$horai,$horaf,$usr,$fecha,$hora,$codpar,$preguntas);
 			$result = ejecutar_consulta($this->db,$sql,$type,$params);
 			$sql = "UPDATE evaluacion set codexa = ? where id = ?";
 			$type = "ii";
@@ -204,6 +225,21 @@ class Evaluacion_Seleccion
 			$sql = "SELECT codexa,bimestre,codmat,codeva,descrip,tot_preg,'Realizado' as realizado FROM evaluacion WHERE estado = 1 AND codigo = ? AND cod_par = ? AND f_inicio <= ? AND f_fin >= ? AND codexa IN (SELECT DISTINCT codexa FROM resp_alu_exa WHERE codigo = ?) UNION SELECT codexa,bimestre,codmat,codeva,descrip,tot_preg,'No realizado' as realizado FROM evaluacion WHERE estado = 1 AND codigo = ? AND cod_par = ? AND f_inicio <= ? AND f_fin >= ? AND codexa NOT IN (SELECT DISTINCT codexa FROM resp_alu_exa WHERE codigo = ?)";
 			$type = "iissiiissi";
 			$params = array($codcur,$codpar,$fecha,$fecha,$codalu,$codcur,$codpar,$fecha,$fecha,$codalu);
+			$result = ejecutar_consulta($this->db,$sql,$type,$params);
+			return $result;
+		}
+		public function save_pregunta($codexa,$numero,$pregunta,$respuesta,$valor,$tiempo,$codprof,$fecha,$hora,$imagen){
+			$sql = "INSERT INTO preguntas(codexa,numero,pregunta,respuesta,valor,tiempo,codprof,fecha,hora,dir_imagen) VALUES(?,?,?,?,?,?,?,?,?,?)";
+			$type = "iisiiissss";
+			$params = array($codexa,$numero,$pregunta,$respuesta,$valor,$tiempo,$codprof,$fecha,$hora,$imagen);
+			$result = ejecutar_consulta($this->db,$sql,$type,$params);
+			$id = $this->db->insert_id;
+			return $id;
+		}
+		public function save_opcion($codpreg,$nop,$op){
+			$sql = "INSERT INTO opciones(codpre,n_opcion,opcion) VALUES(?,?,?)";
+			$type = "iis";
+			$params = array($codpreg,$nop,$op);
 			$result = ejecutar_consulta($this->db,$sql,$type,$params);
 			return $result;
 		}

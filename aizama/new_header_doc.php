@@ -34,6 +34,8 @@ isset($_SESSION["foto"])?$logo = $_SESSION["foto"]:$logo = $logo;
 <link rel="icon" type="image/x-icon" href="images/logo.ico">
 <link rel="stylesheet" href="css/colors.css?v=<?php echo rand(); ?>"> 
 <link rel="stylesheet" href="css/new_header_doc.css?v=<?php echo rand(); ?>"> 
+<link rel="stylesheet" href="node_modules/sweetalert2/dist/sweetalert2.css" >
+<script src="node_modules/sweetalert2/dist/sweetalert2.all.min.js" ></script>
 </head>
 <script type="text/javascript" src="js/jquery.min.js"></script>
 <script type="text/javascript" src="js/new_header.js?v=<?php echo rand(); ?>"></script>
@@ -258,7 +260,7 @@ isset($_SESSION["foto"])?$logo = $_SESSION["foto"]:$logo = $logo;
         </tr>
         <tr>
           <td>
-            <div class="div-menu-item" onclick="go_page('regeval.php?sw1=1')">
+            <div class="div-menu-item" onclick="go_page('evaluaciones_seleccion_doc.php')">
               <div class="div-icon-menu">
                 <img src="images/test.png">
               </div>

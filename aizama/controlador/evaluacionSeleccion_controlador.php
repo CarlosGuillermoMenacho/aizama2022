@@ -154,7 +154,7 @@ switch ($_GET['op']) {
 		$notificar = isset($_POST["notificar"])?1:0;
 		
 		if(empty($codcur) || empty($codpar) || empty($codexa) ||
-		   empty($codmat) || empty($nro_eva) || empty($preguntas) ||
+		   empty($codmat) || empty($nro_eva) ||
 		   empty($indicador) || empty($fini) || empty($ffin) ||
 		   empty($horaini) || empty($horafin)|| empty($descripcion)){
 			echo json_encode(["status"=>"errorParam"]);
@@ -224,10 +224,8 @@ switch ($_GET['op']) {
 		$horaini =  isset($_POST["horaini"])?$_POST["horaini"]:"";
 		$ffin =  isset($_POST["ffin"])?$_POST["ffin"]:"";
 		$horafin =  isset($_POST["horafin"])?$_POST["horafin"]:"";
-		$visible = isset($_POST["visible"])?1:0;
-		$notificar = isset($_POST["notificar"])?1:0;
 		if(empty($codcur) || empty($codpar) ||
-		   empty($codmat) || empty($nro_eva) || empty($preguntas) ||
+		   empty($codmat) || empty($nro_eva) || 
 		   empty($indicador) || empty($fini) || empty($ffin) ||
 		   empty($horaini) || empty($horafin)|| empty($descripcion)){
 			echo json_encode(["status"=>"errorParam"]);
@@ -266,8 +264,102 @@ switch ($_GET['op']) {
 		$fecha = date("Y-m-d");
 		$hora = date("H-i-s");
 		$gestion = date("Y");
-		$id = $Evaluacion->save($gestion,$trimestre,$codmat,$codcur,$nro_eva,$descripcion,$fini,$ffin,$horaini,$horafin,$codusr,$fecha,$hora,$codpar,$preguntas,$visible);
+		$id = $Evaluacion->save($gestion,$trimestre,$codmat,$codcur,$nro_eva,$descripcion,$fini,$ffin,$horaini,$horafin,$codusr,$fecha,$hora,$codpar,$preguntas);
 		$Indicador->save($id,3,$indicador);
+		echo json_encode(["status"=>"ok"]);
+		break;
+	case 'banco':
+		$codusr = $_SESSION["app_user_id"];
+		if(empty($codusr)){
+			echo json_encode(["status"=>"eSession"]);
+			exit();
+		}
+		$codexa = isset($_POST["codexa"])?$_POST["codexa"]:"";
+		if(empty($codexa)){
+			echo json_encode(["status"=>"errorParam"]);
+			exit();
+		}
+		require_once"../modelo/modelo_Evaluacion.php";
+		$EV = new Evaluacion_Seleccion($db);
+		$result = $EV->get_preguntas($codexa);
+		$preguntas = [];
+		while ($row = $result->fetch_object()) {
+			$codpre = $row->codpre;
+			$result2 = $EV->get_opciones($codpre);
+			$opciones = [];
+			while ($rowOP = $result2->fetch_object()) {
+				$opciones[] = $rowOP;
+			}
+			$preguntas[] = [
+				"codpreg"=>$codpre,
+				"imagen"=>$row->dir_imagen,
+				"numero"=>$row->numero,
+				"pregunta"=>$row->pregunta,
+				"respuesta"=>$row->respuesta,
+				"tiempo"=>$row->tiempo,
+				"opciones"=>$opciones
+			];
+
+
+		}
+		echo json_encode(["status"=>"ok","data"=>$preguntas]);
+		break;
+	case 'save_pregunta':
+		$codusr = $_SESSION["app_user_id"];
+		if(empty($codusr)){
+			echo json_encode(["status"=>"eSession"]);
+			exit();
+		}
+		$trimestre = $_SESSION['app_user_bimestre'];
+		if(empty($trimestre)){
+			echo json_encode(["status"=>"eTrimestre"]);
+			exit();
+		}
+		$codexa = isset($_POST["codexa"])?$_POST["codexa"]:"";
+		$descripcion = isset($_POST["descripcion"])?$_POST["descripcion"]:"";
+		$options = isset($_POST["text-option"])?$_POST["text-option"]:"";
+		$tiempo = isset($_POST["tiempo"])?$_POST["tiempo"]:"";
+		$respuesta = isset($_POST["opcion"])?$_POST["opcion"]:"";
+
+		if(empty($codexa) || empty($descripcion) || empty($options) || empty($tiempo) || empty($respuesta)){
+			echo json_encode(["status"=>"errorParam"]);
+			exit();
+		}
+		require_once"../modelo/modelo_Evaluacion.php";
+		$EV = new Evaluacion_Seleccion($db);
+		$result = $EV->get_evaluacion_by_codexa($codexa);
+		$evaluacion = "";
+		if(!$evaluacion = $result->fetch_object()){
+			echo json_encode(["status"=>"errorCodexa"]);
+			exit();
+		}
+		$valor = $evaluacion->tot_preg == 5?20:10;
+		$result = $EV->get_n_preguntas($codexa);
+		$row = $result->fetch_object();
+		$total = $row->total + 1;
+		$fecha = date("Y-m-d");
+		$hora = date("H-i-s");
+		$nombreArchivo = "";
+		if(count($options) < 2){
+			echo json_encode(["status"=>"errorOptions"]);
+			exit();
+		}
+		if (file_exists($_FILES["imagen"]['tmp_name'])&&is_uploaded_file($_FILES["imagen"]['tmp_name'])){
+			$ext=explode(".",$_FILES["imagen"]["name"]);
+			if ($_FILES["imagen"]['type']=="image/jpg"||$_FILES["imagen"]['type']=="image/jpeg"||$_FILES["imagen"]['type']=="image/png"){
+				
+				$fichero="../resources/";
+				$nombreArchivo=$codusr."-".strtotime(date("Y-m-d H:i:s")).".".end($ext);								
+				$dato = move_uploaded_file($_FILES["imagen"]["tmp_name"],$fichero.$nombreArchivo);
+			}
+		}
+
+		$codpreg = $EV->save_pregunta($codexa,$total,$descripcion,$respuesta,$valor,$tiempo,$codusr,$fecha,$hora,$nombreArchivo);
+		$nop = 1;
+		foreach ($options as $op) {
+			$EV->save_opcion($codpreg,$nop,$op);
+			$nop++;
+		}
 		echo json_encode(["status"=>"ok"]);
 		break;
 	case 'delete':

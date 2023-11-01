@@ -108,18 +108,18 @@ const update_evaluacion = (codmat,codexa)  =>  {
 		  	let response = JSON.parse(data);
 		  	if(response.status == "ok"){
 		  		await get_evaluaciones();
-		  		await update_view(codmat,codexa);
 		  		
-		  		setTimeout(()=>{
+		  		setTimeout(async()=>{
 		  			$(`#div-btn-update${codmat}${codexa}`).empty();
 			  		$(`#div-btn-update${codmat}${codexa}`).append(
 			  			`<img src="svg/controlar.svg" width="30px">`
 			  		);
-			  		setTimeout(()=>{
+			  		await setTimeout(async()=>{
 			  			$(`#div-btn-update${codmat}${codexa}`).empty();
 			  			$(`#div-btn-update${codmat}${codexa}`).append(childs);
-			  		},2000)
-		  		},3000)
+			  		},3000)
+		  			await update_view(codmat,codexa);
+		  		},2000)
 		  	}
 		  	if(response.status == "errorFechas"){
 		  		alert("Hay un error en las fechas de inicio y fin...");
@@ -159,9 +159,9 @@ const editar_evaluacion = (codexa,ele) => {
 	$(`#${ele}`).empty();
 	//$("#formulario-evaluacion").append(
 	$( `#${ele}`).append(
-		`<div class="btn-close">
+		`<!--div class="btn-close2">
 	        <img src="images/close.svg" onclick="close_formulario('${evaluacion.codmat}',${codexa});">
-	    </div>
+	    </div-->
 	    <form id="formulario${ele}">
 	        <input type="hidden" name="codcur" value="${evaluacion.codcur}">
 	        <input type="hidden" name="codpar" value="${evaluacion.codpar}">
@@ -180,9 +180,9 @@ const editar_evaluacion = (codexa,ele) => {
 	            <div style="display: flex; align-items: center;">
 	                <div style="width: 89px;">Evaluación:</div>&nbsp;<input class="input-data" type="text"  name="nro_eva" value="${evaluacion.nro_eva}" style="width:30px; height:30px; text-align:center;">
 	            </div>
-	            <div style="display: flex; align-items: center;">
+	            <!--div style="display: flex; align-items: center;">
 	                <div>Preguntas a resolver:</div>&nbsp;<input class="input-data" type="text"  name="preguntas" value="${evaluacion.preguntas}" style="width:30px; height:30px; text-align:center;">
-	            </div>
+	            </div-->
 	        </div>
 	        <div class="div-inputss">
 	            <div>Indicador:</div><textarea class="input-data" type="text"  name="indicador" style="width:100%; min-height: 70px; padding: 5px; font-size: 1em;">${evaluacion.indicador}</textarea>
@@ -196,14 +196,22 @@ const editar_evaluacion = (codexa,ele) => {
 	        <div class="div-inputss">
 	            <div style="width: 90px;">Fecha fin:</div><input class="input-data" type="date"  name="ffin" value="${evaluacion.ffin}" style="width:150px; height:30px; text-align:center;">&nbsp;&nbsp;<input class="input-data" type="time" name="horafin" value="${evaluacion.hf}" style="width:80px; height:30px; text-align:center;">
 	        </div>
+	        <div class="div-inputss">
+	        	<label class="fs09 ta-l" style="margin-left: 5px;">Preguntas</label>
+	        	<select class="input-data p-5" name="preguntas" required>
+                   	<option value="5">5 Preguntas</option>
+                   	<option value="10" ${evaluacion.preguntas == 10?"selected":""}>10 Preguntas</option>
+                </select>
+	        </div>
 	        <div style="display:flex; margin-top:15px;">
 	            Visible para los estudiantes:&nbsp;<input class="input-data" type="checkbox" ${checked} style="cursor:pointer;" name="visible"/> 
 	        </div>
 	        <div style="display:flex; margin-top:15px;">
 	            Notificar a la agenda y whatsapps:&nbsp;<input class="input-data" type="checkbox" checked style="cursor:pointer;" name="notificar"/> 
 	        </div>
-	        <div style="text-align:center; margin-top: 30px;" id="div-btn-update${evaluacion.codmat}${codexa}">
+	        <div style="display: flex; justify-content: center; gap:10px; margin-top: 30px;" id="div-btn-update${evaluacion.codmat}${codexa}">
 	            <button id="btn-update" class="submit" onclick="update_evaluacion('${evaluacion.codmat}',${codexa})">GUARDAR</button>
+	            <button class="danger2" onclick="close_formulario('${evaluacion.codmat}',${codexa});">CANCELAR</button>
 	        </div>
 
 	    </form>`
@@ -267,21 +275,25 @@ const genRandonString = (length) => {
    }
    return result;
 }
-
+const removeImg = e => {
+	let parent = e.parentNode;
+	e.classList.add("oculto");
+	let childs = parent.children;
+	childs[1].style.width = "47px";
+	childs[1].src = "svg/imagen.svg";
+	childs[2].value = "";
+}
 const get_file = e => {
 	let parent = e.parentNode;
-	let childs = parent.childNodes;
+	let childs = parent.children;
 	let input_file = "";
-	childs.forEach(c => {	
-		if(c.type == "file"){
-			input_file = c;
-		}
-	});
+	input_file = childs[2];
 	input_file.click();
 	input_file.addEventListener("change",(__if)=>{
 		if(input_file.value == ""){
 			e.style.width = "47px";
 			e.src = "svg/imagen.svg";
+			childs[0].classList.add("oculto");
 			return;
 		}
 		let file = __if.target.files[0];
@@ -289,14 +301,15 @@ const get_file = e => {
 		reader.onload = function(event){
 			e.src = event.target.result;
 			e.style.width = "100%";
+			childs[0].classList.remove("oculto");
 		}
 		if(file.type)reader.readAsDataURL(file);
 	})
 }
-const add_opcion = e => {
+const add_opcion = (e,codexa) => {
 	$(`#${e}`).append(
 		`<div class="div-opcion">
-            <input type="radio" name="opcion" style="cursor: pointer;" title="Seleccionar como respuesta correcta...">
+            <input type="radio" name="opcion${codexa}" style="cursor: pointer;" title="Seleccionar como respuesta correcta...">
             <input type="hidden" name="text-option[]">
             <div class="divtext input-data" style="width: calc(100% - 50px);" contenteditable="" onkeyup="copiar(this);">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</div>
             <img src="svg/quitar.svg" width="20px" style="cursor: pointer;" title="Eliminar opción..." onclick="delete_opcion(this);">
@@ -314,39 +327,41 @@ const delete_opcion = e => {
 	}
 	main_parent.removeChild(parent);
 }
-const agregar_pregunta = (codmat,codexa) => {
+const agregar_pregunta = (codmat,codexa,n) => {
 	let e = `${codmat}${codexa}`;
 	$(`.b${e}`).children().last().remove();
 	$(`#ban${e}`).append(
 		`<div class="div-pregunta" style="margin-top:10px;">
-            <h3>Pregunta 1</h3>
+            <h3>Pregunta ${n}</h3>
             <form id="formulario-pregunta${e}" style="background: #efefef; padding: 15px 5px; border-radius:5px; position:relative;">
+                <input type="hidden" name="codexa" value="${codexa}">
                 <div class="div-pregunta-img">
                     <input type="hidden" name="descripcion">
                     <div class="divtext input-data" style="width: 100%" contentEditable onkeyup="copiar(this);">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</div>
                     
                 </div>
-                <div  style="display: flex; padding:5px; width:100%; max-width: 360px; margin: 15px auto; justify-content: center; border: 1px solid #ccc; border-radius: 5px;">
+                <div class="div-img-preg">
+                	<img class="img-close oculto" src="images/close.svg" title="Quitar imagen" onclick="removeImg(this)">
                     <img src="svg/imagen.svg" width="47px" style="cursor: pointer;" title="Selecciona una imagen para la pregunta..." onclick="get_file(this);">                
                     <input type="file" name="imagen" hidden accept="image/png, image/gif, image/jpeg, image/jpg">
                 </div>
                 <h3>Opciones</h3>
                 <div id="opciones${codmat}${codexa}">
                     <div class="div-opcion">
-                        <input type="radio" name="opcion" style="cursor: pointer;" title="Seleccionar como respuesta correcta...">
+                        <input type="radio" name="opcion${codexa}"  style="cursor: pointer;" title="Seleccionar como respuesta correcta...">
                         <input type="hidden" name="text-option[]">
                         <div class="divtext input-data" style="width: calc(100% - 50px);" contentEditable onkeyup="copiar(this);">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</div>
                         <img src="svg/quitar.svg" width="20px" style="cursor: pointer;" title="Eliminar opción..." onclick="delete_opcion(this);">
                     </div>
                     <div class="div-opcion">
-                        <input type="radio" name="opcion" style="cursor: pointer;" title="Seleccionar como respuesta correcta..." />
+                        <input type="radio" name="opcion${codexa}" style="cursor: pointer;" title="Seleccionar como respuesta correcta..." />
                         <input type="hidden" name="text-option[]">
                         <div class="divtext input-data" style="width: calc(100% - 50px);" contentEditable onkeyup="copiar(this);">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</div>
                         <img src="svg/quitar.svg" width="20px" style="cursor: pointer;" title="Eliminar opción..." onclick="delete_opcion(this);">
                     </div>
                 </div>
                 <div class="div-add-opcion">
-                    <img src="svg/agregar.svg" width="25px" title="Agregar una opción..." onclick="add_opcion('opciones${codmat}${codexa}')">
+                    <img src="svg/agregar.svg" width="25px" title="Agregar una opción..." onclick="add_opcion('opciones${codmat}${codexa}',${codexa})">
                 </div>
                 <div class="div-tempo" style="font-size: .9em;">
                     Tiempo: <input class="input-data" type="text" name="tiempo" value="3" max="30" min="1" style="width:25px; padding: 3px;"> minutos.
@@ -365,9 +380,20 @@ const agregar_pregunta = (codmat,codexa) => {
 }
 const save_pregunta = e => {
 	let formData = new FormData($(`#${e}`)[0]);
+	console.log(formData.get('codexa'))
+	let radio = document.getElementsByName(`opcion${formData.get('codexa')}`);
+	let op = 0;
+	for (var i = 0; i < radio.length; i++) {
+		if(radio[i].checked)op = i+1;
+	}
+	if(op == 0){
+		Swal.fire("Debe seleccionar una opción como respuesta correcta...");
+		return;
+	}
+	formData.append("opcion",op);
 	let html1 = $.ajax(
 		{
-			url:"controlador/evaluacionSeleccion_controlador.php?op=save_pregunta",
+			url:"controlador/evaluacionSeleccion_controlador.php?op=save_pregunta&usr=doc",
 			type: "POST",
 			data:formData,
 			contentType: false, 
@@ -387,19 +413,79 @@ const close_banco = (e) => {
 	$(`#op${e}`).removeClass("oculto");
 }
 const banco = (codmat,codexa) =>{
-	$(`#op${codmat}${codexa}`).addClass("oculto");
-	$(`#${codmat}${codexa}`).append(
-		`<div class="div-banco b${codmat}${codexa}">
-            <div class="btn-close">
-                <img src="images/close.svg" onclick="close_banco('${codmat}${codexa}');">
-            </div>
-            <h2 style="margin: 20px;">Banco de Preguntas</h2>
-            <div id="ban${codmat}${codexa}"></div>
-            <div class="div-add" style="font-size:.8em">
-                <img src="svg/agregar-documento.svg" style="width:30px; cursor:pointer" onclick="agregar_pregunta('${codmat}',${codexa});">Agregar Pregunta
-            </div>
-        </div>
-		`)
+	$.post(
+		"controlador/evaluacionSeleccion_controlador.php?op=banco&usr=doc",
+		{codexa:codexa},
+		data => {
+			if(data.status == "ok"){
+				let lista = data.data;
+				let html = "";
+				let index = 1;
+				lista.forEach(p => {
+					let img = p.imagen == ""?"svg/imagen.svg":p.imagen;
+					let cls = p.imagen == ""?"oculto":"div-img-preg";
+					let opciones = p.opciones;
+					let html_op = "";
+					opciones.forEach(op => {
+						let checked = op.n_opcion == p.respuesta?"checked":"";
+						html_op = `${html_op}<div class="div-opcion">
+						                        <input type="radio" name="opcion${p.codpreg}" ${checked}  style="cursor: pointer;" title="Seleccionar como respuesta correcta..." disabled>
+						                        <input type="hidden" name="text-option[]" value="${op.opcion}">
+						                        <div class="divtext input-data" style="width: calc(100% - 50px);" onkeyup="copiar(this);">${op.opcion}</div>
+						                        <img src="svg/quitar.svg" width="20px" style="cursor: pointer;" title="Eliminar opción..." onclick="delete_opcion(this);" class="oculto">
+						                    </div>`;
+					});
+					html = `${html}<div class="div-pregunta" style="margin-top:10px;">
+						            <h3>Pregunta ${index}</h3>
+						            <form id="form_preg${p.codpreg}" style="background: #efefef; padding: 15px 5px; border-radius:5px; position:relative;">
+						                <input type="hidden" name="codpre" value="${p.codpreg}">
+						                <div class="div-pregunta-img">
+						                    <input type="hidden" name="descripcion" value="${p.pregunta}">
+						                    <div class="divtext input-data" style="width: 100%"  onkeyup="copiar(this);">${p.pregunta}</div>
+						                </div>
+						                <div class="${cls}">
+						                	<img class="img-close oculto" src="images/close.svg" title="Quitar imagen" onclick="removeImg(this)">
+						                    <img src="${img}" width="47px" style="cursor: pointer;" title="Selecciona una imagen para la pregunta...">                
+						                    <input type="file" name="imagen" hidden accept="image/png, image/gif, image/jpeg, image/jpg">
+						                </div>
+						                <h3>Opciones</h3>
+						                <div id="opciones${p.codpreg}">
+						                    ${html_op}
+						                </div>
+						         		<div class="div-add-opcion oculto">
+						                    <img src="svg/agregar.svg" width="25px" title="Agregar una opción..." onclick="add_opcion('opciones${codmat}${codexa}',${codexa})">
+						                </div>
+						                <div class="div-tempo" style="font-size: .9em; margin-top: 10px;">
+						                    Tiempo: <input class="input-data" type="text" name="tiempo" readonly value="${p.tiempo}" max="30" min="1" style="width:25px; padding: 3px;"> minutos.
+						                </div>
+						                <div class="btn-delete-float" style="position: absolute;bottom: 5px;right: 5px;">
+						                    <img style="width:20px;cursor:pointer;" src="svg/basura.svg" onclick="delete_pregunta(${p.codpreg});" title="Eliminar pregunta.">
+						                </div>
+						            </form>
+						        </div>`;
+					index++;
+				})
+				
+				$(`#op${codmat}${codexa}`).addClass("oculto");
+				$(`#${codmat}${codexa}`).append(
+					`<div class="div-banco b${codmat}${codexa}">
+			            <div class="btn-close2">
+			                <img src="images/close.svg" onclick="close_banco('${codmat}${codexa}');">
+			            </div>
+			            <h2 style="margin: 20px;">Banco de Preguntas</h2>
+
+			            <div id="ban${codmat}${codexa}">${html}</div>
+			            <div class="div-add" style="font-size:.8em">
+			                <img src="svg/agregar-documento.svg" style="width:30px; cursor:pointer" onclick="agregar_pregunta('${codmat}',${codexa},${lista.length + 1});">Agregar Pregunta
+			            </div>
+			        </div>
+					`)
+
+			}
+		},"json"
+	);
+	/*
+	*/
 }
 const mostrar_evaluaciones = (codcur,codpar,codmat,nombre) => {
 	$(`#${codcur}${codpar}${codmat}`).empty();
@@ -442,12 +528,12 @@ const mostrar_evaluaciones = (codcur,codpar,codmat,nombre) => {
 	});
 	$(`#${codcur}${codpar}${codmat}`).append(
 		`<div class="div-evaluaciones">
-			<div class="btn-close">
+			<div class="btn-close2">
 		        <img src="images/close.svg" onclick="close_materia(${codcur},${codpar},'${codmat}','${nombre}');">
 		    </div>
 			<h2 class="h-class-name materia-name" style="margin-bottom:10px;">${nombre}</h2>
 			${evaluaciones}
-			<div class="div-add"><img src="svg/agregar-documento.svg" style="width:30px; cursor:pointer" onclick="mostrar_formulario(${codcur},${codpar},'${codmat}');">Agregar Evaluación</div>`
+			<div class="div-add" id="add${codcur}${codpar}${codmat}"><img src="svg/agregar-documento.svg" style="width:30px; cursor:pointer" onclick="mostrar_formulario(${codcur},${codpar},'${codmat}');">Agregar Evaluación</div>`
 	);
 	
 }
@@ -532,66 +618,86 @@ const init = async () => {
 	await get_evaluaciones();
 	get_cursos();
 }
-const mostrar_formulario = (codcur,codpar,codmat) => {
-	$("#formulario-evaluacion").empty();
-	$("#formulario-evaluacion").append(
-		`<div class="btn-close">
-	        <img src="images/close.svg" onclick="close_formulario2();">
-	    </div>
-	    <form id="formulario">
-	        <input type="hidden" name="codcur" value="${codcur}">
-	        <input type="hidden" name="codpar" value="${codpar}">
-	        <div class="div-title-formulario"><h2 style="font-size: .9em; color: var(--c1); text-align: center;">${get_nombre_curso(codcur,codpar)}</h2></div>
-	        <br>
-	        <div class="form-descrip-materia" style="display:flex; margin-top:10px">
-	            <div style="width: 100%; display:flex; justify-content:space-between;">
-	                <p style="color:var(--c1);">Materia: ${get_materia(codmat).nombre}</p>
-	                <div>
-	                    Código: <input type="text" name="codmat" value="${codmat}" class="input-info" readonly/>
-	                </div>                
-	            </div>
-	        </div>
-	        <div style="display:flex; flex-wrap: nowrap; gap: 50px; margin-top:10px;justify-content: space-between;">
-	            <div style="display: flex; align-items: center;">
-	                <div style="width: 89px;">Evaluación:</div>&nbsp;<input class="input-data" type="text"  name="nro_eva" value="${contar_evaluaciones(codcur,codpar,codmat) + 1}" style="width:30px; height:30px; text-align:center;">
-	            </div>
-	            <div style="display: flex; align-items: center;">
-	                <div>Preguntas a resolver:</div>&nbsp;<input class="input-data" type="text"  name="preguntas" value="5" style="width:30px; height:30px; text-align:center;">
-	            </div>
-	        </div>
-	        <div class="div-inputss">
-	            <div>Indicador:</div><textarea class="input-data" type="text"  name="indicador" style="width:100%; min-height: 70px; padding: 5px; font-size: 1em;"></textarea>
-	        </div>
-	        <div class="div-inputss">
-	            <div>Descripción:</div><textarea class="input-data" type="text"  name="descripcion" style="width:100%; min-height: 70px; padding: 5px; font-size: 1em;"></textarea>
-	        </div>
-	        <div class="div-inputss">
-	            <div style="width: 90px;">Fecha inicio:</div><input class="input-data" type="date"  name="fini" value="" style="width:150px; height:30px; text-align:center;">&nbsp;&nbsp;<input class="input-data" type="time" name="horaini" value="" style="width:80px; height:30px; text-align:center;">
-	        </div>
-	        <div class="div-inputss">
-	            <div style="width: 90px;">Fecha fin:</div><input class="input-data" type="date"  name="ffin" value="" style="width:150px; height:30px; text-align:center;">&nbsp;&nbsp;<input class="input-data" type="time" name="horafin" value="" style="width:80px; height:30px; text-align:center;">
-	        </div>
-	        <div style="display:flex; margin-top:15px;">
-	            Visible para los estudiantes:&nbsp;<input class="input-data" type="checkbox" style="cursor:pointer;" name="visible"/> 
-	        </div>
-	        <div style="display:flex; margin-top:15px;">
-	            Notificar a la agenda y whatsapps:&nbsp;<input class="input-data" type="checkbox" checked style="cursor:pointer;" name="notificar" disabled/> 
-	        </div>
-	        <div style="text-align:center; margin-top: 30px;" id="div-btn-update">
-	            <button id="btn-update" class="submit" onclick="save_evaluacion()">GUARDAR</button>
-	        </div>
-
-	    </form>`
-	);
-	$("#formulario").submit(e => {e.preventDefault()});
-	$("#container").addClass("oculto");
-	$(".div-cursos-float").addClass("oculto");
-	$("#formulario-evaluacion").removeClass("oculto");
+const cerrarFormulario = (codcur,codpar,codmat) => {
+	$(`#add${codcur}${codpar}${codmat}`).empty();
+	$(`#add${codcur}${codpar}${codmat}`).append(`<img src="svg/agregar-documento.svg" style="width:30px; cursor:pointer" onclick="mostrar_formulario(${codcur},${codpar},'${codmat}');">Agregar Evaluación`);
 }
-const save_evaluacion = () => {
-	let childs = $("#div-btn-update").children();
-	$("#div-btn-update").empty();
-	$("#div-btn-update").append(
+const mostrar_formulario = (codcur,codpar,codmat) => {
+	$(`#add${codcur}${codpar}${codmat}`).empty();
+	$(`#add${codcur}${codpar}${codmat}`).append(
+		`<div class="div-formulario">
+                <div class="div-title"><h2>Nueva Evaluación</h2></div>
+                <form id="formulario${codcur}${codpar}${codmat}" class="formulario">
+                    <div class="div-input">
+                    	<input type="hidden" name="codcur" value="${codcur}">
+                    	<input type="hidden" name="codpar" value="${codpar}">
+                    	<input type="hidden" name="codmat" value="${codmat}">
+                        <label class="fs09 ta-l" style="margin-left: 5px;">Curso</label>
+                        <input type="text" name="" readonly value="${get_nombre_curso(codcur,codpar)}" class="input-data p-5 fs1">
+                    </div>
+                    <div class="div-input">
+                        <label class="fs09 ta-l" style="margin-left: 5px;">Meteria</label>
+                        <input type="text" name="" readonly value="${get_materia(codmat).nombre}" class="input-data p-5 fs1">
+                    </div>
+                    <div class="div-input">
+                        <label class="fs09 ta-l" style="margin-left: 5px;">Número de Evaluación</label>
+                        <input type="number" class="input-data p-5" name="nro_eva" value="" required>
+                    </div>
+                    <div class="div-input">
+                        <label class="fs09 ta-l" style="margin-left: 5px;">Descripción</label>
+                        <textarea class="input-data fs1-5" style="height:50px" name="descripcion" required></textarea>
+                    </div>
+                    <div class="div-input">
+                        <label class="fs09 ta-l" style="margin-left: 5px;">Indicador</label>
+                        <textarea class="input-data fs1-5" style="height:50px" name="indicador" required></textarea>
+                    </div>
+                    <div class="div-input">
+                        <label class="fs09 ta-l" style="margin-left: 5px;">Fecha inicio</label>
+                        <input type="date" class="input-data p-5" name="fini" value="" required>
+                    </div>
+                    <div class="div-input">
+                        <label class="fs09 ta-l" style="margin-left: 5px;">Hora inicio</label>
+                        <input type="time" class="input-data p-5" name="horaini" value="" required>
+                    </div>
+                    <div class="div-input">
+                        <label class="fs09 ta-l" style="margin-left: 5px;">Fecha fin</label>
+                        <input type="date" class="input-data p-5" name="ffin" value="" required>
+                    </div>
+                    <div class="div-input">
+                        <label class="fs09 ta-l" style="margin-left: 5px;">Hora fin</label>
+                        <input type="time" class="input-data p-5" name="horafin" value="" required>
+                    </div>
+                    <div class="div-input">
+                        <label class="fs09 ta-l" style="margin-left: 5px;">Preguntas</label>
+                        <select class="input-data p-5" name="preguntas" required>
+                        	<option value="5">5 Preguntas</option>
+                        	<option value="10">10 Preguntas</option>
+                        </select>
+                    </div>
+	                <div class="btn-submit-cancel" id="btnNewEval${codcur}${codpar}${codmat}">
+	                    <button class="submit" onclick="save_evaluacion('${codcur}${codpar}${codmat}')">GUARDAR</button>
+	                    <button class="danger2" onclick="cerrarFormulario(${codcur},${codpar},'${codmat}')">CANCELAR</button>
+	                </div>
+                </form>
+            </div>`
+	);
+	return;
+}
+const save_evaluacion = id_form => {
+	let formData = new FormData($(`#formulario${id_form}`)[0]);
+	if(formData.get('nro_eva') == ""){
+		return;
+	}
+	if(formData.get('descripcion') == "")return;
+	if(formData.get('indicador') == "")return;
+	if(formData.get('fini') == "")return;
+	if(formData.get('horaini') == "")return;
+	if(formData.get('ffin') == "")return;
+	if(formData.get('horafin') == "")return;
+	if(formData.get('preguntas') == "")return;
+	let childs = $(`#btnNewEval${id_form}`).children();
+	$(`#btnNewEval${id_form}`).empty();
+	$(`#btnNewEval${id_form}`).append(
 		`<section style="padding-left:0px;">
 		  <div class='sk-double-bounce'>
 		    <div class='sk-child sk-double-bounce-1'></div>
@@ -599,7 +705,7 @@ const save_evaluacion = () => {
 		  </div>
 		</section>`
 	);
-	let formData = new FormData($("#formulario")[0]);
+
 	$.ajax({
 		  url: "controlador/evaluacionSeleccion_controlador.php?op=save_evaluacion&usr=doc",
 		  type: "POST",
@@ -612,31 +718,40 @@ const save_evaluacion = () => {
 		  		await get_evaluaciones();
 		  		
 		  		setTimeout(()=>{
-		  			$("#div-btn-update").empty();
-			  		$("#div-btn-update").append(
+		  			$(`#btnNewEval${id_form}`).empty();
+			  		$(`#btnNewEval${id_form}`).append(
 			  			`<img src="svg/controlar.svg" width="30px">`
 			  		);
 			  		setTimeout(()=>{
-			  			close_formulario2();
+			  			cerrarFormulario(formData.get('codcur'),formData.get('codpar'),formData.get('codmat'));
 			  			mostrar_evaluaciones(formData.get('codcur'),formData.get('codpar'),formData.get('codmat'),get_materia(formData.get('codmat')).nombre);
 			  		},2000)
 		  		},3000)
 		  	}
 		  	if(response.status == "errorFechas"){
-		  		alert("Hay un error en las fechas de inicio y fin...");
-		  		$("#div-btn-update").empty();
-				$("#div-btn-update").append(childs);
+		  		Swal.fire("Hay un error en las fechas de inicio y fin...");
+		  		$(`#btnNewEval${id_form}`).empty();
+				$(`#btnNewEval${id_form}`).append(childs);
 		  	}
 		  	if(response.status == "errorPreguntas"){
-		  		alert("Debe introducir un valor numérico para la cantidad de preguntas...");
-		  		$("input[name='preguntas']").focus();
-		  		$("#div-btn-update").empty();
-				$("#div-btn-update").append(childs);
+		  		Swal.fire("Debe introducir un valor numérico para la cantidad de preguntas...");
+		  		$(`#btnNewEval${id_form}`).empty();
+				$(`#btnNewEval${id_form}`).append(childs);
+		  	}
+		  	if(response.status == "errorPreguntas"){
+		  		Swal.fire("Debe introducir un valor numérico para la cantidad de preguntas...");
+		  		$(`#btnNewEval${id_form}`).empty();
+				$(`#btnNewEval${id_form}`).append(childs);
+		  	}
+		  	if(response.status == "errorParam"){
+		  		Swal.fire("Hubo un error recarga la página por favor...");
+		  		$(`#btnNewEval${id_form}`).empty();
+				$(`#btnNewEval${id_form}`).append(childs);
 		  	}
 		  },
 		  error: (xhr, status, error) => {
-		  	$("#div-btn-update").empty();
-			$("#div-btn-update").append(childs);
+		  	$(`#btnNewEval${id_form}`).empty();
+			$(`#btnNewEval${id_form}`).append(childs);
 		  	alert("Hubo un problema al actualizar los datos, no se pudo conectar con el servidor, asegúrate de tener conexión a internet...");
 		  }  
 		});
@@ -699,5 +814,5 @@ const print_eval = codexa => {
 $(document).ready(() =>{
 	init();
 	$("#title-pag").click(()=>{init()});
-	print_eval(3);
+	//print_eval(3);
 });
