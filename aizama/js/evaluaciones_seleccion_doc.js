@@ -1,8 +1,30 @@
 let lista_cursos = [];
 let lista_materias = [];
 let lista_evaluaciones = [];
-
 let elem_html = "";
+const save_calificaciones = codexa => {
+	let formData = new FormData($(`#form_calif${codexa}`)[0]);
+	formData.append("codexa",codexa);
+	$.ajax({
+		  url: "controlador/evaluacionSeleccion_controlador.php?op=save_calificaciones&usr=doc",
+		  type: "POST",
+		  data: formData,
+		  processData: false, 
+		  contentType: false,
+		  success: async data =>{
+		  	let response = JSON.parse(data);
+		  	if (response.status == "eSession")Swal.fire("La sesión ha finalizado, vuelva a iniciar sesión con su usuario y contraseña por favor...");
+		  	if(response.status == "ok"){
+		  		Swal.fire("Calificaciones guardadas exitosamente...");	
+		  	}
+		  },
+		  error: (xhr, status, error) => {
+		  	$("#div-btn-update").empty();
+			$("#div-btn-update").append(childs);
+		  	alert("Hubo un problema al actualizar los datos, no se pudo conectar con el servidor, asegúrate de estar conectado a internet...");
+		  }  
+		});
+}
 const contar_evaluaciones = (codcur,codpar,codmat) => {
 	let cont = 0;
 	lista_evaluaciones.forEach(evaluacion =>{
@@ -28,8 +50,7 @@ const close_materia = (codcur,codpar,codmat,nombre) => {
 		        <span class="span-materia">Evaluaciones <b>${contar_evaluaciones(codcur,codpar,codmat)}</b></span>
 		    </div>
 		</div>`
-	);
-	
+	);	
 }
 const get_nombre_curso = (codcur,codpar) => {
 	for (var i = 0; i < lista_cursos.length; i++) {
@@ -69,7 +90,7 @@ const update_view = (codmat,codexa) => {
 				Editar<img style="width:25px; cursor:pointer;" src="svg/editar.svg">
 			</div>
 			<div class="div-option" style="font-size:.8em;">
-				Revisar<img style="width:25px; cursor:pointer;" src="svg/cheque-de-boleta.svg">
+				Revisar<img style="width:25px; cursor:pointer;" src="svg/cheque-de-boleta.svg" onclick="revisar('${codmat}',${evaluacion.codeva})">
 			</div>
 			<div class="div-option" style="font-size:.8em;">
 				Banco<img style="width:25px; cursor:pointer;" src="svg/votacion.svg" onclick="banco('${codmat}',${evaluacion.codeva})">
@@ -82,9 +103,6 @@ const update_view = (codmat,codexa) => {
 			</div>
 		</div>`
 	);
-
-
-	
 }
 const update_evaluacion = (codmat,codexa)  =>  {
 	let childs = $("#div-btn-update").children();
@@ -199,7 +217,8 @@ const editar_evaluacion = (codexa,ele) => {
 	        <div class="div-inputss">
 	        	<label class="fs09 ta-l" style="margin-left: 5px;">Preguntas</label>
 	        	<select class="input-data p-5" name="preguntas" required>
-                   	<option value="5">5 Preguntas</option>
+	        		<option value="0" ${evaluacion.preguntas == 0?"selected":""}>Sin preguntas</option>
+                   	<option value="5" ${evaluacion.preguntas == 5?"selected":""}>5 Preguntas</option>
                    	<option value="10" ${evaluacion.preguntas == 10?"selected":""}>10 Preguntas</option>
                 </select>
 	        </div>
@@ -216,21 +235,73 @@ const editar_evaluacion = (codexa,ele) => {
 
 	    </form>`
 	);
-	$(`#formulario${evaluacion.codmat}${codexa}`).submit(e => {e.preventDefault()});
-	
+	$(`#formulario${evaluacion.codmat}${codexa}`).submit(e => {e.preventDefault()});	
 }
 const close_formulario = (codmat,codexa) => {
 	update_view(codmat,codexa);
 	/*$(`#${e}`).empty();
 	$(`#${e}`).append(elem_html);*/
 }
+const actualizar_calificaciones = codexa => {
+	$.post(
+		"controlador/evaluacionSeleccion_controlador.php?op=get_calificaciones&usr=doc",
+		{codexa:codexa},
+		data => {
+			if (data.status == "eSession")Swal.fire("La sesión ha finalizado, vuelva a iniciar sesión con su usuario y contraseña por favor...");
+			if (data.status == "ok") {
+				let lista = data.data;
+				let html = "";
+				let index = 1;
+				lista.forEach(a => {
+					let readonly = "";
+					let estado = "";
+					if(a.estado == 1){//El alumno realizó la evaluación en plataforma
+						estado = `<div style="display: flex;justify-content: space-between;">
+									<div style"display: flex;align-items: center;">
+										<img style="width: 35px;border-radius: 50%; cursor:pointer;" src="images/test-report.png" title="Ver respuestas" onclick="ver_respuestas(${a.codalu},${codexa});">
+									</div>
+									<div style="display: flex;align-items: center;">
+										<img style="width:25px;cursor:pointer;" src="images/delete.png" title="Eliminar examen" onclick="delete_examen(${a.codalu},${codexa},this)">
+									</div>
+								  </div>`;
+						readonly = "readonly";
+					}
+					html = `${html}<tr>
+			            				<td>${index}</td>
+			            				<td>${a.nombre}</td>
+			            				<td><input type="hidden" name="alumno[]" value="${a.codalu}"><input ${readonly} type="number" name="nota[]" min="0" max="100" class="input-data p-10" value="${a.nota == null?"":a.nota}" style="width:50px"></td>
+			            				<td>${estado}</td>
+			            			</tr>`;
+			        index++;
+				})
+				$(`#calificaciones${codexa}`).empty();
+				$(`#calificaciones${codexa}`).append(
+							`<form id="form_calif${codexa}">
+				            	<table class="lista-notas" style="width:100%;">
+				            		<thead style="font-weight:bold;">
+				            			<tr>
+				            				<td>No.</td>
+				            				<td>Nombre</td>
+				            				<td>Nota</td>
+				            				<td></td>
+				            			</tr>
+				            		</thead>
+				            		<tbody>
+				            			${html}
+				            		</tbody>
+				            	</table>
+				            </form>`
+				);
+			}
+		},"json"
+	)
+}
 const close_formulario2 = () => {
 	$("#formulario-evaluacion").empty();
 	$("#formulario-evaluacion").addClass("oculto");
 	$("#container").removeClass("oculto");
 
-	if(lista_cursos.length>1)$(".div-cursos-float").removeClass("oculto");
-	
+	if(lista_cursos.length>1)$(".div-cursos-float").removeClass("oculto");	
 }
 const delete_evaluacion = codexa => {
 	let e = get_evaluacion(codexa);
@@ -283,6 +354,15 @@ const removeImg = e => {
 	childs[1].src = "svg/imagen.svg";
 	childs[2].value = "";
 }
+const removeImgUpdate = e => {
+	let parent = e.parentNode;
+	e.classList.add("oculto");
+	let childs = parent.children;
+	childs[1].style.width = "47px";
+	childs[1].src = "svg/imagen.svg";
+	childs[2].value = "";
+	childs[3].value = "";
+}
 const get_file = e => {
 	let parent = e.parentNode;
 	let childs = parent.children;
@@ -311,7 +391,7 @@ const add_opcion = (e,codexa) => {
 		`<div class="div-opcion">
             <input type="radio" name="opcion${codexa}" style="cursor: pointer;" title="Seleccionar como respuesta correcta...">
             <input type="hidden" name="text-option[]">
-            <div class="divtext input-data" style="width: calc(100% - 50px);" contenteditable="" onkeyup="copiar(this);">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</div>
+            <div class="divtext input-data" style="width: calc(100% - 50px);" contenteditable="" onkeyup="copiar(this);"></div>
             <img src="svg/quitar.svg" width="20px" style="cursor: pointer;" title="Eliminar opción..." onclick="delete_opcion(this);">
         </div>`
 	)
@@ -319,8 +399,9 @@ const add_opcion = (e,codexa) => {
 const delete_opcion = e => {	
 	let parent = e.parentNode;
 	let main_parent = parent.parentNode;
-	let childs = main_parent.childNodes;
-	let n = childs.length - 3; 	
+	let childs = main_parent.children;
+	let n = childs.length; 	
+	console.log(childs)
 	if( n <= 2){
 		Swal.fire("Debe tener al menos dos opciones...");
 		return;
@@ -337,7 +418,7 @@ const agregar_pregunta = (codmat,codexa,n) => {
                 <input type="hidden" name="codexa" value="${codexa}">
                 <div class="div-pregunta-img">
                     <input type="hidden" name="descripcion">
-                    <div class="divtext input-data" style="width: 100%" contentEditable onkeyup="copiar(this);">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</div>
+                    <div class="divtext input-data" style="width: 100%" contentEditable onkeyup="copiar(this);"></div>
                     
                 </div>
                 <div class="div-img-preg">
@@ -350,19 +431,25 @@ const agregar_pregunta = (codmat,codexa,n) => {
                     <div class="div-opcion">
                         <input type="radio" name="opcion${codexa}"  style="cursor: pointer;" title="Seleccionar como respuesta correcta...">
                         <input type="hidden" name="text-option[]">
-                        <div class="divtext input-data" style="width: calc(100% - 50px);" contentEditable onkeyup="copiar(this);">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</div>
-                        <img src="svg/quitar.svg" width="20px" style="cursor: pointer;" title="Eliminar opción..." onclick="delete_opcion(this);">
+                        <div class="divtext input-data" style="width: calc(100% - 30px)" contentEditable onkeyup="copiar(this);"></div>
+                        <!--img src="svg/quitar.svg" width="20px" style="cursor: pointer;" title="Eliminar opción..." onclick="delete_opcion(this);"-->
                     </div>
                     <div class="div-opcion">
                         <input type="radio" name="opcion${codexa}" style="cursor: pointer;" title="Seleccionar como respuesta correcta..." />
                         <input type="hidden" name="text-option[]">
-                        <div class="divtext input-data" style="width: calc(100% - 50px);" contentEditable onkeyup="copiar(this);">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</div>
-                        <img src="svg/quitar.svg" width="20px" style="cursor: pointer;" title="Eliminar opción..." onclick="delete_opcion(this);">
+                        <div class="divtext input-data" style="width: calc(100% - 30px);" contentEditable onkeyup="copiar(this);"></div>
+                        <!--img src="svg/quitar.svg" width="20px" style="cursor: pointer;" title="Eliminar opción..." onclick="delete_opcion(this);"-->
+                    </div>
+                    <div class="div-opcion">
+                        <input type="radio" name="opcion${codexa}" style="cursor: pointer;" title="Seleccionar como respuesta correcta..." />
+                        <input type="hidden" name="text-option[]">
+                        <div class="divtext input-data" style="width: calc(100% - 30px)" contentEditable onkeyup="copiar(this);"></div>
+                        <!--img src="svg/quitar.svg" width="20px" style="cursor: pointer;" title="Eliminar opción..." onclick="delete_opcion(this);"-->
                     </div>
                 </div>
-                <div class="div-add-opcion">
+                <!--div class="div-add-opcion">
                     <img src="svg/agregar.svg" width="25px" title="Agregar una opción..." onclick="add_opcion('opciones${codmat}${codexa}',${codexa})">
-                </div>
+                </div-->
                 <div class="div-tempo" style="font-size: .9em;">
                     Tiempo: <input class="input-data" type="text" name="tiempo" value="3" max="30" min="1" style="width:25px; padding: 3px;"> minutos.
                 </div>
@@ -380,7 +467,6 @@ const agregar_pregunta = (codmat,codexa,n) => {
 }
 const save_pregunta = e => {
 	let formData = new FormData($(`#${e}`)[0]);
-	console.log(formData.get('codexa'))
 	let radio = document.getElementsByName(`opcion${formData.get('codexa')}`);
 	let op = 0;
 	for (var i = 0; i < radio.length; i++) {
@@ -401,7 +487,18 @@ const save_pregunta = e => {
 			async:false
 		}
 		).responseText;
-
+	let response = JSON.parse(html1);
+	if (response.status == "eSession")Swal.fire("La sesión ha finalizado, vuelva a iniciar sesión con su usuario y contraseña por favor...");
+	if (response.status == "errorParam")Swal.fire("Debe llenar todos los campos del formulario...");
+	if(response.status == "ok"){
+		let parent = $(`#${e}`).parent();
+		parent.children().last().remove();
+		parent.append(
+			`<form id="form_preg${response.codpre}" style="background: #efefef; padding: 15px 5px; border-radius:5px; position:relative;"> 
+			</form>`
+		);
+		actualizar_view_pregunta(response.codpre);
+	}
 }
 const close_form_pregunta = (codmat,codexa) => {
 	$(`#${codmat}${codexa}`).children().last().remove();
@@ -412,11 +509,26 @@ const close_banco = (e) => {
 	$(`#${e}`).children().last().remove();
 	$(`#op${e}`).removeClass("oculto");
 }
-const banco = (codmat,codexa) =>{
+const delete_pregunta = (codmat,codexa,codpreg) => {
+	$.post(
+		"controlador/evaluacionSeleccion_controlador.php?op=delete_pregunta&usr=doc",
+		{codpreg:codpreg},
+		data => {
+			if (data.status == "eSession")Swal.fire("La sesión ha finalizado, vuelva a iniciar sesión con su usuario y contraseña por favor...");
+			if (data.status == "eTrimestre")Swal.fire("Debe seleccionar un trimestre por favor...");
+			if (data.status == "ok") {
+				update_banco(codmat,codexa);
+			}
+		},"json"
+	);
+}
+const update_banco = (codmat,codexa) => {
 	$.post(
 		"controlador/evaluacionSeleccion_controlador.php?op=banco&usr=doc",
 		{codexa:codexa},
 		data => {
+			if (data.status == "eSession")Swal.fire("La sesión ha finalizado, vuelva a iniciar sesión con su usuario y contraseña por favor...");
+			if (data.status == "eTrimestre")Swal.fire("Debe seleccionar un trimestre por favor...");
 			if(data.status == "ok"){
 				let lista = data.data;
 				let html = "";
@@ -458,8 +570,219 @@ const banco = (codmat,codexa) =>{
 						                <div class="div-tempo" style="font-size: .9em; margin-top: 10px;">
 						                    Tiempo: <input class="input-data" type="text" name="tiempo" readonly value="${p.tiempo}" max="30" min="1" style="width:25px; padding: 3px;"> minutos.
 						                </div>
-						                <div class="btn-delete-float" style="position: absolute;bottom: 5px;right: 5px;">
-						                    <img style="width:20px;cursor:pointer;" src="svg/basura.svg" onclick="delete_pregunta(${p.codpreg});" title="Eliminar pregunta.">
+						                <div class="btn-delete-float" style="position: absolute;bottom: 5px;right: 5px; display:flex; gap:5px;">
+						                    <img style="width:18px; padding:2px; cursor:pointer; border:1px solid #ccc; border-radius:5px;" src="svg/edit.svg" onclick="edit_pregunta(${p.codpreg});" title="Editar pregunta.">
+						                    <img style="width:18px; padding:2px; cursor:pointer; border:1px solid #ccc; border-radius:5px;" src="svg/basura.svg" onclick="delete_pregunta('${codmat}',${codexa},${p.codpreg});" title="Eliminar pregunta.">
+						                </div>
+						            </form>
+						        </div>`;
+					index++;
+				})
+				
+				$(`.b${codmat}${codexa}`).empty();
+				$(`.b${codmat}${codexa}`).append(
+					`   <div class="btn-close2">
+			                <img src="images/close.svg" onclick="close_banco('${codmat}${codexa}');">
+			            </div>
+			            <h2 style="margin: 20px;">Banco de Preguntas</h2>
+
+			            <div id="ban${codmat}${codexa}">${html}</div>
+			            <div class="div-add" style="font-size:.8em">
+			                <img src="svg/agregar-documento.svg" style="width:30px; cursor:pointer" onclick="agregar_pregunta('${codmat}',${codexa},${lista.length + 1});">Agregar Pregunta
+			            </div>
+					`)
+
+			}
+		},"json"
+	);
+}
+const edit_pregunta = codpreg => {
+	$.post(
+		"controlador/evaluacionSeleccion_controlador.php?op=get_pregunta&usr=doc",
+		{codpre:codpreg},
+		data => {
+			if (data.status == "eSession")Swal.fire("La sesión ha finalizado, vuelva a iniciar sesión con su usuario y contraseña por favor...");
+			if (data.status == "eTrimestre")Swal.fire("Debe seleccionar un trimestre por favor...");
+			if (data.status == "ok") {
+				let p = data.data;
+				let img = p.dir_imagen == ""?'<img src="svg/imagen.svg" width="47px" style="cursor: pointer;" title="Selecciona una imagen para la pregunta..." onclick="get_file(this);">':`<img src="resources/${p.dir_imagen}" style="cursor: pointer; width:100%;" title="Selecciona una imagen para la pregunta..." onclick="get_file(this);">`;
+				let oc = p.dir_imagen == ""?"oculto":"";
+				let opciones = p.opciones;
+				let html_op = "";
+				opciones.forEach(op => {
+						let checked = op.n_opcion == p.respuesta?"checked":"";
+						html_op = `${html_op}<div class="div-opcion">
+						                        <input type="radio" name="opcion${codpreg}" ${checked}  style="cursor: pointer;" title="Seleccionar como respuesta correcta...">
+						                        <input type="hidden" name="text-option[]" value="${op.opcion}">
+						                        <div class="divtext input-data" style="width: calc(100% - 50px);" contentEditable onkeyup="copiar(this);">${op.opcion}</div>
+						                        <!--img src="svg/quitar.svg" width="20px" style="cursor: pointer;" title="Eliminar opción..." onclick="delete_opcion(this);"-->
+						                    </div>`;
+					});
+				$(`#form_preg${codpreg}`).empty();
+				$(`#form_preg${codpreg}`).submit(e=>{e.preventDefault()});
+				$(`#form_preg${codpreg}`).append(
+					`<input type="hidden" name="codpre" value="${codpreg}">
+		                <div class="div-pregunta-img">
+		                    <input type="hidden" name="descripcion" value="${data.data.pregunta}">
+		                    <div class="divtext input-data" style="width: 100%" contentEditable onkeyup="copiar(this);">${data.data.pregunta}</div>
+		                </div>
+		                <div class="div-img-preg">
+		                	<img class="img-close ${oc}" src="images/close.svg" title="Quitar imagen" onclick="removeImgUpdate(this)">
+		                    ${img}                
+		                    <input type="file" name="imagen" hidden accept="image/png, image/gif, image/jpeg, image/jpg">
+		                    <input type="hidden" name="img" value="${p.dir_imagen}">
+		                </div>
+		                <h3>Opciones</h3>
+		                <div id="opciones${codpreg}">
+		                    ${html_op}
+		                </div>
+		                <!--div class="div-add-opcion">
+		                    <img src="svg/agregar.svg" width="25px" title="Agregar una opción..." onclick="add_opcion('opciones${codpreg}',${codpreg})">
+		                </div-->
+		                <div class="div-tempo" style="font-size: .9em;">
+		                    Tiempo: <input class="input-data" type="text" name="tiempo" value="3" max="30" min="1" style="width:25px; padding: 3px;"> minutos.
+		                </div>
+		                <div class="btn-pregunta" style="padding: 10px; text-align: center;">
+		                    <button class="submit2" onclick="update_pregunta('form_preg${codpreg}')">GUARDAR</button>
+		                    <button class="danger2" onclick="actualizar_view_pregunta(${codpreg})">CANCELAR</button>
+		                </div>`
+				);
+			}
+		},"json"
+	);
+}
+const actualizar_view_pregunta = codpre => {
+	$.post(
+			"controlador/evaluacionSeleccion_controlador.php?op=get_pregunta&usr=doc",
+			{codpre:codpre},
+			response => {
+				if (response.status == "eSession")Swal.fire("La sesión ha finalizado, vuelva a iniciar sesión con su usuario y contraseña por favor...");
+				if(response.status == "ok"){
+					$(`#form_preg${codpre}`).empty();
+					let p = response.data;
+					let opciones = p.opciones;
+					let html_op = "";
+					let img = p.dir_imagen == ""?'<img src="svg/imagen.svg" width="47px" style="cursor: pointer;" title="Selecciona una imagen para la pregunta...">':`<img src="resources/${p.dir_imagen}" style="cursor: pointer; width:100%;" title="Selecciona una imagen para la pregunta...">`;
+					let cls = p.dir_imagen == ""?"oculto":"div-img-preg";
+					opciones.forEach(op => {
+						let checked = op.n_opcion == p.respuesta?"checked":"";
+						html_op = `${html_op}<div class="div-opcion">
+						                        <input type="radio" name="opcion${p.codpreg}" ${checked}  style="cursor: pointer;" title="Seleccionar como respuesta correcta..." disabled>
+						                        <input type="hidden" name="text-option[]" value="${op.opcion}">
+						                        <div class="divtext input-data" style="width: calc(100% - 50px);" onkeyup="copiar(this);">${op.opcion}</div>
+						                        <img src="svg/quitar.svg" width="20px" style="cursor: pointer;" title="Eliminar opción..." onclick="delete_opcion(this);" class="oculto">
+						                    </div>`;
+					});
+					$(`#form_preg${codpre}`).append(
+										`<input type="hidden" name="codpre" value="${codpre}">
+						                <div class="div-pregunta-img">
+						                    <input type="hidden" name="descripcion" value="${p.pregunta}">
+						                    <div class="divtext input-data" style="width: 100%"  onkeyup="copiar(this);">${p.pregunta}</div>
+						                </div>
+						                <div class="${cls}">
+						                	<img class="img-close oculto" src="images/close.svg" title="Quitar imagen" onclick="removeImg(this)">
+						                    ${img}                
+						                    <input type="file" name="imagen" hidden accept="image/png, image/gif, image/jpeg, image/jpg">
+						                </div>
+						                <h3>Opciones</h3>
+						                <div id="opciones${p.codpreg}">
+						                    ${html_op}
+						                </div>
+						         		<div class="div-add-opcion oculto">
+						                    <img src="svg/agregar.svg" width="25px" title="Agregar una opción..." onclick="add_opcion('opciones${p.codmat}${p.codexa}',${p.codexa})">
+						                </div>
+						                <div class="div-tempo" style="font-size: .9em; margin-top: 10px;">
+						                    Tiempo: <input class="input-data" type="text" name="tiempo" readonly value="${p.tiempo}" max="30" min="1" style="width:25px; padding: 3px;"> minutos.
+						                </div>
+						                <div class="btn-delete-float" style="position: absolute;bottom: 5px;right: 5px; display:flex; gap:5px;">
+						                    <img style="width:18px; padding:2px; cursor:pointer; border:1px solid #ccc; border-radius:5px;" src="svg/edit.svg" onclick="edit_pregunta(${codpre});" title="Editar pregunta.">
+						                    <img style="width:18px; padding:2px; cursor:pointer; border:1px solid #ccc; border-radius:5px;" src="svg/basura.svg" onclick="delete_pregunta('${p.codmat}',${p.codexa},${codpre});" title="Eliminar pregunta.">
+						                </div>`
+					);
+				}
+			},"json"
+		);
+}
+const update_pregunta = e => {
+	let formData = new FormData($(`#${e}`)[0]);
+	let codpre = formData.get('codpre');
+	let radio = document.getElementsByName(`opcion${codpre}`);
+	let op = 0;
+	for (var i = 0; i < radio.length; i++) {
+		if(radio[i].checked)op = i+1;
+	}
+	if(op == 0){
+		Swal.fire("Debe seleccionar una opción como respuesta correcta...");
+		return;
+	}
+	formData.append("opcion",op);
+	let html1 = $.ajax(
+		{
+			url:"controlador/evaluacionSeleccion_controlador.php?op=update_pregunta&usr=doc",
+			type: "POST",
+			data:formData,
+			contentType: false, 
+			processData: false,
+			async:false
+		}
+		).responseText;
+	let data = JSON.parse(html1);
+	if (data.status == "eSession")Swal.fire("La sesión ha finalizado, vuelva a iniciar sesión con su usuario y contraseña por favor...");
+	if (data.status == "ok") {
+		actualizar_view_pregunta(codpre);
+	}
+}
+const banco = (codmat,codexa) =>{
+	$.post(
+		"controlador/evaluacionSeleccion_controlador.php?op=banco&usr=doc",
+		{codexa:codexa},
+		data => {
+			if (data.status == "eSession")Swal.fire("La sesión ha finalizado, vuelva a iniciar sesión con su usuario y contraseña por favor...");
+			if (data.status == "eTrimestre")Swal.fire("Debe seleccionar un trimestre por favor...");
+			if(data.status == "ok"){
+				let lista = data.data;
+				let html = "";
+				let index = 1;
+				lista.forEach(p => {
+					let img = p.imagen == ""?'<img src="svg/imagen.svg" width="47px" style="cursor: pointer;" title="Selecciona una imagen para la pregunta...">':`<img src="resources/${p.imagen}" style="cursor: pointer; width:100%;" title="Selecciona una imagen para la pregunta...">`;
+					let cls = p.imagen == ""?"oculto":"div-img-preg";
+					let opciones = p.opciones;
+					let html_op = "";
+					opciones.forEach(op => {
+						let checked = op.n_opcion == p.respuesta?"checked":"";
+						html_op = `${html_op}<div class="div-opcion">
+						                        <input type="radio" name="opcion${p.codpreg}" ${checked}  style="cursor: pointer;" title="Seleccionar como respuesta correcta..." disabled>
+						                        <input type="hidden" name="text-option[]" value="${op.opcion}">
+						                        <div class="divtext input-data" style="width: calc(100% - 50px);" onkeyup="copiar(this);">${op.opcion}</div>
+						                        <img src="svg/quitar.svg" width="20px" style="cursor: pointer;" title="Eliminar opción..." onclick="delete_opcion(this);" class="oculto">
+						                    </div>`;
+					});
+					html = `${html}<div class="div-pregunta" style="margin-top:10px;">
+						            <h3>Pregunta ${index}</h3>
+						            <form id="form_preg${p.codpreg}" style="background: #efefef; padding: 15px 5px; border-radius:5px; position:relative;">
+						                <input type="hidden" name="codpre" value="${p.codpreg}">
+						                <div class="div-pregunta-img">
+						                    <input type="hidden" name="descripcion" value="${p.pregunta}">
+						                    <div class="divtext input-data" style="width: 100%"  onkeyup="copiar(this);">${p.pregunta}</div>
+						                </div>
+						                <div class="${cls}">
+						                	<img class="img-close oculto" src="images/close.svg" title="Quitar imagen" onclick="removeImg(this)">
+						                    ${img}                
+						                    <input type="file" name="imagen" hidden accept="image/png, image/gif, image/jpeg, image/jpg">
+						                </div>
+						                <h3>Opciones</h3>
+						                <div id="opciones${p.codpreg}">
+						                    ${html_op}
+						                </div>
+						         		<div class="div-add-opcion oculto">
+						                    <img src="svg/agregar.svg" width="25px" title="Agregar una opción..." onclick="add_opcion('opciones${codmat}${codexa}',${codexa})">
+						                </div>
+						                <div class="div-tempo" style="font-size: .9em; margin-top: 10px;">
+						                    Tiempo: <input class="input-data" type="text" name="tiempo" readonly value="${p.tiempo}" max="30" min="1" style="width:25px; padding: 3px;"> minutos.
+						                </div>
+						                <div class="btn-delete-float" style="position: absolute;bottom: 5px;right: 5px; display:flex; gap:5px;">
+						                    <img style="width:18px; padding:2px; cursor:pointer; border:1px solid #ccc; border-radius:5px;" src="svg/edit.svg" onclick="edit_pregunta(${p.codpreg});" title="Editar pregunta.">
+						                    <img style="width:18px; padding:2px; cursor:pointer; border:1px solid #ccc; border-radius:5px;" src="svg/basura.svg" onclick="delete_pregunta('${codmat}',${codexa},${p.codpreg});" title="Eliminar pregunta.">
 						                </div>
 						            </form>
 						        </div>`;
@@ -487,6 +810,189 @@ const banco = (codmat,codexa) =>{
 	/*
 	*/
 }
+const delete_examen = (codalu,codexa,e) => {
+	Swal.queue([{
+    title: '¿Estás seguro?',
+    confirmButtonText: 'Si',
+    cancelButtonText: 'No',
+    showCancelButton: true,
+    text:'Se eliminará los registros de la evaluación del estudiante...',
+    showLoaderOnConfirm: true,
+    preConfirm: () => {
+      document.querySelector('.swal2-styled.swal2-cancel').style.display ="none";
+      return $.post(
+				"controlador/evaluacionSeleccion_controlador.php?op=delete_examen&usr=doc",
+				{codexa:codexa,codalu:codalu},
+				data => {
+					if (data.status == "eSession")Swal.fire("La sesión ha finalizado, vuelva a iniciar sesión con su usuario y contraseña por favor...");
+					if (data.status == "ok") {
+						Swal.fire("El examen ha sido anulado...");
+						let parent = e.parentElement.parentElement.parentElement;
+						parent.innerHTML = "";
+						let tr = parent.parentElement;
+						let childs = tr.children;
+						let input = childs[2].children;
+						input[1].value= "";
+						input[1].removeAttribute('readonly');
+					}
+				},"json"
+			);
+      
+    }
+  }]);	
+}
+const close_respuestas = () => {
+	$(".div-respuestas").slideToggle();
+}
+const ver_respuestas = (codalu,codexa) => {
+	$.post(
+		"controlador/evaluacionSeleccion_controlador.php?op=get_respuestas&usr=doc",
+		{codalu,codexa},
+		data => {
+			if (data.status == "eSession")Swal.fire("La sesión ha finalizado, vuelva a iniciar sesión con su usuario y contraseña por favor...");
+			if (data.status == "ok") {
+				let respuestas = data.data;
+				let html = "";
+				let index = 1;
+				respuestas.forEach(r => {
+					let html_op = "";
+					let opciones = r.opciones;
+					let imagen = "";
+					if(r.imagen != ""){
+						imagen = `<div class="div-img-preg">
+				                    <img src="resources/${r.imagen}" width="100%" style="cursor: pointer;" title="Selecciona una imagen para la pregunta...">          
+				                </div>`;
+					}
+					opciones.forEach(op => {
+
+						let background = "";
+						if(op.n_op == r.respuesta && r.respuesta == r.opcion){
+							background = "background:#76efa770;";
+						}
+						if(op.n_op == r.respuesta && r.respuesta != r.opcion){
+							background = "background:#fb646470;";
+						}
+						if(op.n_op == r.opcion && r.respuesta != r.opcion){
+							background = "background:#ccc;";
+						}
+						html_op = `${html_op}<div class="div-opcion">
+						                        <div class="divtext input-data" style="width: 100%;${background}" >${op.opcion}</div>
+						                    </div>`
+					})
+					html = `${html}<div class="div-pregunta" style="margin-top:10px;border: 1px solid #ccc;border-radius: 5px;padding: 10px;">
+				                <h3>Pregunta ${index}</h3>
+				                <div class="div-pregunta-img">
+				                    <div class="divtext input-data" style="width: 100%">${r.pregunta}</div>
+				                </div>
+				                ${imagen}
+				                <h3>Opciones</h3>
+				                <div>
+				                    ${html_op}
+				                </div>
+				                <div class="div-tempo" style="font-size: .9em;padding: 10px;display: flex;justify-content: space-between;align-items: center;">
+				                        Hora: inicio ${r.horai} - fin ${r.horaf}
+				                </div>
+				            </div>`;
+				    index++;
+				});
+				$(".div-resp").empty();
+				$(".div-resp").append(
+					`<div class="btn-close2">
+			            <img src="images/close.svg" onclick="close_respuestas();">
+			        </div>
+			        <div class="main-info">
+			            <div class="div-info">
+			                <strong>Curso:</strong>&nbsp; ${data.curso}  
+			            </div>
+			            <div class="div-info">
+			                <strong>Meteria:</strong>&nbsp; ${data.materia}
+			            </div>
+			            <div class="div-info">
+			                <strong>Alumno:</strong>&nbsp; ${data.alumno} 
+			            </div>
+			            
+			            <div class="div-info">
+			                <strong>Nota:</strong>&nbsp; ${data.nota}
+			            </div>
+			        </div>
+			        <div class="div-content-respuestas">
+			        	<div class="div-info">
+			                <strong>Tema:</strong>&nbsp; ${data.evaluacion} 
+			            </div>
+			            ${html}
+			        </div>`
+				);
+				$(".div-respuestas").slideToggle("disappear");
+			}
+		},"json"
+	);
+}
+const revisar = (codmat,codexa) => {
+	$.post(
+		"controlador/evaluacionSeleccion_controlador.php?op=get_calificaciones&usr=doc",
+		{codexa:codexa},
+		data => {
+			if (data.status == "eSession")Swal.fire("La sesión ha finalizado, vuelva a iniciar sesión con su usuario y contraseña por favor...");
+			if (data.status == "ok") {
+				let lista = data.data;
+				let html = "";
+				let index = 1;
+				lista.forEach(a => {
+					let readonly = "";
+					let estado = "";
+					if(a.estado == 1){//El alumno realizó la evaluación en plataforma
+						estado = `<div style="display: flex;justify-content: space-between;">
+									<div style"display: flex;align-items: center;">
+										<img style="width: 35px;border-radius: 50%; cursor:pointer;" src="images/test-report.png" title="Ver respuestas" onclick="ver_respuestas(${a.codalu},${codexa});">
+									</div>
+									<div style="display: flex;align-items: center;">
+										<img style="width:25px;cursor:pointer;" src="images/delete.png" title="Eliminar examen" onclick="delete_examen(${a.codalu},${codexa},this)">
+									</div>
+								  </div>`;
+						readonly = "readonly";
+					}
+					html = `${html}<tr>
+			            				<td>${index}</td>
+			            				<td>${a.nombre}</td>
+			            				<td><input type="hidden" name="alumno[]" value="${a.codalu}"><input ${readonly} type="number" name="nota[]" min="0" max="100" class="input-data p-10" value="${a.nota == null?"":a.nota}" style="width:50px"></td>
+			            				<td>${estado}</td>
+			            			</tr>`;
+			        index++;
+				})
+				$(`#op${codmat}${codexa}`).addClass("oculto");
+				$(`#${codmat}${codexa}`).append(
+					`<div class="div-banco b${codmat}${codexa}">
+			            <div class="btn-close2">
+			                <img src="images/close.svg" onclick="close_banco('${codmat}${codexa}');">
+			            </div>
+			            <h2 style="margin: 20px;">Lista de Notas</h2>
+			            <div id="calificaciones${codexa}">
+			            	<form id="form_calif${codexa}">
+				            	<table class="lista-notas" style="width:100%;">
+				            		<thead style="font-weight:bold;">
+				            			<tr>
+				            				<td>No.</td>
+				            				<td>Nombre</td>
+				            				<td>Nota</td>
+				            				<td></td>
+				            			</tr>
+				            		</thead>
+				            		<tbody>
+				            			${html}
+				            		</tbody>
+				            	</table>
+				            </form>
+			            </div>
+			            <div class="btn-submit-cancel" id="btnNewEval111S5">
+		                    <button class="submit" onclick="save_calificaciones(${codexa})">GUARDAR</button>
+		                    <button class="danger2" onclick="actualizar_calificaciones(${codexa})">CANCELAR</button>
+		                </div>
+			        </div>`
+				);
+			}
+		},"json"
+	)
+}
 const mostrar_evaluaciones = (codcur,codpar,codmat,nombre) => {
 	$(`#${codcur}${codpar}${codmat}`).empty();
 	$(`#${codcur}${codpar}${codmat}`).css("transition",".5s");
@@ -511,14 +1017,14 @@ const mostrar_evaluaciones = (codcur,codpar,codmat,nombre) => {
 													Editar<img style="width:25px; cursor:pointer;" src="svg/editar.svg">
 												</div>
 												<div class="div-option" style="font-size:.8em;">
-													Revisar<img style="width:25px; cursor:pointer;" src="svg/cheque-de-boleta.svg">
+													Revisar<img style="width:25px; cursor:pointer;" src="svg/cheque-de-boleta.svg" onclick="revisar('${codmat}',${evaluacion.codeva})">
 												</div>
 												<div class="div-option" style="font-size:.8em;">
 													Banco<img style="width:25px; cursor:pointer;" src="svg/votacion.svg" onclick="banco('${codmat}',${evaluacion.codeva})">
 												</div>
-												<div class="div-option" style="font-size:.8em;">
+												<!--div class="div-option" style="font-size:.8em;">
 													Config.<img style="width:25px; cursor:pointer;" src="svg/ajustes.svg">
-												</div>
+												</div-->
 												<div class="div-option" style="font-size:.8em; color:var(--c3);">
 													Eliminar<img style="width:25px; cursor:pointer;" src="svg/basura.svg" onclick="delete_evaluacion(${evaluacion.codeva});">
 												</div>
@@ -534,8 +1040,7 @@ const mostrar_evaluaciones = (codcur,codpar,codmat,nombre) => {
 			<h2 class="h-class-name materia-name" style="margin-bottom:10px;">${nombre}</h2>
 			${evaluaciones}
 			<div class="div-add" id="add${codcur}${codpar}${codmat}"><img src="svg/agregar-documento.svg" style="width:30px; cursor:pointer" onclick="mostrar_formulario(${codcur},${codpar},'${codmat}');">Agregar Evaluación</div>`
-	);
-	
+	);	
 }
 const mostrar_materias = (codcur,codpar,nombre) => {
 	$("#content-table").empty();
@@ -586,7 +1091,6 @@ const cargar_cursos = cursos => {
 	if(cursos.length == 1){
 		$(".div-cursos-float").addClass("oculto");
 	}
-
 }
 const get_cursos = () =>{
 	$.get(
@@ -670,6 +1174,7 @@ const mostrar_formulario = (codcur,codpar,codmat) => {
                     <div class="div-input">
                         <label class="fs09 ta-l" style="margin-left: 5px;">Preguntas</label>
                         <select class="input-data p-5" name="preguntas" required>
+                        	<option value="0">Sin preguntas</option>
                         	<option value="5">5 Preguntas</option>
                         	<option value="10">10 Preguntas</option>
                         </select>

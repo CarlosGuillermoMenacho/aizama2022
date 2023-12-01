@@ -163,26 +163,23 @@ isset($_SESSION["foto"])?$logo = $_SESSION["foto"]:$logo = $logo;
             </div>
           </td>
         </tr>
+        
         <tr>
           <td>
-            <div class="div-menu-item" onclick="go_page('evaluacion_alumnos.php')">
+            <div class="div-menu-item" onclick="go_page(<?php if($_SESSION['app_user_perfil'] == "INICIAL"){
+              echo "'evaluacion_inicial.php'";
+            }else{
+              echo "'evaluacion_alumnos_10p.php'";
+            } ?>)">
               <div class="div-icon-menu">
                 <img src="images/test.png">
               </div>
               <div class="name-item">
-                <a href="#">Evaluación de Selección 5 preguntas</a>
-              </div>
-            </div>
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <div class="div-menu-item" onclick="go_page('evaluacion_alumnos_10p.php')">
-              <div class="div-icon-menu">
-                <img src="images/test.png">
-              </div>
-              <div class="name-item">
-                <a href="#">Evaluación de Selección 10 preguntas</a>
+                <a href="#"><?php if($_SESSION['app_user_perfil'] == "INICIAL"){
+              echo "Evaluación";
+            }else{
+              echo "Evaluación de Selección 10 preguntas";
+            } ?></a>
               </div>
             </div>
           </td>

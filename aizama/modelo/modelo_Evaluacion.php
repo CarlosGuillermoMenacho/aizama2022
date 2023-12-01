@@ -153,6 +153,51 @@ class Evaluacion_Seleccion
 			$result = ejecutar_consulta($this->db,$sql,$type,$params);
 			return $result;	
 		}
+		public function get_calificacion($codalu,$codexa){
+			$sql = "SELECT sum(nota) as nota FROM resp_alu_exa WHERE codigo = ? AND codexa = ? ";
+			$type = "ii";
+			$params = array($codalu,$codexa);
+			$result = ejecutar_consulta($this->db,$sql,$type,$params);
+			return $result;	
+		}
+		public function calificar($codexa,$codalu,$nota){
+			$sql = "INSERT INTO resp_alu_exa(codigo,nota,fecha,hora_ini,codexa) VALUES (?,?,?,?,?)";
+			$type = "iissi";
+			$fecha = date("Y-m-d");
+			$hora = date("H:i:s");
+			$params = array($codalu,$nota,$fecha,$hora,$codexa);
+			$result = ejecutar_consulta($this->db,$sql,$type,$params);
+			return $result;	
+		}
+		public function get_respuestas($codalu,$codexa){
+			$sql = "SELECT r.codpre,p.dir_imagen,r.hora_ini,r.hora_fin,r.nota,p.pregunta,r.surespuest,p.respuesta FROM resp_alu_exa r INNER JOIN preguntas p ON r.codpre = p.codpre AND r.codigo = ? AND r.codexa = ? ";
+			$type = "ii";
+			$params = array($codalu,$codexa);
+			$result = ejecutar_consulta($this->db,$sql,$type,$params);
+			return $result;	
+		}
+		public function count_respuestas($codalu,$codexa){
+			$sql = "SELECT count(*) as total FROM resp_alu_exa WHERE codigo = ? AND codexa = ? ";
+			$type = "ii";
+			$params = array($codalu,$codexa);
+			$result = ejecutar_consulta($this->db,$sql,$type,$params);
+			$row = $result->fetch_object();
+			return $row->total;	
+		}
+		public function set_nota($id,$nota){
+			$sql = "UPDATE resp_alu_exa SET nota = ? WHERE id = ?";
+			$type = "ii";
+			$params = array($nota,$id);
+			$result = ejecutar_consulta($this->db,$sql,$type,$params);
+			return $result;	
+		}
+		public function delete_examen($codexa,$codalu){
+			$sql = "UPDATE resp_alu_exa SET codigo = -codigo, codexa = -codexa WHERE codigo = ? AND codexa = ?";
+			$type = "ii";
+			$params = array($codalu,$codexa);
+			$result = ejecutar_consulta($this->db,$sql,$type,$params);
+			return $result;	
+		}
 		public function get_evaluacion_by_codexa($codexa){
 			$sql = "SELECT * FROM evaluacion WHERE estado = 1 AND codexa = ? ";
 			$type = "i";
@@ -164,6 +209,13 @@ class Evaluacion_Seleccion
 			$sql = "SELECT * FROM preguntas WHERE codexa = ? ";
 			$type = "i";
 			$params = array($id);
+			$result = ejecutar_consulta($this->db,$sql,$type,$params);
+			return $result;	
+		}
+		public function set_notas_preguntas($codexa,$nota){
+			$sql = "UPDATE preguntas SET valor = ? WHERE codexa = ? ";
+			$type = "ii";
+			$params = array($nota,$codexa);
 			$result = ejecutar_consulta($this->db,$sql,$type,$params);
 			return $result;	
 		}
@@ -202,6 +254,27 @@ class Evaluacion_Seleccion
 			$result = ejecutar_consulta($this->db,$sql,$type,$params);
 			return $result;
 		}
+		public function update_pregunta($codpre,$descripcion,$respuesta,$tiempo,$codusr,$fecha,$hora,$img){
+			$sql = "UPDATE preguntas SET pregunta = ?,respuesta = ?,tiempo = ?, codprof = ?, fecha = ?, hora = ?, dir_imagen = ? WHERE codpre = ?";
+			$type = "siissssi";
+			$params = array($descripcion,$respuesta,$tiempo,$codusr,$fecha,$hora,$img,$codpre);
+			$result = ejecutar_consulta($this->db,$sql,$type,$params);
+			return $result;
+		}
+		public function update_opcion($codpre,$n,$opcion){
+			$sql = "UPDATE opciones SET opcion = ? WHERE codpre = ? AND n_opcion = ?";
+			$type = "sii";
+			$params = array($opcion,$codpre,$n);
+			$result = ejecutar_consulta($this->db,$sql,$type,$params);
+			return $result;
+		}
+		public function delete_opcion($codpre,$n){
+			$sql = "UPDATE opciones SET codpre = -codpre WHERE codpre = ? AND n_opcion = ?";
+			$type = "ii";
+			$params = array($codpre,$n);
+			$result = ejecutar_consulta($this->db,$sql,$type,$params);
+			return $result;
+		}
 		public function save($gestion,$trimestre,$codmat,$codcur,$nro,$descripcion,$fechai,$fechaf,$horai,$horaf,$usr,$fecha,$hora,$codpar,$preguntas){
 			$sql = "INSERT INTO evaluacion(gestion,bimestre,codmat,codigo,codeva,descrip,f_inicio,f_fin,horai,horaf,usr,fecha,hora,cod_par,estado,tot_preg,visible) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,1,?,0)";
 			$type = "iisiissssssssii";
@@ -218,6 +291,21 @@ class Evaluacion_Seleccion
 			$sql = "UPDATE evaluacion SET estado = 0,usr = ?, fecha = ?,hora = ? WHERE id = ?";
 			$type = "sssi";
 			$params = array($usr,$fecha,$hora,$codexa);
+			$result = ejecutar_consulta($this->db,$sql,$type,$params);
+			return $result;
+		}
+		public function delete_pregunta($codpreg){
+			$sql = "UPDATE preguntas SET codpre = ?,codexa = -codexa WHERE codpre = ?";
+			$type = "si";
+			$preg = "-$codpreg";
+			$params = array($preg,$codpreg);
+			$result = ejecutar_consulta($this->db,$sql,$type,$params);
+			return $result;
+		}
+		public function get_pregunta($codpreg){
+			$sql = "SELECT e.codexa,e.codmat,p.pregunta,p.respuesta,p.valor,p.tiempo,p.dir_imagen,e.tot_preg FROM preguntas p INNER JOIN evaluacion e ON p.codexa = e.codexa AND p.codpre = ?";
+			$type = "i";
+			$params = array($codpreg);
 			$result = ejecutar_consulta($this->db,$sql,$type,$params);
 			return $result;
 		}

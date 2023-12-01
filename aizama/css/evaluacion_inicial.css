@@ -1,0 +1,109 @@
+:root{
+	--color1 : #006581;
+	--color2: #e23b3b;
+	--color3: lightblue;
+	--color4:rgb(224, 218, 216); /*Gris*/
+	--color5:rgb(186, 214, 206); /*verde*/
+}
+.div-title h1{
+	text-align: center;
+    color: var(--color1);
+    text-transform: uppercase;
+    font-size: 1.2em;
+}
+.div-list-materia{
+	display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    margin-top: 40px;
+}
+.div-materia{
+	max-width: 500px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    padding: 10px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    column-gap: 20px;
+    cursor: pointer;
+    color: var(--color1);
+}
+.div-materia:hover{
+	background: #ccc;
+}
+.div-materia img{
+	width: 70px;
+	border-radius: 5px;
+}
+.oculto{
+	display: none;
+}
+.div-content-eval{
+	border-radius: 5px;
+    border: 1px solid #ccc;
+    padding: 10px;
+    width: 90%;
+    margin: auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+    max-width: 800px;
+    flex-direction: column;
+}
+.div-content-face img{
+    width: 170px;
+}
+.div-content-faces{
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+}
+.div-content-faces img{
+    width: 95px;
+    position: relative;
+    top: 0;
+    left: 0;
+}
+.btn-save{
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translate(-50%, 0);
+}
+.btn-save img {
+    width: 100px;
+    cursor: pointer;
+}
+
+@media screen and (min-width: 600px){
+    .div-content-face img{
+        width: 330px;
+    }
+    .div-content-faces{
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+    .div-content-faces img{
+        width: 200px;
+        position: relative;
+        top: 0;
+        left: 0;
+    }
+    .div-content-eval{
+        border-radius: 5px;
+        border: 1px solid #ccc;
+        padding: 10px;
+        width: 97%;
+        margin: auto;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        position: relative;
+        max-width: 800px;
+        flex-direction: row;
+    }
+}

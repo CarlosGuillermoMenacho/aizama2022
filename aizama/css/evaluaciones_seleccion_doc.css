@@ -13,6 +13,9 @@
 .p-10{
 	padding: 10px;
 }
+.p-9{
+	padding: 9px;
+}
 .container{
 	background-color: var(--c4);
 	padding:0 10px;
@@ -173,7 +176,62 @@
 	border-radius: 5px;
 	color: var(--c1);
 	box-sizing: border-box;
+}
+.main-info{
+	display: flex;
+  flex-direction: column;
+  gap: 5px;
+  height: 110px;
+}
+.div-info input{
+	max-width: 400px;
+  width: 100%;
+  padding: 5px;
+  text-align: end;
+}
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+  -webkit-appearance: none; 
+  margin: 0; 
+}
 
+input[type=number] { -moz-appearance:textfield; }
+.input-data3{
+	border: 1px solid #ccc;
+	border-radius: 5px 0 0 5px;
+	color: var(--c1);
+	box-sizing: border-box;
+
+}
+.div-respuestas{
+	position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #04040442;
+  z-index: 1000;
+}
+.div-resp{
+	position: relative;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #fffcfc;
+  max-width: 1000px;
+  width: 93%;
+  height: 95%;
+  border-radius: 5px;
+  padding: 10px;
+}
+.div-content-respuestas{
+	overflow-y: scroll;
+  height: calc(100% - 110px);
+}
+.div-info{
+	display: flex;
+  justify-content: flex-start;
+  padding: 0 20px;
 }
 .formulario{
 	  max-width: 500px;
@@ -188,9 +246,10 @@
 .ta-l{
 	text-align: left;
 }
-.input-data:focus {
+.input-data:focus,.input-data3:focus {
   	outline-color: #ccc;
 }
+
 .div-inputs{
 	display: flex;
 	flex-wrap: nowrap;
@@ -374,7 +433,18 @@ h3{
 	border: none;
 	cursor: pointer;
 }
-
+.submit3{
+	padding: 10px 20px;
+	background: var(--c1);
+	border-radius: 0 5px 5px 0 ;
+	color: var(--c5);
+	text-transform: uppercase;
+	border: none;
+	cursor: pointer;
+}
+.submit3:hover{
+	background: var(--c1a);
+}
 .submit:hover{
 	background: var(--c1a);
 }
