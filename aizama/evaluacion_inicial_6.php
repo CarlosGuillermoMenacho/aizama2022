@@ -7,7 +7,7 @@ if($_SESSION['app_user_perfil'] == 'PRIMARIA' || $_SESSION['app_user_perfil'] ==
   require 'new_header.php';
 } 
 ?>
-<link rel="stylesheet" type="text/css" href="css/evaluacion_inicial.css?v=<?php echo rand();?>">
+<link rel="stylesheet" type="text/css" href="css/evaluacion_inicial_6.css?v=<?php echo rand();?>">
 <div class="div-title"><h1>Evaluaciones Inicial</h1></div>
 <div class="div-list-materia oculto">
 	<div class="div-materia">
@@ -29,21 +29,21 @@ if($_SESSION['app_user_perfil'] == 'PRIMARIA' || $_SESSION['app_user_perfil'] ==
 </div>
 <div id="evaluaciones" class="div-content-eval">
 	<div class="div-content-faces">
-		<img src="images/feliz.png" id="cursorImage" ondragstart="return false;">
-		<img src="images/serio.png" id="cursorImage1" ondragstart="return false;">
-		<img src="images/asustado.png" id="cursorImage2" ondragstart="return false;">	
-		<img src="images/asustado.png" id="cursorImage3" ondragstart="return false;">
-		<img src="images/asustado.png" id="cursorImage4" ondragstart="return false;">	
+		<img src="images/oler.png">
+		<img src="images/comer.png">
+		<img src="images/tocar.png">	
+		<img src="images/escuchar.png">
+		<img src="images/telescopio.png">	
 	</div>
 	<!--div class="div-content-face">
 		<img src="images/carita.png" >
 	</div-->
-	<div class="div-content-faces">
-		<img src="images/triste.png" id="cursorImage5" ondragstart="return false;">
-		<img src="images/llorar.png" id="cursorImage6" ondragstart="return false;">
-		<img src="images/sorprendido.png" id="cursorImage7" ondragstart="return false;">
-		<img src="images/asustado.png" id="cursorImage8" ondragstart="return false;">
-		<img src="images/asustado.png" id="cursorImage9" ondragstart="return false;">		
+	<div class="div-content-faces2">
+		<img src="images/oreja.png" id="cursorImage" ondragstart="return false;">
+		<img src="images/mano.png" id="cursorImage1" ondragstart="return false;">
+		<img src="images/ojo.png" id="cursorImage2" ondragstart="return false;">
+		<img src="images/nariz.png" id="cursorImage3" ondragstart="return false;">
+		<img src="images/boca.png" id="cursorImage4" ondragstart="return false;">		
 	</div>
 </div>
 	<div class="btn-save">

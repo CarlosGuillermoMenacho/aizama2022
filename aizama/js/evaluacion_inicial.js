@@ -9,14 +9,14 @@ function addListeners() {
     document.getElementById('cursorImage2').addEventListener('mousedown', mouseDown, false);
     document.getElementById('cursorImage3').addEventListener('mousedown', mouseDown, false);
     document.getElementById('cursorImage4').addEventListener('mousedown', mouseDown, false);
-    document.getElementById('cursorImage5').addEventListener('mousedown', mouseDown, false);
+    //document.getElementById('cursorImage5').addEventListener('mousedown', mouseDown, false);
 
     document.getElementById('cursorImage').addEventListener("touchstart", mouseDownTouch);
     document.getElementById('cursorImage1').addEventListener("touchstart", mouseDownTouch);
     document.getElementById('cursorImage2').addEventListener("touchstart", mouseDownTouch);
     document.getElementById('cursorImage3').addEventListener("touchstart", mouseDownTouch);
     document.getElementById('cursorImage4').addEventListener("touchstart", mouseDownTouch);
-    document.getElementById('cursorImage5').addEventListener("touchstart", mouseDownTouch);
+   // document.getElementById('cursorImage5').addEventListener("touchstart", mouseDownTouch);
     window.addEventListener('mouseup', mouseUp, false);
     window.addEventListener("touchend", mouseUpTouch);
 }
