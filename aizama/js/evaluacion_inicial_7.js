@@ -2,7 +2,36 @@ let gMouseDownX = 0;
 let gMouseDownY = 0;
 let gMouseDownOffsetX = 0;
 let gMouseDownOffsetY = 0;
-
+const azul = "#0D4BB0";
+const rojo = "#FF0000";
+const verde = "#00AF02";
+const amarillo = "#FFFF00";
+const blanco = "#fff";
+const paleta = [blanco,rojo,amarillo,verde,azul];
+let color = blanco;
+const lapiz = n => {
+    color = paleta[n];
+    if(n == 0){
+        $("#canvas").removeClass();
+        $("#canvas").addClass("borrador");
+    }
+    if(n == 1){
+        $("#canvas").removeClass();
+        $("#canvas").addClass("rojo");
+    }
+    if(n == 2){
+        $("#canvas").removeClass();
+        $("#canvas").addClass("amarillo");
+    }
+    if(n == 3){
+        $("#canvas").removeClass();
+        $("#canvas").addClass("verde");
+    }
+    if(n == 4){
+        $("#canvas").removeClass();
+        $("#canvas").addClass("azul");
+    }
+}
 function addListeners() {
     /*document.getElementById('cursorImage').addEventListener('mousedown', mouseDown, false);
     document.getElementById('cursorImage1').addEventListener('mousedown', mouseDown, false);
@@ -34,7 +63,10 @@ function mouseUpTouch(e) {
     window.removeEventListener('touchmove', divMoveTouch);
 }
 function mouseDown(e) {
-    if(e.srcElement.id == "" || e.srcElement.id == "evaluaciones")return;
+    if(e.srcElement.id == "" || e.srcElement.id == "evaluaciones"){
+        window.removeEventListener('mousemove', divMove, true);
+        return;
+    }
     gMouseDownX = e.clientX;
     gMouseDownY = e.clientY;
     let gMoffsetX = e.offsetX;
@@ -43,12 +75,14 @@ function mouseDown(e) {
     	var canvas = document.getElementById("canvas");
     	var ctx = canvas.getContext("2d");
     	ctx.beginPath();
-		ctx.rect(gMoffsetX - 3, gMoffsety + 47, 6, 6);
-		ctx.fillStyle = "#000";
+        let grosor = 4;
+        if(color == blanco)grosor = 10;
+        ctx.arc(gMoffsetX - 3, gMoffsety + 50, grosor, 0, Math.PI * 2, true);
+		//ctx.rect(gMoffsetX - 3, gMoffsety + 47, 6, 6);
+		ctx.fillStyle = color;
 		ctx.fill();
 		ctx.closePath();
 		window.addEventListener('mousemove', divMove, true);
-    console.log(e)
     	return;
     }
     var div = document.getElementById(e.srcElement.id);
@@ -77,7 +111,6 @@ function mouseDown(e) {
 }
 function mouseDownTouch(e) {
     if(e.srcElement.id == "" || e.srcElement.id == "evaluaciones")return;
-    //console.log(e.changedTouches[0].clientX)
     gMouseDownX = e.changedTouches[0].clientX;
     gMouseDownY = e.changedTouches[0].clientY;
     var div = document.getElementById(e.srcElement.id);
@@ -105,21 +138,25 @@ function mouseDownTouch(e) {
     window.addEventListener("touchmove", divMoveTouch);
 }
 function divMove(e){
-    console.log(e)
     if(e.srcElement.id == "canvas"){
     	let gMoffsetX = e.offsetX;
     	let gMoffsety = e.offsetY;
     	var canvas = document.getElementById("canvas");
     	var ctx = canvas.getContext("2d");
     	ctx.beginPath();
-		ctx.rect(gMoffsetX - 3, gMoffsety + 47, 6, 6);
-		ctx.fillStyle = "#000";
+        let grosor = 4;
+        if(color == blanco)grosor = 10;
+        ctx.arc(gMoffsetX - 3, gMoffsety + 50, grosor, 0, Math.PI * 2, true);
+		//ctx.rect(gMoffsetX - 3, gMoffsety + 47, 6, 6);
+		ctx.fillStyle = color;
 		ctx.fill();
 		ctx.closePath();
-    console.log(e)
     	return;
     }
-    if(e.srcElement.id == "" || e.srcElement.id == "evaluaciones")return;
+    if(e.srcElement.id == "" || e.srcElement.id == "evaluaciones"){
+        window.removeEventListener('mousemove', divMove, true);
+        return;
+    }
     var div = document.getElementById(e.srcElement.id);
     div.style.position = 'relative';
     div.style.zIndex = 100;
@@ -150,7 +187,6 @@ $(document).ready(function(){
 	let height = rec.height;
 	canvas.width = width;
 	canvas.height = height;
-	console.log(rec)
 $("#btn-save").on('click', function () {
     html2canvas($("#evaluaciones")[0]).then((canvas) => {
         var imgageData = canvas.toDataURL("image/png");
@@ -168,4 +204,3 @@ $("#btn-save").on('click', function () {
     });
 });
 });
-//console.log("top: " + document.getElementById("evaluaciones").getBoundingClientRect().y + "    left: " + document.getElementById("evaluaciones").getBoundingClientRect().x);

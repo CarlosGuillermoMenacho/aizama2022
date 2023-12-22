@@ -116,7 +116,31 @@
     .div-canvas{
     	width: 100%;
     }
+    .borrador{
+        cursor: url('http://localhost/aizama2022/aizama/images/borrador.png'),auto;
+    }
+    .rojo{
+        cursor: url('http://localhost/aizama2022/aizama/images/lapizrojo.png'),auto;
+    }
+    .amarillo{
+        cursor: url('http://localhost/aizama2022/aizama/images/lapizamarillo.png'),auto;
+    }
+    .verde{
+        cursor: url('http://localhost/aizama2022/aizama/images/lapizverde.png'),auto;
+    }
+    .azul{
+        cursor: url('http://localhost/aizama2022/aizama/images/lapizazul.png'),auto;
+    }
     .div-canvas canvas{
-    	cursor: url('http://localhost/aizama2022/aizama/images/lapiz.png'),auto;
+    	
+    }
+    .div-lapiz{
+        position: absolute;
+        display: flex;
+        gap: 20px;
+    }
+    .div-lapiz img{
+        width: 40px;
+        cursor: pointer;
     }
 }

@@ -28,6 +28,13 @@ if($_SESSION['app_user_perfil'] == 'PRIMARIA' || $_SESSION['app_user_perfil'] ==
 	</div>
 </div>
 <div id="evaluaciones" class="div-content-eval">
+	<div class="div-lapiz">
+		<img src="images/lapizazul.png" title="Lápiz azul" onclick="lapiz(4);"> 
+		<img src="images/lapizverde.png" title="Lápiz verde" onclick="lapiz(3);">
+		<img src="images/lapizrojo.png" title="Lápiz rojo" onclick="lapiz(1);">
+		<img src="images/lapizamarillo.png" title="Lápiz amarillo" onclick="lapiz(2);">
+		<img src="images/borrador.png" title="Borrador" onclick="lapiz(0);">
+	</div>
 	<div class="div-content-faces">
 		<img src="images/oreja.png">
 		<img src="images/mano.png">
@@ -35,7 +42,7 @@ if($_SESSION['app_user_perfil'] == 'PRIMARIA' || $_SESSION['app_user_perfil'] ==
 		<img src="images/nariz.png">
 		<img src="images/boca.png">		
 	</div>
-	<div class="div-canvas" id="div-canvas">
+	<div class="div-canvas borrador" id="div-canvas">
 		<canvas id="canvas"></canvas>
 	</div>
 
