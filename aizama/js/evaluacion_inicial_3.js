@@ -35,21 +35,30 @@ const lapiz = n => {
     }
 }
 function addListeners() {
-    /*document.getElementById('cursorImage').addEventListener('mousedown', mouseDown, false);
+    document.getElementById('cursorImage').addEventListener('mousedown', mouseDown, false);
     document.getElementById('cursorImage1').addEventListener('mousedown', mouseDown, false);
     document.getElementById('cursorImage2').addEventListener('mousedown', mouseDown, false);
     document.getElementById('cursorImage3').addEventListener('mousedown', mouseDown, false);
     document.getElementById('cursorImage4').addEventListener('mousedown', mouseDown, false);
-    //document.getElementById('cursorImage5').addEventListener('mousedown', mouseDown, false);
-	
+    document.getElementById('cursorImage5').addEventListener('mousedown', mouseDown, false);
+	document.getElementById('cursorImage6').addEventListener('mousedown', mouseDown, false);
+    document.getElementById('cursorImage7').addEventListener('mousedown', mouseDown, false);
+    document.getElementById('cursorImage8').addEventListener('mousedown', mouseDown, false);
+    document.getElementById('cursorImage9').addEventListener('mousedown', mouseDown, false);
+
     document.getElementById('cursorImage').addEventListener("touchstart", mouseDownTouch);
     document.getElementById('cursorImage1').addEventListener("touchstart", mouseDownTouch);
     document.getElementById('cursorImage2').addEventListener("touchstart", mouseDownTouch);
     document.getElementById('cursorImage3').addEventListener("touchstart", mouseDownTouch);
     document.getElementById('cursorImage4').addEventListener("touchstart", mouseDownTouch);
-   // document.getElementById('cursorImage5').addEventListener("touchstart", mouseDownTouch);
+    document.getElementById('cursorImage5').addEventListener("touchstart", mouseDownTouch);
+    document.getElementById('cursorImage6').addEventListener("touchstart", mouseDownTouch);
+    document.getElementById('cursorImage7').addEventListener("touchstart", mouseDownTouch);
+    document.getElementById('cursorImage8').addEventListener("touchstart", mouseDownTouch);
+    document.getElementById('cursorImage9').addEventListener("touchstart", mouseDownTouch);
+
     window.addEventListener('mouseup', mouseUp, false);
-    window.addEventListener("touchend", mouseUpTouch);*/
+    window.addEventListener("touchend", mouseUpTouch);
     document.getElementById('canvas').addEventListener('mousedown', mouseDown, false);
     window.addEventListener('mouseup', mouseUp, false);
 }
@@ -218,7 +227,7 @@ $(document).ready(function(){
     img.onload=function(){
         ctx.drawImage(img,0,0,img.width,img.height,0,0,width,height);
     }
-    img.src="images/lienzoanimales.png";
+    img.src="images/lienzo3.png";
 $("#btn-save").on('click', function () {
     html2canvas($("#evaluaciones")[0]).then((canvas) => {
         var imgageData = canvas.toDataURL("image/png");
