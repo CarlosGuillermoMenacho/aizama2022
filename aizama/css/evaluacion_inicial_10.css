@@ -40,6 +40,18 @@
 .oculto{
 	display: none;
 }
+.div-content-letra{
+    width: 150px;
+    height: 150px;
+    border: 1px solid #ccc;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.div-content-letra img{
+    width: 100px;
+}
 .div-content-eval{
 	border-radius: 5px;
     border: 1px solid #ccc;
@@ -84,7 +96,7 @@
     }
     .div-content-faces,.div-content-faces2{
         display: flex;
-        flex-direction: column;
+        flex-direction: row;
         gap: 20px;
         padding: 50px 0;
     }
@@ -113,6 +125,8 @@
         position: relative;
         max-width: 1000px;
         flex-direction: row;
+        flex-wrap: wrap;
+        gap: 20px;
     }
     .div-canvas{
     	width: 750px;

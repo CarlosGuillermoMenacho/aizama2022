@@ -35,32 +35,12 @@ const lapiz = n => {
     }
 }
 function addListeners() {
-    /*document.getElementById('cursorImage').addEventListener('mousedown', mouseDown, false);
+    document.getElementById('cursorImage').addEventListener('mousedown', mouseDown, false);
     document.getElementById('cursorImage1').addEventListener('mousedown', mouseDown, false);
     document.getElementById('cursorImage2').addEventListener('mousedown', mouseDown, false);
     document.getElementById('cursorImage3').addEventListener('mousedown', mouseDown, false);
     document.getElementById('cursorImage4').addEventListener('mousedown', mouseDown, false);
-    document.getElementById('cursorImage5').addEventListener('mousedown', mouseDown, false);
-	document.getElementById('cursorImage6').addEventListener('mousedown', mouseDown, false);
-    document.getElementById('cursorImage7').addEventListener('mousedown', mouseDown, false);
-    document.getElementById('cursorImage8').addEventListener('mousedown', mouseDown, false);
-    document.getElementById('cursorImage9').addEventListener('mousedown', mouseDown, false);
-
-    document.getElementById('cursorImage').addEventListener("touchstart", mouseDownTouch);
-    document.getElementById('cursorImage1').addEventListener("touchstart", mouseDownTouch);
-    document.getElementById('cursorImage2').addEventListener("touchstart", mouseDownTouch);
-    document.getElementById('cursorImage3').addEventListener("touchstart", mouseDownTouch);
-    document.getElementById('cursorImage4').addEventListener("touchstart", mouseDownTouch);
-    document.getElementById('cursorImage5').addEventListener("touchstart", mouseDownTouch);
-    document.getElementById('cursorImage6').addEventListener("touchstart", mouseDownTouch);
-    document.getElementById('cursorImage7').addEventListener("touchstart", mouseDownTouch);
-    document.getElementById('cursorImage8').addEventListener("touchstart", mouseDownTouch);
-    document.getElementById('cursorImage9').addEventListener("touchstart", mouseDownTouch);*/
-    document.getElementById('canvas').addEventListener('mousedown', mouseDown, false);
     window.addEventListener('mouseup', mouseUp, false);
-    window.addEventListener("touchend", mouseUpTouch);
-    //document.getElementById('canvas').addEventListener('mousedown', mouseDown, false);
-    //window.addEventListener('mouseup', mouseUp, false);
 }
 const redrawing = () => {
 	var ctx = canvas.getContext("2d");
@@ -75,7 +55,6 @@ const redrawing = () => {
         if(c == blanco)grosor = 10;
     
         ctx.arc(x, y, grosor, 0, Math.PI * 2, true);
-		//ctx.rect(gMoffsetX - 3, gMoffsety + 47, 6, 6);
 		ctx.fillStyle = c;
 		ctx.fill();
 		ctx.closePath();
@@ -213,27 +192,45 @@ function divMoveTouch(e){
     div.style.top = topAmount + 'px';
     div.style.left = leftAmount + 'px';
 }
-addListeners();
-
-$(document).ready(function(){
-	let div = document.getElementById("div-canvas");
-	let canvas = document.getElementById("canvas");
-	let rec = div.getBoundingClientRect();
-	let width = rec.width;
-	let height = rec.height;
-	canvas.width = width;
-	canvas.height = height;
-	var ctx=canvas.getContext("2d");
-
-    img=new Image();
-    circle = new Image();
-    equiz = new Image();
-    img.onload=function(){
-        ctx.drawImage(img,0,0,img.width,img.height,0,0,width,height);
+function getRndInteger(min, max) {
+  return Math.floor(Math.random() * (max - min) ) + min;
+}
+const init = () => {
+    $("#evaluaciones").empty();
+    let pos = []; 
+    let letras = ["a","b","c","d","e","f","g","h","i","j","k","l","m","n","ñ"];
+    while (pos.length < 5){
+        let ram = getRndInteger(0,15);
+        if(!pos.includes(ram))pos.push(ram);
     }
-    circle.src = "images/circlegreen.png";
-    equiz.src = "images/equiz.png";
-    img.src="images/lienzo6.png";
+    for (var i = 0; i < 15; i++) {
+        if(!pos.includes(i)){
+            $("#evaluaciones").append(
+                `<div class="div-content-letra">
+                    <img src="images/${letras[i]}.png">
+                </div>`
+            );  
+        }else{
+            $("#evaluaciones").append(
+                `<div class="div-content-letra">
+                    
+                </div>`
+            );
+        }
+    }
+    $("#evaluaciones").append(
+            `<div class="div-content-faces">
+                <img src="images/${letras[pos[0]]}.png" id="cursorImage" ondragstart="return false;">
+                <img src="images/${letras[pos[1]]}.png" id="cursorImage1" ondragstart="return false;">
+                <img src="images/${letras[pos[2]]}.png" id="cursorImage2" ondragstart="return false;">     
+                <img src="images/${letras[pos[3]]}.png" id="cursorImage3" ondragstart="return false;">
+                <img src="images/${letras[pos[4]]}.png" id="cursorImage4" ondragstart="return false;">
+            </div>`
+        );
+}
+addListeners();
+$(document).ready(function(){
+//init();	
 $("#btn-save").on('click', function () {
     html2canvas($("#evaluaciones")[0]).then((canvas) => {
         var imgageData = canvas.toDataURL("image/png");
