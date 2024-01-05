@@ -30,16 +30,11 @@ if($_SESSION['app_user_perfil'] == 'PRIMARIA' || $_SESSION['app_user_perfil'] ==
 <div id="evaluaciones" class="div-content-eval">
 	
 	<div class="div-content-face">
-		<img src="images/lienzo7.png" >
-		
+		<img src="images/lienzo7.png" >	
 	</div>
 		
 	<div class="div-content-faces">
-		<img src="images/1.png" id="cursorImage" ondragstart="return false;">
-		<img src="images/2.png" id="cursorImage1" ondragstart="return false;">
-		<img src="images/3.png" id="cursorImage2" ondragstart="return false;">		
-		<img src="images/14.png" id="cursorImage3" ondragstart="return false;">
-		<img src="images/20.png" id="cursorImage4" ondragstart="return false;">
+		
 	</div>
 </div>
 	<div class="btn-save">

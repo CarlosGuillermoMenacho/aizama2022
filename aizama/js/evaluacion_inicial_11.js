@@ -35,12 +35,29 @@ const lapiz = n => {
     }
 }
 function addListeners() {
-    document.getElementById('cursorImage').addEventListener('mousedown', mouseDown, false);
     document.getElementById('cursorImage1').addEventListener('mousedown', mouseDown, false);
     document.getElementById('cursorImage2').addEventListener('mousedown', mouseDown, false);
     document.getElementById('cursorImage3').addEventListener('mousedown', mouseDown, false);
     document.getElementById('cursorImage4').addEventListener('mousedown', mouseDown, false);
+    document.getElementById('cursorImage5').addEventListener('mousedown', mouseDown, false);
+    document.getElementById('cursorImage6').addEventListener('mousedown', mouseDown, false);
+    document.getElementById('cursorImage7').addEventListener('mousedown', mouseDown, false);
+    document.getElementById('cursorImage8').addEventListener('mousedown', mouseDown, false);
+    document.getElementById('cursorImage9').addEventListener('mousedown', mouseDown, false);
+    document.getElementById('cursorImage10').addEventListener('mousedown', mouseDown, false);
     window.addEventListener('mouseup', mouseUp, false);
+
+    document.getElementById('cursorImage1').addEventListener("touchstart", mouseDownTouch);
+    document.getElementById('cursorImage2').addEventListener("touchstart", mouseDownTouch);
+    document.getElementById('cursorImage3').addEventListener("touchstart", mouseDownTouch);
+    document.getElementById('cursorImage4').addEventListener("touchstart", mouseDownTouch);
+    document.getElementById('cursorImage5').addEventListener("touchstart", mouseDownTouch);
+    document.getElementById('cursorImage6').addEventListener("touchstart", mouseDownTouch);
+    document.getElementById('cursorImage7').addEventListener("touchstart", mouseDownTouch);
+    document.getElementById('cursorImage8').addEventListener("touchstart", mouseDownTouch);
+    document.getElementById('cursorImage9').addEventListener("touchstart", mouseDownTouch);
+    document.getElementById('cursorImage10').addEventListener("touchstart", mouseDownTouch);
+    window.addEventListener("touchend", mouseUpTouch);
 }
 const redrawing = () => {
 	var ctx = canvas.getContext("2d");
@@ -196,41 +213,30 @@ function getRndInteger(min, max) {
   return Math.floor(Math.random() * (max - min) ) + min;
 }
 const init = () => {
-    $("#evaluaciones").empty();
+    //$("#evaluaciones").empty();
     let pos = []; 
-    let letras = ["a","b","c","d","e","f","g","h","i","j","k","l","m","n","ñ"];
-    while (pos.length < 5){
-        let ram = getRndInteger(0,15);
+    let letras = [{top:85,left:150,number:1},{top:52,left:245,number:2},{top:15,left:335,number:3},{top:28,left:430,number:4},{top:35,left:530,number:5},{top:107,left:592,number:6},{top:178,left:526,number:7},{top:192,left:427,number:8},{top:207,left:331,number:9},{top:236,left:241,number:10},{top:252,left:141,number:11},{top:318,left:71,number:12},{top:418,left:88,number:13},{top:412,left:187,number:14},{top:393,left:279,number:15},{top:372,left:376,number:16},{top:349,left:470,number:17},{top:378,left:561,number:18},{top:469,left:593,number:19},{top:498,left:502,number:20}];
+    while (pos.length < 10){
+        let ram = getRndInteger(0,20);
         if(!pos.includes(ram))pos.push(ram);
     }
-    for (var i = 0; i < 15; i++) {
+    console.log(pos)
+    for (var i = 0; i < 20; i++) {
         if(!pos.includes(i)){
-            $("#evaluaciones").append(
-                `<div class="div-content-letra">
-                    <img src="images/${letras[i]}.png">
-                </div>`
+            $(".div-content-face").append(
+                `<img src="images/${letras[i].number}.png" style="width:75px;position:absolute; top:${letras[i].top}px;left:${letras[i].left}px">`
             );  
-        }else{
-            $("#evaluaciones").append(
-                `<div class="div-content-letra">
-                    
-                </div>`
-            );
         }
     }
-    $("#evaluaciones").append(
-            `<div class="div-content-faces">
-                <img src="images/${letras[pos[0]]}.png" id="cursorImage" ondragstart="return false;">
-                <img src="images/${letras[pos[1]]}.png" id="cursorImage1" ondragstart="return false;">
-                <img src="images/${letras[pos[2]]}.png" id="cursorImage2" ondragstart="return false;">     
-                <img src="images/${letras[pos[3]]}.png" id="cursorImage3" ondragstart="return false;">
-                <img src="images/${letras[pos[4]]}.png" id="cursorImage4" ondragstart="return false;">
-            </div>`
-        );
+    for (var i = 0; i < pos.length; i++) {
+            $(".div-content-faces").append(
+                `<img src="images/${letras[pos[i]].number}.png" id="cursorImage${i+1}" ondragstart="return false;">`
+            );
+        }
+    addListeners();
 }
-addListeners();
 $(document).ready(function(){
-//init();	
+init();	
 $("#btn-save").on('click', function () {
     html2canvas($("#evaluaciones")[0]).then((canvas) => {
         var imgageData = canvas.toDataURL("image/png");
