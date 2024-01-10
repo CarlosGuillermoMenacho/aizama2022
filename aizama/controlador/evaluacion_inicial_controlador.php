@@ -136,13 +136,283 @@ switch ($_GET['op']) {
 		    			exit();
 					}
 				}
+			}else{
+				$result_actividad = $Evaluacion->get_actividades($codeva);
+				if($row_act = $result_actividad->fetch_object()){
+					$createdAt = date("Y-m-d H:i:s");
+					$Evaluacion->iniciar_evaluacion($user,$codeva,1,$createdAt);
+					echo json_encode(["status"=>"ok","actividad"=>$row_act->script]);
+		    		exit();
+				}else{
+					echo json_encode(["status"=>"errorActividad"]);
+		    		exit();
+				}
 			}
 		}else{
 			echo json_encode(["status"=>"errorEval"]);
 	    	exit();
 		}
-
 	   	break;
+	   	case 'save_actividad_alumno':
+	   		$user = isset($_SESSION["app_user_id"])?$_SESSION["app_user_id"]:"";
+		    if(empty($user)){
+		    	echo json_encode(["status"=>"eSession"]);
+		    	exit();
+		    }
+			$codeva = isset($_POST["codeva"])?$_POST["codeva"]:"";
+			$captura = isset($_POST["captura"])?$_POST["captura"]:"";
+			$id_actividad = isset($_POST["id_actividad"])?$_POST["id_actividad"]:"";
+			$ordenadas = isset($_POST["ordenadas"])?$_POST["ordenadas"]:"";
+			if(empty($codeva)||empty($captura)||empty($id_actividad)||empty($ordenadas)){
+				echo json_encode(["status"=>"errorParam"]);
+		    	exit();
+			}
+			require_once'../modelo/conexion.php';
+			require_once'../modelo/modelo_evaluacion_inicial.php';
+			$db = Conectar::conexion();
+			$Evaluacion = new Evaluacion_inicial($db);
+			$result = $Evaluacion->get_evaluacion_alumno($user,$codeva);
+			$row = "";
+			if(!$row = $result->fetch_object()){
+				echo json_encode(["status"=>"errorProceso"]);//No se ha iniciado la evaluación
+				exit();
+			}
+			$proceso = $row->proceso;
+			if($proceso == 0){
+				echo json_encode(["status"=>"errorFinalized"]);//La evaluación está finalizada
+				exit();
+			}
+			$result = $Evaluacion->get_actividad_alumno($user,$id_evaluacion_alumno,$id_actividad);
+			$createdAt = date("Y-m-d H:i:s");
+			if($row = $result->fetch_object()){//La actividad ya existe en la base de datos
+				$id = $row->id;
+				$Evaluacion->update_captura_actividad_alumno($id,$captura,$ordenadas,$createdAt);
+				echo json_encode(["status"=>"ok"]);
+				exit();	
+			}
+			$Evaluacion->save_actividad_alumno($user,$codeva,$id_actividad,$captura,$ordenadas,$createdAt);
+			echo json_encode(["status"=>"ok"]);
+	   	break;
+	   	case 'finalizar_evaluacion':
+	   		$user = isset($_SESSION["app_user_id"])?$_SESSION["app_user_id"]:"";
+		    if(empty($user)){
+		    	echo json_encode(["status"=>"eSession"]);
+		    	exit();
+		    }
+		    $codeva = isset($_POST["codeva"])?$_POST["codeva"]:"";
+			
+			if(empty($codeva)){
+				echo json_encode(["status"=>"errorParam"]);
+		    	exit();
+			}
+			require_once'../modelo/conexion.php';
+			require_once'../modelo/modelo_evaluacion_inicial.php';
+			$db = Conectar::conexion();
+			$Evaluacion = new Evaluacion_inicial($db);
+			$result = $Evaluacion->get_evaluacion_alumno($user,$codeva);
+			if($row = $result->fetch_object()){
+				$proceso = $row->proceso;
+				if($proceso == 1){
+					$updateAt = date("Y-m-d H:i:s");
+					$Evaluacion->finalizar_evaluacion($row->id,$updateAt);
+					echo json_encode(["status"=>"ok"]);
+					exit();
+				}
+				echo json_encode(["status"=>"evalFinalized"]);
+				exit()
+			}
+			echo json_encode(["status"=>"errorEvaluacion"]);
+			
+	   		break;
+	   	case 'get_evaluaciones_curso':
+	   		$user = isset($_SESSION["app_user_id"])?$_SESSION["app_user_id"]:"";
+		    if(empty($user)){
+		    	echo json_encode(["status"=>"eSession"]);
+		    	exit();
+		    }
+		    $trimestre = isset($_SESSION["app_user_bimestre"])?$_SESSION["app_user_bimestre"]:"";
+			if(empty($trimestre)){
+				echo json_encode(["status"=>"eTrimestre"]);
+		    	exit();
+			}
+		    $codcur = isset($_POST["codcur"])?$_POST["codcur"]:"";
+		    $codpar = isset($_POST["codpar"])?$_POST["codpar"]:"";
+			
+			if(empty($codcur)||empty($codpar)){
+				echo json_encode(["status"=>"errorParam"]);
+		    	exit();
+			}
+			
+			if(empty($codeva)){
+				echo json_encode(["status"=>"errorParam"]);
+		    	exit();
+			}
+			require_once'../modelo/conexion.php';
+			require_once'../modelo/modelo_evaluacion_inicial.php';
+			$db = Conectar::conexion();
+			$Evaluacion = new Evaluacion_inicial($db);
+			$gestion = date("Y");
+		    $result = $Evaluacion->get_all_trimestre_curso($gestion,$trimestre,$codcur,$codpar);
+		    $evaluaciones = [];
+		    while ($row = $result->fetch_object()) {
+			    $evaluaciones[] = [
+			    	"codeva"=>$id,
+			    	"descripcion"=>$row->descripcion,
+			    	"visible"=>$row->visible,
+			    	"inicio"=>$row->inicio,
+			    	"fin"=>$row->fin,
+			    	"timeout"=>$row->fueradetiempo
+			    ];
+		    }
+		    echo json_encode(["status"=>"ok","evaluaciones"=>$evaluaciones]);
+	   		break;
+	   	case 'calificar_evaluacion':
+	   		$user = isset($_SESSION["app_user_id"])?$_SESSION["app_user_id"]:"";
+		    if(empty($user)){
+		    	echo json_encode(["status"=>"eSession"]);
+		    	exit();
+		    }
+		    $codeva = isset($_POST["codeva"])?$_POST["codeva"]:"";
+			$calificacion = isset($_POST["calificacion"])?$_POST["calificacion"]:"";
+			if(empty($codeva)||empty($calificacion)){
+				echo json_encode(["status"=>"errorParam"]);
+		    	exit();
+			}
+			$updateAt = date("Y-m-d H:i:s");
+			require_once'../modelo/conexion.php';
+			require_once'../modelo/modelo_evaluacion_inicial.php';
+			$db = Conectar::conexion();
+			$Evaluacion = new Evaluacion_inicial($db);
+			$Evaluacion->calificar_evaluacion_alumno($codeva,$calificacion,$updateAt);
+			echo json_encode(["status"=>"ok"]);
+	   		break;
+	   	case 'calificar_actividad':
+	   		$user = isset($_SESSION["app_user_id"])?$_SESSION["app_user_id"]:"";
+		    if(empty($user)){
+		    	echo json_encode(["status"=>"eSession"]);
+		    	exit();
+		    }
+		    $codeva = isset($_POST["codeva"])?$_POST["codeva"]:"";
+			$calificacion = isset($_POST["calificacion"])?$_POST["calificacion"]:"";
+			if(empty($codeva)||empty($calificacion)){
+				echo json_encode(["status"=>"errorParam"]);
+		    	exit();
+			}
+			$updateAt = date("Y-m-d H:i:s");
+			require_once'../modelo/conexion.php';
+			require_once'../modelo/modelo_evaluacion_inicial.php';
+			$db = Conectar::conexion();
+			$Evaluacion = new Evaluacion_inicial($db);
+			$Evaluacion->update_observacion_actividad_alumno($codeva,$calificacion,$updateAt);
+			echo json_encode(["status"=>"ok"]);
+	   		break;
+	   	case 'eliminar_evaluacion':
+	   		$user = isset($_SESSION["app_user_id"])?$_SESSION["app_user_id"]:"";
+		    if(empty($user)){
+		    	echo json_encode(["status"=>"eSession"]);
+		    	exit();
+		    }
+		    $codeva = isset($_POST["codeva"])?$_POST["codeva"]:"";
+	   		if(empty($codeva)){
+				echo json_encode(["status"=>"errorParam"]);
+		    	exit();
+			}
+			$updateAt = date("Y-m-d H:i:s");
+			require_once'../modelo/conexion.php';
+			require_once'../modelo/modelo_evaluacion_inicial.php';
+			$db = Conectar::conexion();
+			$Evaluacion = new Evaluacion_inicial($db);
+			$Evaluacion->delete($codeva,$updateAt);
+			echo json_encode(["status"=>"ok"]);
+	   		break;
+	   	case 'eliminar_evaluacion_alumno':
+	   		$user = isset($_SESSION["app_user_id"])?$_SESSION["app_user_id"]:"";
+		    if(empty($user)){
+		    	echo json_encode(["status"=>"eSession"]);
+		    	exit();
+		    }
+		    $codeva = isset($_POST["codeva"])?$_POST["codeva"]:"";
+	   		if(empty($codeva)){
+				echo json_encode(["status"=>"errorParam"]);
+		    	exit();
+			}	
+			$updateAt = date("Y-m-d H:i:s");
+			require_once'../modelo/conexion.php';
+			require_once'../modelo/modelo_evaluacion_inicial.php';
+			$db = Conectar::conexion();
+			$Evaluacion = new Evaluacion_inicial($db);
+			$Evaluacion->delete_evaluacion_proceso($codeva,$updateAt);
+			echo json_encode(["status"=>"ok"]);
+	   		break;	
+	   	case 'programar_evalaucion':
+	   		$user = isset($_SESSION["app_user_id"])?$_SESSION["app_user_id"]:"";
+		    if(empty($user)){
+		    	echo json_encode(["status"=>"eSession"]);
+		    	exit();
+		    }
+		    $trimestre = isset($_SESSION["app_user_bimestre"])?$_SESSION["app_user_bimestre"]:"";
+			if(empty($trimestre)){
+				echo json_encode(["status"=>"eTrimestre"]);
+		    	exit();
+			}
+		    $codcur = isset($_POST["codcur"])?$_POST["codcur"]:"";
+		    $codpar = isset($_POST["codpar"])?$_POST["codpar"]:"";
+			$descripcion = isset($_POST["descripcion"])?$_POST["descripcion"]:"";
+			$visible = isset($_POST["visible"])?$_POST["visible"]:"";
+			$inicio = isset($_POST["inicio"])?$_POST["inicio"]:"";
+			$fin = isset($_POST["fin"])?$_POST["fin"]:"";
+			$timeout = isset($_POST["timeout"])?$_POST["timeout"]:"";
+			if(empty($codcur)||empty($codpar)||empty($descripcion)||empty($visible)||empty($inicio)||empty($fin)||empty($timeout)){
+				echo json_encode(["status"=>"errorParam"]);
+		    	exit();
+			}
+			$gestion = date("Y");
+			$createdAt = date("Y-m-d H:i:s");
+		    require_once'../modelo/conexion.php';
+			require_once'../modelo/modelo_evaluacion_inicial.php';
+			$db = Conectar::conexion();
+			$Evaluacion = new Evaluacion_inicial($db);
+			$id  = $Evaluacion->save($gestion,$trimestre,$codcur,$codpar,$descripcion,$visible,$inicio,$fin,$timeout,$createdAt);	
+			echo json_encode(["status"=>"ok","codeva"=>$id]);	
+	   		break;
+	   	case 'agregar_actividad':
+	   		$user = isset($_SESSION["app_user_id"])?$_SESSION["app_user_id"]:"";
+		    if(empty($user)){
+		    	echo json_encode(["status"=>"eSession"]);
+		    	exit();
+		    }
+		    $codeva = isset($_POST["codeva"])?$_POST["codeva"]:"";
+			$id_actividad = isset($_POST["id_actividad"])?$_POST["id_actividad"]:"";
+			if(empty($codeva)||empty($id_actividad)){
+				echo json_encode(["status"=>"errorParam"]);
+		    	exit();
+			}
+			require_once'../modelo/conexion.php';
+			require_once'../modelo/modelo_evaluacion_inicial.php';
+			$db = Conectar::conexion();
+			$Evaluacion = new Evaluacion_inicial($db);
+			$Evaluacion->save_actividad($codeva,$id_actividad);
+			echo json_encode(["status"=>"ok"]);
+	   		break;
+	   	case 'quitar_actividad':
+	   		$user = isset($_SESSION["app_user_id"])?$_SESSION["app_user_id"]:"";
+		    if(empty($user)){
+		    	echo json_encode(["status"=>"eSession"]);
+		    	exit();
+		    }
+		    $codeva = isset($_POST["codeva"])?$_POST["codeva"]:"";
+			$id_actividad = isset($_POST["id_actividad"])?$_POST["id_actividad"]:"";
+			if(empty($codeva)||empty($id_actividad)){
+				echo json_encode(["status"=>"errorParam"]);
+		    	exit();
+			}
+			require_once'../modelo/conexion.php';
+			require_once'../modelo/modelo_evaluacion_inicial.php';
+			$db = Conectar::conexion();
+			$Evaluacion = new Evaluacion_inicial($db);
+			$Evaluacion->delete_actividad($id_evaluacion,$id_actividad);
+			echo json_encode(["status"=>"ok"]);
+	   		break;
 	default:
 		echo json_encode(["status"=>"errorOP"]);
 		break;

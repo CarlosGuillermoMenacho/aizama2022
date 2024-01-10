@@ -49,7 +49,7 @@
 			$type = "iiiisissis";
 			$params = array($gestion,$trimestre,$codcur,$codpar,$descripcion,$visible,$inicio,$fin,$fuera_de_tiempo,$createdAt);
 			$result = ejecutar_consulta($this->db,$sql,$type,$params);
-			return $result;
+			return $this->db->insert_id;
 		}
 		public function update($id,$descripcion,$visible,$inicio,$fin,$fuera_de_tiempo,$updateAt){
 			$sql = "UPDATE evaluacion_inicial SET descripcion = ?, visible = ?, inicio = ?, fin = ?, fueradetiempo = ?, updateAt = ? WHERE id = ?";
@@ -92,6 +92,13 @@
 			$result = ejecutar_consulta($this->db,$sql,$type,$params);
 			return $result;
 		}
+		public function get_actividad_alumno($codalu,$id_evaluacion_alumno,$id_actividad){
+			$sql = "SELECT * FROM evaluacion_inicial_actividad_alumno WHERE estado = 1 AND codalu = ? AND id_evaluacion_alumno = ? AND id_actividad = ?";
+			$type = "iii";
+			$params = array($codalu,$id_evaluacion_alumno,$id_actividad);
+			$result = ejecutar_consulta($this->db,$sql,$type,$params);
+			return $result;
+		}
 		public function update_captura_actividad_alumno($id,$captura,$ordenadas,$updateAt){
 			$sql = "UPDATE evaluacion_inicial_actividad_alumno SET captura = ?,ordenadas = ? , updateAt = ? WHERE id = ?";
 			$type = "sssi";
@@ -117,6 +124,13 @@
 			$sql = "SELECT * FROM evaluacion_inicial_alumno WHERE codalu = ? AND id_evaluacion = ? AND estado = 1";
 			$type = "ii";
 			$params = array($codalu,$id_evaluacion);
+			$result = ejecutar_consulta($this->db,$sql,$type,$params);
+			return $result;	
+		}
+		public function calificar_evaluacion_alumno($id,$calificacion,$updateAt){
+			$sql = "UPDATE evaluacion_inicial_alumno SET proceso = 0, calificacion = ?,updateAt = ? WHERE id = ?";
+			$type = "ssi";
+			$params = array($calificacion,$updateAt,$id);
 			$result = ejecutar_consulta($this->db,$sql,$type,$params);
 			return $result;	
 		}
