@@ -219,7 +219,7 @@ switch ($_GET['op']) {
 					exit();
 				}
 				echo json_encode(["status"=>"evalFinalized"]);
-				exit()
+				exit();
 			}
 			echo json_encode(["status"=>"errorEvaluacion"]);
 			
@@ -242,11 +242,6 @@ switch ($_GET['op']) {
 				echo json_encode(["status"=>"errorParam"]);
 		    	exit();
 			}
-			
-			if(empty($codeva)){
-				echo json_encode(["status"=>"errorParam"]);
-		    	exit();
-			}
 			require_once'../modelo/conexion.php';
 			require_once'../modelo/modelo_evaluacion_inicial.php';
 			$db = Conectar::conexion();
@@ -256,7 +251,8 @@ switch ($_GET['op']) {
 		    $evaluaciones = [];
 		    while ($row = $result->fetch_object()) {
 			    $evaluaciones[] = [
-			    	"codeva"=>$id,
+			    	"codeva"=>$row->id,
+			    	"codmat"=>$row->codmat,
 			    	"descripcion"=>$row->descripcion,
 			    	"visible"=>$row->visible,
 			    	"inicio"=>$row->inicio,
@@ -265,6 +261,46 @@ switch ($_GET['op']) {
 			    ];
 		    }
 		    echo json_encode(["status"=>"ok","evaluaciones"=>$evaluaciones]);
+	   		break;
+	   	case 'get_evaluaciones_profesor':
+	   		$user = isset($_SESSION["app_user_id"])?$_SESSION["app_user_id"]:"";
+		    if(empty($user)){
+		    	echo json_encode(["status"=>"eSession"]);
+		    	exit();
+		    }
+		    $trimestre = isset($_SESSION["app_user_bimestre"])?$_SESSION["app_user_bimestre"]:"";
+			if(empty($trimestre)){
+				echo json_encode(["status"=>"eTrimestre"]);
+		    	exit();
+			}
+			require_once'../modelo/conexion.php';
+			require_once'../modelo/modelo_evaluacion_inicial.php';
+			$db = Conectar::conexion();
+			$Evaluacion = new Evaluacion_inicial($db);
+			$gestion = date("Y");
+		    $result = $Evaluacion->get_evaluaciones_profesor($gestion,$trimestre,$user);
+		    $evaluaciones = [];
+		    while ($row = $result->fetch_object()) {
+		    	$result_actividades = $Evaluacion->contar_actividades($row->id);
+		    	$row_actividades = $result_actividades->fetch_object();
+			    $evaluaciones[] = [
+			    	"codeva"=>$row->id,
+			    	"codmat"=>$row->codmat,
+			    	"codcur"=>$row->codcur,
+			    	"codpar"=>$row->codpar,
+			    	"descripcion"=>$row->descripcion,
+			    	"visible"=>$row->visible,
+			    	"inicio"=>$row->inicio,
+			    	"fin"=>$row->fin,
+			    	"timeout"=>$row->fueradetiempo,
+			    	"actividades"=>$row_actividades->total,
+			    	"fini"=>substr($row->inicio, 0,10),
+			    	"ffin"=>substr($row->fin, 0,10),
+			    	"hi"=>substr($row->inicio, 11,16),
+			    	"hf"=>substr($row->fin, 11,16),
+			    ];
+		    }
+		    echo json_encode(["status"=>"ok","data"=>$evaluaciones]);
 	   		break;
 	   	case 'calificar_evaluacion':
 	   		$user = isset($_SESSION["app_user_id"])?$_SESSION["app_user_id"]:"";
@@ -344,7 +380,7 @@ switch ($_GET['op']) {
 			$Evaluacion->delete_evaluacion_proceso($codeva,$updateAt);
 			echo json_encode(["status"=>"ok"]);
 	   		break;	
-	   	case 'programar_evalaucion':
+	   	case 'programar_evaluacion':
 	   		$user = isset($_SESSION["app_user_id"])?$_SESSION["app_user_id"]:"";
 		    if(empty($user)){
 		    	echo json_encode(["status"=>"eSession"]);
@@ -411,6 +447,34 @@ switch ($_GET['op']) {
 			$db = Conectar::conexion();
 			$Evaluacion = new Evaluacion_inicial($db);
 			$Evaluacion->delete_actividad($id_evaluacion,$id_actividad);
+			echo json_encode(["status"=>"ok"]);
+	   		break;
+	   	case 'update_evaluacion':
+	   		$user = isset($_SESSION["app_user_id"])?$_SESSION["app_user_id"]:"";
+		    if(empty($user)){
+		    	echo json_encode(["status"=>"eSession"]);
+		    	exit();
+		    }
+		    $codeva = isset($_POST["codeva"])?$_POST["codeva"]:"";
+		    $descripcion = isset($_POST["descripcion"])?$_POST["descripcion"]:"";
+		    $visible = isset($_POST["visible"])?$_POST["visible"]:"";
+		    $inicio = isset($_POST["fini"])?$_POST["fini"]:"";
+		    $fin = isset($_POST["ffin"])?$_POST["ffin"]:"";
+		    $horaini = isset($_POST["horaini"])?$_POST["horaini"]:"";
+		    $horafin = isset($_POST["horafin"])?$_POST["horafin"]:"";
+		    $timeout = isset($_POST["timeout"])?$_POST["timeout"]:"";
+		    if(empty($codeva)||empty($descripcion)||empty($visible)||empty($inicio)||empty($fin)||empty($timeout)||empty($horaini)||empty($horafin)){
+				echo json_encode(["status"=>"errorParam"]);
+		    	exit();
+			}
+			$inicio = "$inicio $horaini";
+			$fin = "$fin $horafin";
+			require_once'../modelo/conexion.php';
+			require_once'../modelo/modelo_evaluacion_inicial.php';
+			$db = Conectar::conexion();
+			$Evaluacion = new Evaluacion_inicial($db);
+			$updateAt = date("Y-m-d H:i:s");
+			$Evaluacion->update($codeva,$descripcion,$visible,$inicio,$fin,$timeout,$updateAt);
 			echo json_encode(["status"=>"ok"]);
 	   		break;
 	default:

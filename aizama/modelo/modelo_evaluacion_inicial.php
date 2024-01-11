@@ -36,6 +36,14 @@
 			$result = ejecutar_consulta($this->db,$sql,$type,$params);
 			return $result;	
 		}
+
+		public function get_evaluaciones_profesor($gestion,$trimestre,$codprof){
+			$sql = "SELECT DISTINCT ei.id, ei.codcur,ei.codpar,ei.codmat,ei.descripcion,ei.visible,ei.inicio,ei.fin,ei.fueradetiempo FROM evaluacion_inicial ei INNER JOIN prof_cur_mat p ON ei.gestion = ? AND ei.trimestre = ? AND ei.codcur = p.codcur AND ei.codpar = p.codpar  AND ei.estado = 1 AND p.estado = 'activo' AND p.gestion = ? AND p.prof = ?";
+			$type = "iiis";
+			$params = array($gestion,$trimestre,$gestion,$codprof);
+			$result = ejecutar_consulta($this->db,$sql,$type,$params);
+			return $result;	
+		}
 		public function get_all_trimestre_curso($gestion,$trimestre,$codcur,$codpar){
 			$sql = "SELECT * FROM evaluacion_inicial WHERE gestion = ? AND trimestre = ? AND codcur = ? AND codpar = ? AND estado = 1";
 			$type = "iiii";
@@ -43,11 +51,11 @@
 			$result = ejecutar_consulta($this->db,$sql,$type,$params);
 			return $result;	
 		}		
-		public function save($gestion,$trimestre,$codcur,$codpar,$descripcion,$visible,$inicio,$fin,$fuera_de_tiempo,$createdAt){
-			$sql = "INSERT INTO evaluacion_inicial(gestion,trimestre,codcur,codpar,descripcion,visible,inicio,fin,fueradetiempo,createdAt,estado)
-					VALUES(?,?,?,?,?,?,?,?,?,?,1)";
-			$type = "iiiisissis";
-			$params = array($gestion,$trimestre,$codcur,$codpar,$descripcion,$visible,$inicio,$fin,$fuera_de_tiempo,$createdAt);
+		public function save($gestion,$trimestre,$codcur,$codpar,$codmat,$descripcion,$visible,$inicio,$fin,$fuera_de_tiempo,$createdAt){
+			$sql = "INSERT INTO evaluacion_inicial(gestion,trimestre,codcur,codpar,codmat,descripcion,visible,inicio,fin,fueradetiempo,createdAt,estado)
+					VALUES(?,?,?,?,?,?,?,?,?,?,?,1)";
+			$type = "iiiississis";
+			$params = array($gestion,$trimestre,$codcur,$codpar,$codmat,$descripcion,$visible,$inicio,$fin,$fuera_de_tiempo,$createdAt);
 			$result = ejecutar_consulta($this->db,$sql,$type,$params);
 			return $this->db->insert_id;
 		}
@@ -157,6 +165,13 @@
 		}
 		public function get_actividades($codeva){
 			$sql = "SELECT a.id,a.descripcion,a.script FROM evaluacion_inicial_actividad ea INNER JOIN evaluacion_inicial_actividades a ON ea.id_actividad_evaluacion_inicial = a.id AND ea.estado = 1 AND a.estado = 1 AND ea.id_evaluacion_inicial = ?";
+			$type = "i";
+			$params = array($codeva);
+			$result = ejecutar_consulta($this->db,$sql,$type,$params);
+			return $result;
+		}
+		public function contar_actividades($codeva){
+			$sql = "SELECT count(*) as total FROM evaluacion_inicial_actividad ea INNER JOIN evaluacion_inicial_actividades a ON ea.id_actividad_evaluacion_inicial = a.id AND ea.estado = 1 AND a.estado = 1 AND ea.id_evaluacion_inicial = ?";
 			$type = "i";
 			$params = array($codeva);
 			$result = ejecutar_consulta($this->db,$sql,$type,$params);

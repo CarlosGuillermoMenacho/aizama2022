@@ -21,7 +21,7 @@ if(isset($_POST['vf_usuario'])&&!empty($_POST['vf_usuario']) && isset($_POST['vf
   $vUsuario = strtoupper($_POST['vf_usuario']);
   $vClave   = strtoupper($_POST['vf_clave']);
 
-  $sql = "SELECT p.codprof, p.apepro, p.nompro, p.clave FROM profe p WHERE p.codprof='".$vUsuario."' AND p.clave=".$vClave;
+  $sql = "SELECT p.codprof, p.apepro, p.nompro, p.clave,p.NIVEL FROM profe p WHERE p.codprof='".$vUsuario."' AND p.clave=".$vClave;
 
 if(trim($_POST['vf_usuario'])<>"" && trim($_POST['vf_clave'])<>"")
 /*ESTE IF ME PERMITE SALIR Y VOLVER A INDEX.PHP */
@@ -51,6 +51,7 @@ if(trim($_POST['vf_usuario'])<>"" && trim($_POST['vf_clave'])<>"")
 		   $_SESSION['app_user_nombre']= '';
 	       $_SESSION['app_user_access'] = date("Y-n-j H:i:s");
 		   $_SESSION['app_user_sysdat']= date("Y-n-j");
+       $_SESSION['app_user_nivel']=$row[4];
 
 			$hora_actual = date("H:i:s");
 			$detalle = 'Ingreso: Usr correcto: '.$_POST['vf_usuario'];

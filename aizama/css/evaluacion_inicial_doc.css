@@ -1,0 +1,26 @@
+:root{
+	--color1 : #006581;
+	--color2: #e23b3b;
+	--color3: lightblue;
+	--color4:rgb(224, 218, 216); /*Gris*/
+	--color5:rgb(186, 214, 206); /*verde*/
+}
+.div-title{
+	text-align: center;
+    color: var(--color1);
+    text-transform: uppercase;
+}
+.div-btn-add-evaluacion button{
+	padding: 10px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    text-transform: uppercase;
+    color: white;
+    font-weight: bold;
+    background: var(--background-green-selected);
+}
+.div-btn-add-evaluacion button:hover{
+	background: var(--background-cursor-hover);
+	color: var(--background-green-selected);
+}

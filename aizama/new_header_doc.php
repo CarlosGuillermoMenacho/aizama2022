@@ -234,102 +234,121 @@ isset($_SESSION["foto"])?$logo = $_SESSION["foto"]:$logo = $logo;
             </div>
           </td>
         </tr>
-        <tr>
-          <td>
-            <div class="div-menu-item" onclick="go_page('Evaluaciones_mixtas.php')">
-              <div class="div-icon-menu">
-                <img src="images/test-mix.png">
-              </div>
-              <div class="name-item">
-                <a href="#">Evaluación Mixta</a>
-              </div>
-            </div>
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <div class="div-menu-item" onclick="go_page('evaluaciones_escritas.php')">
-              <div class="div-icon-menu">
-                <img src="images/rol.png">
-              </div>
-              <div class="name-item">
-                <a href="#">Evaluación Escrita</a>
-              </div>
-            </div>
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <div class="div-menu-item" onclick="go_page('evaluaciones_seleccion_doc.php')">
-              <div class="div-icon-menu">
-                <img src="images/test.png">
-              </div>
-              <div class="name-item">
-                <a href="#">Evaluación de Selección</a>
-              </div>
-            </div>
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <div class="div-menu-item" onclick="go_page('evaluaciones_vr2.php')">
-              <div class="div-icon-menu">
-                <img src="images/calificacion.png">
-              </div>
-              <div class="name-item">
-                <a href="#">Notas de Exámenes de Selección</a>
-              </div>
-            </div>
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <div class="div-menu-item" onclick="go_page('reg_ser_decidir.php')">
-              <div class="div-icon-menu">
-                <img src="images/serdecidir.png">
-              </div>
-              <div class="name-item">
-                <a href="#">Notas Ser y Decidir</a>
-              </div>
-            </div>
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <div class="div-menu-item" onclick="go_page('auto_evaluaciones.php')">
-              <div class="div-icon-menu">
-                <img src="images/autoevaluacion.png">
-              </div>
-              <div class="name-item">
-                <a href="#">Auto Evaluaciones</a>
-              </div>
-            </div>
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <div class="div-menu-item" onclick="go_page('reg_notas1.php')">
-              <div class="div-icon-menu">
-                <img src="images/notatrimestral.png">
-              </div>
-              <div class="name-item">
-                <a href="#">Notas Trimestrales</a>
-              </div>
-            </div>
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <div class="div-menu-item" onclick="go_page('top_calificaciones_doc.php')">
-              <div class="div-icon-menu">
-                <img src="images/best.png">
-              </div>
-              <div class="name-item">
-                <a href="#">Mejores Notas</a>
-              </div>
-            </div>
-          </td>
-        </tr>
+        <?php 
+          if($_SESSION["app_user_nivel"] == "Inicial"){
+            echo '<tr>
+                    <td>
+                      <div class="div-menu-item" onclick="go_page(\'evaluaciones_inicial_doc.php\')">
+                        <div class="div-icon-menu">
+                          <img src="images/test.png">
+                        </div>
+                        <div class="name-item">
+                          <a href="#">Evaluaciones</a>
+                        </div>
+                      </div>
+                    </td>
+                  </tr>';
+          }
+          else{
+            echo '<tr>
+                    <td>
+                      <div class="div-menu-item" onclick="go_page(\'Evaluaciones_mixtas.php\')">
+                        <div class="div-icon-menu">
+                          <img src="images/test-mix.png">
+                        </div>
+                        <div class="name-item">
+                          <a href="#">Evaluación Mixta</a>
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <div class="div-menu-item" onclick="go_page(\'evaluaciones_escritas.php\')">
+                        <div class="div-icon-menu">
+                          <img src="images/rol.png">
+                        </div>
+                        <div class="name-item">
+                          <a href="#">Evaluación Escrita</a>
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <div class="div-menu-item" onclick="go_page(\'evaluaciones_seleccion_doc.php\')">
+                        <div class="div-icon-menu">
+                          <img src="images/test.png">
+                        </div>
+                        <div class="name-item">
+                          <a href="#">Evaluación de Selección</a>
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <div class="div-menu-item" onclick="go_page(\'evaluaciones_vr2.php\')">
+                        <div class="div-icon-menu">
+                          <img src="images/calificacion.png">
+                        </div>
+                        <div class="name-item">
+                          <a href="#">Notas de Exámenes de Selección</a>
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <div class="div-menu-item" onclick="go_page(\'reg_ser_decidir.php\')">
+                        <div class="div-icon-menu">
+                          <img src="images/serdecidir.png">
+                        </div>
+                        <div class="name-item">
+                          <a href="#">Notas Ser y Decidir</a>
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <div class="div-menu-item" onclick="go_page(\'auto_evaluaciones.php\')">
+                        <div class="div-icon-menu">
+                          <img src="images/autoevaluacion.png">
+                        </div>
+                        <div class="name-item">
+                          <a href="#">Auto Evaluaciones</a>
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <div class="div-menu-item" onclick="go_page(\'reg_notas1.php\')">
+                        <div class="div-icon-menu">
+                          <img src="images/notatrimestral.png">
+                        </div>
+                        <div class="name-item">
+                          <a href="#">Notas Trimestrales</a>
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <div class="div-menu-item" onclick="go_page(\'top_calificaciones_doc.php\')">
+                        <div class="div-icon-menu">
+                          <img src="images/best.png">
+                        </div>
+                        <div class="name-item">
+                          <a href="#">Mejores Notas</a>
+                        </div>
+                      </div>
+                    </td>
+                  </tr>';
+          }
+        ?>
+        
         <tr>
           <td>
             <div class="div-menu-item" onclick="go_page('gestion_Utiles.php')">
