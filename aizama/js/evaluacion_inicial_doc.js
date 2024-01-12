@@ -93,7 +93,7 @@ const update_view = (codmat,codexa) => {
 				Revisar<img style="width:25px; cursor:pointer;" src="svg/cheque-de-boleta.svg" onclick="revisar('${codmat}',${evaluacion.codeva})">
 			</div>
 			<div class="div-option" style="font-size:.8em;">
-				Banco<img style="width:25px; cursor:pointer;" src="svg/votacion.svg" onclick="banco('${codmat}',${evaluacion.codeva})">
+				Actividades<img style="width:25px; cursor:pointer;" src="svg/votacion.svg" onclick="banco('${codmat}',${evaluacion.codeva})">
 			</div>
 			<div class="div-option" style="font-size:.8em;">
 				Config.<img style="width:25px; cursor:pointer;" src="svg/ajustes.svg">
@@ -105,7 +105,8 @@ const update_view = (codmat,codexa) => {
 	);
 }
 const update_evaluacion = (codmat,codexa)  =>  {
-	let childs = $("#div-btn-update").children();
+	let childs = $(`#div-btn-update${codmat}${codexa}`).children();
+	console.log(childs)
 	$(`#div-btn-update${codmat}${codexa}`).empty();
 	$(`#div-btn-update${codmat}${codexa}`).append(
 		`<section style="padding-left:0px;">
@@ -115,7 +116,6 @@ const update_evaluacion = (codmat,codexa)  =>  {
 		  </div>
 		</section>`
 	);
-	console.log(childs)
 	let formData = new FormData($(`#formulario${codmat}${codexa}`)[0]);
 	$.ajax({
 		  url: "controlador/evaluacion_inicial_controlador.php?op=update_evaluacion",
