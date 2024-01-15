@@ -70,23 +70,22 @@ const get_materia = codmat => {
 	}
 	return [];
 }
-const update_view = (codmat,codexa) => {
+const update_view = (codmat,codexa,n) => {
 	$(`#${codmat}${codexa}`).empty();
 	let evaluacion = get_evaluacion(codexa);
 	let visible = evaluacion.visible == 1?"La evaluación está visible para los estudiantes.":"La evaluación no está visible para los estudiantes.";
 	$(`#${codmat}${codexa}`).append(
 		`<div class="data-evaluacion">
-			<p><b>Evaluación: ${evaluacion.nro_eva}</b></p>
-			<p class="descripcion">${evaluacion.indicador}</p>
+			<p><b>Evaluación: ${n}</b></p>
 			<p class="descripcion">${evaluacion.descripcion}</p>
 			<p style="display: flex;flex-wrap: wrap;"><label style="width:100px; display: block;">Fecha inicio: </label>${evaluacion.fini}  ${evaluacion.hi} hrs.</p>
 			<p style="display: flex;flex-wrap: wrap;"><label style="width:100px; display: block;">Fecha fin: </label>${evaluacion.ffin}  ${evaluacion.hf} hrs.</p>
-			<p>Preguntas a responder: ${evaluacion.preguntas}</p>
+			<p>Actividades a realizar: ${evaluacion.actividades}</p>
 			<p>Código: ${evaluacion.codeva}</p>
 			<p>Visible: ${visible}</p>
 		</div>
 		<div class="div-evaluacion-options" id="op${codmat}${evaluacion.codeva}">
-			<div class="div-option" style="font-size:.8em;" onclick="editar_evaluacion(${evaluacion.codeva},'${codmat}${codexa}');">
+			<div class="div-option" style="font-size:.8em;" onclick="editar_evaluacion(${evaluacion.codeva},'${codmat}${codexa}',${n});">
 				Editar<img style="width:25px; cursor:pointer;" src="svg/editar.svg">
 			</div>
 			<div class="div-option" style="font-size:.8em;">
@@ -104,7 +103,7 @@ const update_view = (codmat,codexa) => {
 		</div>`
 	);
 }
-const update_evaluacion = (codmat,codexa)  =>  {
+const update_evaluacion = (codmat,codexa,n)  =>  {
 	let childs = $(`#div-btn-update${codmat}${codexa}`).children();
 	console.log(childs)
 	$(`#div-btn-update${codmat}${codexa}`).empty();
@@ -137,7 +136,7 @@ const update_evaluacion = (codmat,codexa)  =>  {
 			  			$(`#div-btn-update${codmat}${codexa}`).empty();
 			  			$(`#div-btn-update${codmat}${codexa}`).append(childs);
 			  		},3000)
-		  			await update_view(codmat,codexa);
+		  			await update_view(codmat,codexa,n);
 		  		},2000)
 		  	}
 		  	if(response.status == "errorFechas"){
@@ -168,7 +167,7 @@ const update_evaluacion = (codmat,codexa)  =>  {
 function adjustHeight(el){
     el.style.height = (el.scrollHeight > el.clientHeight) ? (el.scrollHeight)+"px" : "60px";
 }
-const editar_evaluacion = (codexa,ele) => {
+const editar_evaluacion = (codexa,ele,n) => {
 	
 	$("#formulario-evaluacion").empty();
 	let evaluacion = get_evaluacion(codexa);
@@ -180,7 +179,7 @@ const editar_evaluacion = (codexa,ele) => {
 	//$("#formulario-evaluacion").append(
 	$( `#${ele}`).append(
 		`<!--div class="btn-close2">
-	        <img src="images/close.svg" onclick="close_formulario('${evaluacion.codmat}',${codexa});">
+	        <img src="images/close.svg" onclick="close_formulario('${evaluacion.codmat}',${codexa},${n});">
 	    </div-->
 	    <form id="formulario${ele}">
 	        <input type="hidden" name="codcur" value="${evaluacion.codcur}">
@@ -220,16 +219,16 @@ const editar_evaluacion = (codexa,ele) => {
 	            Notificar a la agenda y whatsapps:&nbsp;<input class="input-data" type="checkbox" checked style="cursor:pointer;" name="notificar"/> 
 	        </div>
 	        <div style="display: flex; justify-content: center; gap:10px; margin-top: 30px;" id="div-btn-update${evaluacion.codmat}${codexa}">
-	            <button id="btn-update" class="submit" onclick="update_evaluacion('${evaluacion.codmat}',${codexa})">GUARDAR</button>
-	            <button class="danger2" onclick="close_formulario('${evaluacion.codmat}',${codexa});">CANCELAR</button>
+	            <button id="btn-update" class="submit" onclick="update_evaluacion('${evaluacion.codmat}',${codexa},${n})">GUARDAR</button>
+	            <button class="danger2" onclick="close_formulario('${evaluacion.codmat}',${codexa},${n});">CANCELAR</button>
 	        </div>
 
 	    </form>`
 	);
 	$(`#formulario${evaluacion.codmat}${codexa}`).submit(e => {e.preventDefault()});	
 }
-const close_formulario = (codmat,codexa) => {
-	update_view(codmat,codexa);
+const close_formulario = (codmat,codexa,n) => {
+	update_view(codmat,codexa,n);
 	/*$(`#${e}`).empty();
 	$(`#${e}`).append(elem_html);*/
 }
@@ -984,6 +983,27 @@ const revisar = (codmat,codexa) => {
 		},"json"
 	)
 }
+const set_timeout = (e,codeva) => {
+	if(e.checked){
+		$.post(
+			"controlador/evaluacion_inicial_controlador.php?op=set_timeout_on",
+			{codexa:codeva},
+			data => {
+				if (data.status == "eSession")Swal.fire("La sesión ha finalizado, vuelva a iniciar sesión con su usuario y contraseña por favor...");
+				if(data.status == "ok")Swal.fire("Los estudiantes ahora podrán realizar la evaluación después la fecha límite programada...");
+			},"json"
+		);
+	}else{
+		$.post(
+			"controlador/evaluacion_inicial_controlador.php?op=set_timeout_off",
+			{codexa:codeva},
+			data => {
+				if (data.status == "eSession")Swal.fire("La sesión ha finalizado, vuelva a iniciar sesión con su usuario y contraseña por favor...");
+				if(data.status == "ok")Swal.fire("Los estudiantes ahora no podrán realizar la evaluación después de la fecha límite programada...");
+			},"json"
+		);
+	}
+}
 const mostrar_evaluaciones = (codcur,codpar,codmat,nombre) => {
 	$(`#${codcur}${codpar}${codmat}`).empty();
 	$(`#${codcur}${codpar}${codmat}`).css("transition",".5s");
@@ -993,6 +1013,7 @@ const mostrar_evaluaciones = (codcur,codpar,codmat,nombre) => {
 	lista_evaluaciones.forEach(evaluacion =>{
 		if (evaluacion.codcur == codcur && evaluacion.codpar == codpar && evaluacion.codmat == codmat) {
 			let visible = evaluacion.visible == 1?"La evaluación está visible para los estudiantes.":"La evaluación no está visible para los estudiantes.";
+			let checked = evaluacion.timeout == 1?"checked":"";
 			evaluaciones = `${evaluaciones}<div class="div-evaluacion" id="${codmat}${evaluacion.codeva}">
 											<div class="data-evaluacion">
 												<p><b>Evaluación: ${index}</b></p>
@@ -1000,11 +1021,14 @@ const mostrar_evaluaciones = (codcur,codpar,codmat,nombre) => {
 												<p style="display: flex;flex-wrap: wrap;"><label style="width:100px; display: block;">Fecha inicio: </label>${evaluacion.inicio} hrs.</p>
 												<p style="display: flex;flex-wrap: wrap;"><label style="width:100px; display: block;">Fecha fin: </label>${evaluacion.fin} hrs.</p>
 												<p>Actividades a realizar: ${evaluacion.actividades}</p>
+												<p>
+					            				Evaluar pasada la fecha límite:&nbsp;<input class="input-data" type="checkbox" ${checked} style="cursor:pointer;" onclick="set_timeout(this,${evaluacion.codeva})"/> 
+					        					</p>
 												<p>Código: ${evaluacion.codeva}</p>
 												<p>Visible: ${visible}</p>
 											</div>
 											<div class="div-evaluacion-options" id="op${codmat}${evaluacion.codeva}">
-												<div class="div-option" style="font-size:.8em;" onclick="editar_evaluacion(${evaluacion.codeva},'${codmat}${evaluacion.codeva}');">
+												<div class="div-option" style="font-size:.8em;" onclick="editar_evaluacion(${evaluacion.codeva},'${codmat}${evaluacion.codeva}',${index});">
 													Editar<img style="width:25px; cursor:pointer;" src="svg/editar.svg">
 												</div>
 												<div class="div-option" style="font-size:.8em;">

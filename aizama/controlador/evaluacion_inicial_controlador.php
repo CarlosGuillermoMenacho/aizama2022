@@ -455,15 +455,14 @@ switch ($_GET['op']) {
 		    	echo json_encode(["status"=>"eSession"]);
 		    	exit();
 		    }
-		    $codeva = isset($_POST["codeva"])?$_POST["codeva"]:"";
+		    $codeva = isset($_POST["codexa"])?$_POST["codexa"]:"";
 		    $descripcion = isset($_POST["descripcion"])?$_POST["descripcion"]:"";
-		    $visible = isset($_POST["visible"])?$_POST["visible"]:"";
+		    $visible = isset($_POST["visible"])?"1":"0";
 		    $inicio = isset($_POST["fini"])?$_POST["fini"]:"";
 		    $fin = isset($_POST["ffin"])?$_POST["ffin"]:"";
 		    $horaini = isset($_POST["horaini"])?$_POST["horaini"]:"";
 		    $horafin = isset($_POST["horafin"])?$_POST["horafin"]:"";
-		    $timeout = isset($_POST["timeout"])?$_POST["timeout"]:"";
-		    if(empty($codeva)||empty($descripcion)||empty($visible)||empty($inicio)||empty($fin)||empty($timeout)||empty($horaini)||empty($horafin)){
+		    if(empty($codeva)||empty($descripcion)||empty($inicio)||empty($fin)||empty($horaini)||empty($horafin)){
 				echo json_encode(["status"=>"errorParam"]);
 		    	exit();
 			}
@@ -474,7 +473,49 @@ switch ($_GET['op']) {
 			$db = Conectar::conexion();
 			$Evaluacion = new Evaluacion_inicial($db);
 			$updateAt = date("Y-m-d H:i:s");
-			$Evaluacion->update($codeva,$descripcion,$visible,$inicio,$fin,$timeout,$updateAt);
+			$Evaluacion->update($codeva,$descripcion,$visible,$inicio,$fin,$updateAt);
+			echo json_encode(["status"=>"ok"]);
+	   		break;
+	   	case 'set_timeout_on':
+	   		$user = isset($_SESSION["app_user_id"])?$_SESSION["app_user_id"]:"";
+		    if(empty($user)){
+		    	echo json_encode(["status"=>"eSession"]);
+		    	exit();
+		    }
+		    $codeva = isset($_POST["codexa"])?$_POST["codexa"]:"";
+		    
+		    if(empty($codeva)){
+				echo json_encode(["status"=>"errorParam"]);
+		    	exit();
+			}
+			
+			require_once'../modelo/conexion.php';
+			require_once'../modelo/modelo_evaluacion_inicial.php';
+			$db = Conectar::conexion();
+			$Evaluacion = new Evaluacion_inicial($db);
+			$updateAt = date("Y-m-d H:i:s");
+			$Evaluacion->set_fuera_de_tiempo($codeva,1,$updateAt);
+			echo json_encode(["status"=>"ok"]);
+	   		break;
+	   	case 'set_timeout_off':
+	   		$user = isset($_SESSION["app_user_id"])?$_SESSION["app_user_id"]:"";
+		    if(empty($user)){
+		    	echo json_encode(["status"=>"eSession"]);
+		    	exit();
+		    }
+		    $codeva = isset($_POST["codexa"])?$_POST["codexa"]:"";
+		    
+		    if(empty($codeva)){
+				echo json_encode(["status"=>"errorParam"]);
+		    	exit();
+			}
+			
+			require_once'../modelo/conexion.php';
+			require_once'../modelo/modelo_evaluacion_inicial.php';
+			$db = Conectar::conexion();
+			$Evaluacion = new Evaluacion_inicial($db);
+			$updateAt = date("Y-m-d H:i:s");
+			$Evaluacion->set_fuera_de_tiempo($codeva,0,$updateAt);
 			echo json_encode(["status"=>"ok"]);
 	   		break;
 	default:

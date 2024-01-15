@@ -59,10 +59,17 @@
 			$result = ejecutar_consulta($this->db,$sql,$type,$params);
 			return $this->db->insert_id;
 		}
-		public function update($id,$descripcion,$visible,$inicio,$fin,$fuera_de_tiempo,$updateAt){
-			$sql = "UPDATE evaluacion_inicial SET descripcion = ?, visible = ?, inicio = ?, fin = ?, fueradetiempo = ?, updateAt = ? WHERE id = ?";
-			$type = "sissisi";
-			$params = array($descripcion,$visible,$inicio,$fin,$fuera_de_tiempo,$updateAt,$id);
+		public function update($id,$descripcion,$visible,$inicio,$fin,$updateAt){
+			$sql = "UPDATE evaluacion_inicial SET descripcion = ?, visible = ?, inicio = ?, fin = ?, updateAt = ? WHERE id = ?";
+			$type = "sisssi";
+			$params = array($descripcion,$visible,$inicio,$fin,$updateAt,$id);
+			$result = ejecutar_consulta($this->db,$sql,$type,$params);
+			return $result;
+		}
+		public function set_fuera_de_tiempo($id,$timeout,$updateAt){
+			$sql = "UPDATE evaluacion_inicial SET fueradetiempo = ?, updateAt = ? WHERE id = ?";
+			$type = "isi";
+			$params = array($timeout,$updateAt,$id);
 			$result = ejecutar_consulta($this->db,$sql,$type,$params);
 			return $result;
 		}
