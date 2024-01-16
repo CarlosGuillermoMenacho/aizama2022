@@ -446,7 +446,7 @@ switch ($_GET['op']) {
 			require_once'../modelo/modelo_evaluacion_inicial.php';
 			$db = Conectar::conexion();
 			$Evaluacion = new Evaluacion_inicial($db);
-			$Evaluacion->delete_actividad($id_evaluacion,$id_actividad);
+			$Evaluacion->delete_actividad($codeva,$id_actividad);
 			echo json_encode(["status"=>"ok"]);
 	   		break;
 	   	case 'update_evaluacion':
@@ -517,6 +517,47 @@ switch ($_GET['op']) {
 			$updateAt = date("Y-m-d H:i:s");
 			$Evaluacion->set_fuera_de_tiempo($codeva,0,$updateAt);
 			echo json_encode(["status"=>"ok"]);
+	   		break;
+	   	case 'get_actividades_evaluacion':
+	   		$user = isset($_SESSION["app_user_id"])?$_SESSION["app_user_id"]:"";
+		    if(empty($user)){
+		    	echo json_encode(["status"=>"eSession"]);
+		    	exit();
+		    }
+		    $codeva = isset($_POST["codexa"])?$_POST["codexa"]:"";
+		    
+		    if(empty($codeva)){
+				echo json_encode(["status"=>"errorParam"]);
+		    	exit();
+			}
+			require_once'../modelo/conexion.php';
+			require_once'../modelo/modelo_evaluacion_inicial.php';
+			$db = Conectar::conexion();
+			$Evaluacion = new Evaluacion_inicial($db);
+			$result = $Evaluacion->get_actividades($codeva);
+			$actividades = [];
+			while ($row = $result->fetch_object()) {
+				$actividades[] = $row;
+			}
+			echo json_encode(["status"=>"ok","data"=>$actividades]);
+	   		break;
+	   	case 'get_actividades':
+	   		$user = isset($_SESSION["app_user_id"])?$_SESSION["app_user_id"]:"";
+		    if(empty($user)){
+		    	echo json_encode(["status"=>"eSession"]);
+		    	exit();
+		    }
+		    
+			require_once'../modelo/conexion.php';
+			require_once'../modelo/modelo_evaluacion_inicial.php';
+			$db = Conectar::conexion();
+			$Evaluacion = new Evaluacion_inicial($db);
+			$result = $Evaluacion->get_actividades_all();
+			$actividades = [];
+			while ($row = $result->fetch_object()) {
+				$actividades[] = $row;
+			}
+			echo json_encode(["status"=>"ok","data"=>$actividades]);
 	   		break;
 	default:
 		echo json_encode(["status"=>"errorOP"]);

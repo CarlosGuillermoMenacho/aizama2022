@@ -93,7 +93,7 @@
 			return $result;
 		}
 		public function delete_actividad($id_evaluacion,$id_actividad){
-			$sql = "UPDATE evaluacion_inicial SET estado = 0 WHERE id_evaluacion_inicial = ? AND id_actividad_evalaucion_incial = ?";
+			$sql = "UPDATE evaluacion_inicial_actividad SET estado = 0 WHERE id_evaluacion_inicial = ? AND id_actividad_evaluacion_inicial = ?";
 			$type = "ii";
 			$params = array($id_evaluacion,$id_actividad);
 			$result = ejecutar_consulta($this->db,$sql,$type,$params);
@@ -171,9 +171,16 @@
 			return $result;	
 		}
 		public function get_actividades($codeva){
-			$sql = "SELECT a.id,a.descripcion,a.script FROM evaluacion_inicial_actividad ea INNER JOIN evaluacion_inicial_actividades a ON ea.id_actividad_evaluacion_inicial = a.id AND ea.estado = 1 AND a.estado = 1 AND ea.id_evaluacion_inicial = ?";
+			$sql = "SELECT a.id,a.descripcion,a.script,a.captura FROM evaluacion_inicial_actividad ea INNER JOIN evaluacion_inicial_actividades a ON ea.id_actividad_evaluacion_inicial = a.id AND ea.estado = 1 AND a.estado = 1 AND ea.id_evaluacion_inicial = ?";
 			$type = "i";
 			$params = array($codeva);
+			$result = ejecutar_consulta($this->db,$sql,$type,$params);
+			return $result;
+		}
+		public function get_actividades_all(){
+			$sql = "SELECT id,descripcion,script,captura FROM evaluacion_inicial_actividades WHERE estado = 1";
+			$type = "";
+			$params = array();
 			$result = ejecutar_consulta($this->db,$sql,$type,$params);
 			return $result;
 		}

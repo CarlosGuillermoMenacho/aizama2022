@@ -398,12 +398,23 @@ const delete_opcion = e => {
 	}
 	main_parent.removeChild(parent);
 }
+const request_actividades = () => {
+	$.get(
+		"controlador/evaluacion_inicial_controlador.php?op=get_actividades",
+		data => {
+			if(data.status == "eSession"){
+	    		alert("La sesión ha finalizado por favor vuelva a ingresar con su usuario y contraseña...");
+	    		return;
+	    	}
+		},"json"
+	);
+}
 const agregar_pregunta = (codmat,codexa,n) => {
+	let actividades = request_actividades();
 	let e = `${codmat}${codexa}`;
 	$(`.b${e}`).children().last().remove();
 	$(`#ban${e}`).append(
 		`<div class="div-pregunta" style="margin-top:10px;">
-            <h3>Pregunta ${n}</h3>
             <form id="formulario-pregunta${e}" style="background: #efefef; padding: 15px 5px; border-radius:5px; position:relative;">
                 <input type="hidden" name="codexa" value="${codexa}">
                 <div class="div-pregunta-img">
@@ -501,11 +512,10 @@ const close_banco = (e) => {
 }
 const delete_pregunta = (codmat,codexa,codpreg) => {
 	$.post(
-		"controlador/evaluacionSeleccion_controlador.php?op=delete_pregunta&usr=doc",
-		{codpreg:codpreg},
+		"controlador/evaluacion_inicial_controlador.php?op=quitar_actividad",
+		{codeva:codexa,id_actividad:codpreg},
 		data => {
 			if (data.status == "eSession")Swal.fire("La sesión ha finalizado, vuelva a iniciar sesión con su usuario y contraseña por favor...");
-			if (data.status == "eTrimestre")Swal.fire("Debe seleccionar un trimestre por favor...");
 			if (data.status == "ok") {
 				update_banco(codmat,codexa);
 			}
@@ -514,21 +524,20 @@ const delete_pregunta = (codmat,codexa,codpreg) => {
 }
 const update_banco = (codmat,codexa) => {
 	$.post(
-		"controlador/evaluacionSeleccion_controlador.php?op=banco&usr=doc",
+		"controlador/evaluacion_inicial_controlador.php?op=get_actividades_evaluacion",
 		{codexa:codexa},
 		data => {
 			if (data.status == "eSession")Swal.fire("La sesión ha finalizado, vuelva a iniciar sesión con su usuario y contraseña por favor...");
-			if (data.status == "eTrimestre")Swal.fire("Debe seleccionar un trimestre por favor...");
 			if(data.status == "ok"){
 				let lista = data.data;
 				let html = "";
 				let index = 1;
 				lista.forEach(p => {
-					let img = p.imagen == ""?"svg/imagen.svg":p.imagen;
-					let cls = p.imagen == ""?"oculto":"div-img-preg";
-					let opciones = p.opciones;
-					let html_op = "";
-					opciones.forEach(op => {
+					//let img = p.imagen == ""?"svg/imagen.svg":p.imagen;
+					//let cls = p.imagen == ""?"oculto":"div-img-preg";
+					//let opciones = p.opciones;
+					//let html_op = "";
+					/*opciones.forEach(op => {
 						let checked = op.n_opcion == p.respuesta?"checked":"";
 						html_op = `${html_op}<div class="div-opcion">
 						                        <input type="radio" name="opcion${p.codpreg}" ${checked}  style="cursor: pointer;" title="Seleccionar como respuesta correcta..." disabled>
@@ -536,33 +545,19 @@ const update_banco = (codmat,codexa) => {
 						                        <div class="divtext input-data" style="width: calc(100% - 50px);" onkeyup="copiar(this);">${op.opcion}</div>
 						                        <img src="svg/quitar.svg" width="20px" style="cursor: pointer;" title="Eliminar opción..." onclick="delete_opcion(this);" class="oculto">
 						                    </div>`;
-					});
+					});*/
 					html = `${html}<div class="div-pregunta" style="margin-top:10px;">
 						            <h3>Pregunta ${index}</h3>
-						            <form id="form_preg${p.codpreg}" style="background: #efefef; padding: 15px 5px; border-radius:5px; position:relative;">
-						                <input type="hidden" name="codpre" value="${p.codpreg}">
+						            <form id="form_preg${p.descripcion}" style="background: #efefef; padding: 15px 5px; border-radius:5px; position:relative;">
+						                
 						                <div class="div-pregunta-img">
-						                    <input type="hidden" name="descripcion" value="${p.pregunta}">
-						                    <div class="divtext input-data" style="width: 100%"  onkeyup="copiar(this);">${p.pregunta}</div>
+						                    <div class="divtext input-data" style="width: 100%" >${p.descripcion}</div>
 						                </div>
-						                <div class="${cls}">
-						                	<img class="img-close oculto" src="images/close.svg" title="Quitar imagen" onclick="removeImg(this)">
-						                    <img src="${img}" width="47px" style="cursor: pointer;" title="Selecciona una imagen para la pregunta...">                
-						                    <input type="file" name="imagen" hidden accept="image/png, image/gif, image/jpeg, image/jpg">
+						                <div style="padding:5px">
+						                    <img src="images/${p.captura}" style="width:100%; border-radius:5px"> 
 						                </div>
-						                <h3>Opciones</h3>
-						                <div id="opciones${p.codpreg}">
-						                    ${html_op}
-						                </div>
-						         		<div class="div-add-opcion oculto">
-						                    <img src="svg/agregar.svg" width="25px" title="Agregar una opción..." onclick="add_opcion('opciones${codmat}${codexa}',${codexa})">
-						                </div>
-						                <div class="div-tempo" style="font-size: .9em; margin-top: 10px;">
-						                    Tiempo: <input class="input-data" type="text" name="tiempo" readonly value="${p.tiempo}" max="30" min="1" style="width:25px; padding: 3px;"> minutos.
-						                </div>
-						                <div class="btn-delete-float" style="position: absolute;bottom: 5px;right: 5px; display:flex; gap:5px;">
-						                    <img style="width:18px; padding:2px; cursor:pointer; border:1px solid #ccc; border-radius:5px;" src="svg/edit.svg" onclick="edit_pregunta(${p.codpreg});" title="Editar pregunta.">
-						                    <img style="width:18px; padding:2px; cursor:pointer; border:1px solid #ccc; border-radius:5px;" src="svg/basura.svg" onclick="delete_pregunta('${codmat}',${codexa},${p.codpreg});" title="Eliminar pregunta.">
+						                <div class="btn-delete-float" style="display:flex; flex-direction: row-reverse:">
+						                    <img style="width:25px; padding:2px; cursor:pointer; border:1px solid #ccc; border-radius:5px;" src="svg/basura.svg" onclick="delete_pregunta('${codmat}',${codexa},${p.id});" title="Quitar Actividad.">
 						                </div>
 						            </form>
 						        </div>`;
@@ -724,21 +719,20 @@ const update_pregunta = e => {
 }
 const banco = (codmat,codexa) =>{
 	$.post(
-		"controlador/evaluacionSeleccion_controlador.php?op=banco&usr=doc",
+		"controlador/evaluacion_inicial_controlador.php?op=get_actividades_evaluacion",
 		{codexa:codexa},
 		data => {
 			if (data.status == "eSession")Swal.fire("La sesión ha finalizado, vuelva a iniciar sesión con su usuario y contraseña por favor...");
-			if (data.status == "eTrimestre")Swal.fire("Debe seleccionar un trimestre por favor...");
 			if(data.status == "ok"){
 				let lista = data.data;
 				let html = "";
 				let index = 1;
 				lista.forEach(p => {
-					let img = p.imagen == ""?'<img src="svg/imagen.svg" width="47px" style="cursor: pointer;" title="Selecciona una imagen para la pregunta...">':`<img src="resources/${p.imagen}" style="cursor: pointer; width:100%;" title="Selecciona una imagen para la pregunta...">`;
-					let cls = p.imagen == ""?"oculto":"div-img-preg";
-					let opciones = p.opciones;
-					let html_op = "";
-					opciones.forEach(op => {
+					//let img = p.imagen == ""?'<img src="svg/imagen.svg" width="47px" style="cursor: pointer;" title="Selecciona una imagen para la pregunta...">':`<img src="resources/${p.imagen}" style="cursor: pointer; width:100%;" title="Selecciona una imagen para la pregunta...">`;
+					//let cls = p.imagen == ""?"oculto":"div-img-preg";
+					//let opciones = p.opciones;
+					//let html_op = "";
+					/*opciones.forEach(op => {
 						let checked = op.n_opcion == p.respuesta?"checked":"";
 						html_op = `${html_op}<div class="div-opcion">
 						                        <input type="radio" name="opcion${p.codpreg}" ${checked}  style="cursor: pointer;" title="Seleccionar como respuesta correcta..." disabled>
@@ -746,33 +740,18 @@ const banco = (codmat,codexa) =>{
 						                        <div class="divtext input-data" style="width: calc(100% - 50px);" onkeyup="copiar(this);">${op.opcion}</div>
 						                        <img src="svg/quitar.svg" width="20px" style="cursor: pointer;" title="Eliminar opción..." onclick="delete_opcion(this);" class="oculto">
 						                    </div>`;
-					});
+					});*/
 					html = `${html}<div class="div-pregunta" style="margin-top:10px;">
-						            <h3>Pregunta ${index}</h3>
-						            <form id="form_preg${p.codpreg}" style="background: #efefef; padding: 15px 5px; border-radius:5px; position:relative;">
-						                <input type="hidden" name="codpre" value="${p.codpreg}">
+						            <h3>Actividad ${index}</h3>
+						            <form id="form_preg${p.id}" style="background: #efefef; padding: 15px 5px; border-radius:5px; position:relative;">
 						                <div class="div-pregunta-img">
-						                    <input type="hidden" name="descripcion" value="${p.pregunta}">
-						                    <div class="divtext input-data" style="width: 100%"  onkeyup="copiar(this);">${p.pregunta}</div>
+						                    <div class="divtext input-data" style="width: 100%" >${p.descripcion}</div>
 						                </div>
-						                <div class="${cls}">
-						                	<img class="img-close oculto" src="images/close.svg" title="Quitar imagen" onclick="removeImg(this)">
-						                    ${img}                
-						                    <input type="file" name="imagen" hidden accept="image/png, image/gif, image/jpeg, image/jpg">
+						                <div style="padding:5px">               
+						                    <img style="width:100%; border-radius:5px" src="images/${p.captura}">
 						                </div>
-						                <h3>Opciones</h3>
-						                <div id="opciones${p.codpreg}">
-						                    ${html_op}
-						                </div>
-						         		<div class="div-add-opcion oculto">
-						                    <img src="svg/agregar.svg" width="25px" title="Agregar una opción..." onclick="add_opcion('opciones${codmat}${codexa}',${codexa})">
-						                </div>
-						                <div class="div-tempo" style="font-size: .9em; margin-top: 10px;">
-						                    Tiempo: <input class="input-data" type="text" name="tiempo" readonly value="${p.tiempo}" max="30" min="1" style="width:25px; padding: 3px;"> minutos.
-						                </div>
-						                <div class="btn-delete-float" style="position: absolute;bottom: 5px;right: 5px; display:flex; gap:5px;">
-						                    <img style="width:18px; padding:2px; cursor:pointer; border:1px solid #ccc; border-radius:5px;" src="svg/edit.svg" onclick="edit_pregunta(${p.codpreg});" title="Editar pregunta.">
-						                    <img style="width:18px; padding:2px; cursor:pointer; border:1px solid #ccc; border-radius:5px;" src="svg/basura.svg" onclick="delete_pregunta('${codmat}',${codexa},${p.codpreg});" title="Eliminar pregunta.">
+						                <div class="btn-delete-float" style="display:flex; flex-direction: row-reverse;">
+						                    <img style="width:25px; padding:2px; cursor:pointer; border:1px solid #ccc; border-radius:5px;" src="svg/basura.svg" onclick="delete_pregunta('${codmat}',${codexa},${p.id});" title="Quitar Actividad">
 						                </div>
 						            </form>
 						        </div>`;
@@ -785,11 +764,9 @@ const banco = (codmat,codexa) =>{
 			            <div class="btn-close2">
 			                <img src="images/close.svg" onclick="close_banco('${codmat}${codexa}');">
 			            </div>
-			            <h2 style="margin: 20px;">Banco de Preguntas</h2>
-
 			            <div id="ban${codmat}${codexa}">${html}</div>
 			            <div class="div-add" style="font-size:.8em">
-			                <img src="svg/agregar-documento.svg" style="width:30px; cursor:pointer" onclick="agregar_pregunta('${codmat}',${codexa},${lista.length + 1});">Agregar Pregunta
+			                <img src="svg/agregar-documento.svg" style="width:30px; cursor:pointer" onclick="agregar_pregunta('${codmat}',${codexa},${lista.length + 1});">Agregar Actividades
 			            </div>
 			        </div>
 					`)
