@@ -2,6 +2,7 @@ let lista_cursos = [];
 let lista_materias = [];
 let lista_evaluaciones = [];
 let elem_html = "";
+let lista_actividades_evaluacion = [];
 const save_calificaciones = codexa => {
 	let formData = new FormData($(`#form_calif${codexa}`)[0]);
 	formData.append("codexa",codexa);
@@ -398,69 +399,48 @@ const delete_opcion = e => {
 	}
 	main_parent.removeChild(parent);
 }
-const request_actividades = () => {
+const request_actividades = (codmat,codexa,n) => {
 	$.get(
 		"controlador/evaluacion_inicial_controlador.php?op=get_actividades",
-		data => {
+		async data => {
 			if(data.status == "eSession"){
 	    		alert("La sesión ha finalizado por favor vuelva a ingresar con su usuario y contraseña...");
 	    		return;
 	    	}
+	    	if(data.status == "ok"){
+	    		agregar_pregunta(data.data,codmat,codexa,n);
+	    	}
 		},"json"
 	);
 }
-const agregar_pregunta = (codmat,codexa,n) => {
-	let actividades = request_actividades();
+const es_actividad = (a,codexa) => {
+	let actividades = lista_actividades_evaluacion[codexa];
+	for (var i = 0; i < actividades.length; i++) {
+		if(actividades[i].id == a.id)return true;
+	}
+	return false;
+}
+const agregar_pregunta = (actividades,codmat,codexa,n) => {
+	let html = "";
+
+	actividades.forEach(a => {
+		let checked = "";
+		if(es_actividad(a,codexa))checked = "checked";
+		html = `${html}<div class="div-opcion" style="gap:5px">
+								<input type="checkbox" ${checked}>
+                        <div class="divtext input-data" style="width: calc(100% - 30px)">${a.descripcion}</div>
+                        <img width="100px" src="images/${a.captura}">
+                    </div>`;
+	})
 	let e = `${codmat}${codexa}`;
 	$(`.b${e}`).children().last().remove();
 	$(`#ban${e}`).append(
 		`<div class="div-pregunta" style="margin-top:10px;">
             <form id="formulario-pregunta${e}" style="background: #efefef; padding: 15px 5px; border-radius:5px; position:relative;">
                 <input type="hidden" name="codexa" value="${codexa}">
-                <div class="div-pregunta-img">
-                    <input type="hidden" name="descripcion">
-                    <div class="divtext input-data" style="width: 100%" contentEditable onkeyup="copiar(this);"></div>
-                    
-                </div>
-                <div class="div-img-preg">
-                	<img class="img-close oculto" src="images/close.svg" title="Quitar imagen" onclick="removeImg(this)">
-                    <img src="svg/imagen.svg" width="47px" style="cursor: pointer;" title="Selecciona una imagen para la pregunta..." onclick="get_file(this);">                
-                    <input type="file" name="imagen" hidden accept="image/png, image/gif, image/jpeg, image/jpg">
-                </div>
-                <h3>Opciones</h3>
                 <div id="opciones${codmat}${codexa}">
-                    <div class="div-opcion">
-                        <input type="radio" name="opcion${codexa}"  style="cursor: pointer;" title="Seleccionar como respuesta correcta...">
-                        <input type="hidden" name="text-option[]">
-                        <div class="divtext input-data" style="width: calc(100% - 30px)" contentEditable onkeyup="copiar(this);"></div>
-                        <!--img src="svg/quitar.svg" width="20px" style="cursor: pointer;" title="Eliminar opción..." onclick="delete_opcion(this);"-->
-                    </div>
-                    <div class="div-opcion">
-                        <input type="radio" name="opcion${codexa}" style="cursor: pointer;" title="Seleccionar como respuesta correcta..." />
-                        <input type="hidden" name="text-option[]">
-                        <div class="divtext input-data" style="width: calc(100% - 30px);" contentEditable onkeyup="copiar(this);"></div>
-                        <!--img src="svg/quitar.svg" width="20px" style="cursor: pointer;" title="Eliminar opción..." onclick="delete_opcion(this);"-->
-                    </div>
-                    <div class="div-opcion">
-                        <input type="radio" name="opcion${codexa}" style="cursor: pointer;" title="Seleccionar como respuesta correcta..." />
-                        <input type="hidden" name="text-option[]">
-                        <div class="divtext input-data" style="width: calc(100% - 30px)" contentEditable onkeyup="copiar(this);"></div>
-                        <!--img src="svg/quitar.svg" width="20px" style="cursor: pointer;" title="Eliminar opción..." onclick="delete_opcion(this);"-->
-                    </div>
+                    ${html}
                 </div>
-                <!--div class="div-add-opcion">
-                    <img src="svg/agregar.svg" width="25px" title="Agregar una opción..." onclick="add_opcion('opciones${codmat}${codexa}',${codexa})">
-                </div-->
-                <div class="div-tempo" style="font-size: .9em;">
-                    Tiempo: <input class="input-data" type="text" name="tiempo" value="3" max="30" min="1" style="width:25px; padding: 3px;"> minutos.
-                </div>
-                <div class="btn-pregunta" style="padding: 10px; text-align: center;">
-                    <button class="submit2" onclick="save_pregunta('formulario-pregunta${e}')">GUARDAR</button>
-                    <button class="danger2" onclick="close_form_pregunta('${codmat}',${codexa})">CANCELAR</button>
-                </div>
-                <!--div class="btn-delete-float" style="position: absolute;bottom: 5px;right: 5px;">
-                    <img style="width:20px;cursor:pointer;" src="svg/basura.svg" onclick="delete_pregunta(65);" title="Eliminar pregunta.">
-                </div-->
             </form>
         </div>`
 	);
@@ -530,6 +510,7 @@ const update_banco = (codmat,codexa) => {
 			if (data.status == "eSession")Swal.fire("La sesión ha finalizado, vuelva a iniciar sesión con su usuario y contraseña por favor...");
 			if(data.status == "ok"){
 				let lista = data.data;
+				lista_actividades_evaluacion[codexa] = lista;
 				let html = "";
 				let index = 1;
 				lista.forEach(p => {
@@ -573,7 +554,7 @@ const update_banco = (codmat,codexa) => {
 
 			            <div id="ban${codmat}${codexa}">${html}</div>
 			            <div class="div-add" style="font-size:.8em">
-			                <img src="svg/agregar-documento.svg" style="width:30px; cursor:pointer" onclick="agregar_pregunta('${codmat}',${codexa},${lista.length + 1});">Agregar Pregunta
+			                <img src="svg/agregar-documento.svg" style="width:30px; cursor:pointer" onclick="request_actividades('${codmat}',${codexa},${lista.length + 1});">Agregar Pregunta
 			            </div>
 					`)
 
@@ -725,22 +706,10 @@ const banco = (codmat,codexa) =>{
 			if (data.status == "eSession")Swal.fire("La sesión ha finalizado, vuelva a iniciar sesión con su usuario y contraseña por favor...");
 			if(data.status == "ok"){
 				let lista = data.data;
+				lista_actividades_evaluacion[codexa] = lista;
 				let html = "";
 				let index = 1;
 				lista.forEach(p => {
-					//let img = p.imagen == ""?'<img src="svg/imagen.svg" width="47px" style="cursor: pointer;" title="Selecciona una imagen para la pregunta...">':`<img src="resources/${p.imagen}" style="cursor: pointer; width:100%;" title="Selecciona una imagen para la pregunta...">`;
-					//let cls = p.imagen == ""?"oculto":"div-img-preg";
-					//let opciones = p.opciones;
-					//let html_op = "";
-					/*opciones.forEach(op => {
-						let checked = op.n_opcion == p.respuesta?"checked":"";
-						html_op = `${html_op}<div class="div-opcion">
-						                        <input type="radio" name="opcion${p.codpreg}" ${checked}  style="cursor: pointer;" title="Seleccionar como respuesta correcta..." disabled>
-						                        <input type="hidden" name="text-option[]" value="${op.opcion}">
-						                        <div class="divtext input-data" style="width: calc(100% - 50px);" onkeyup="copiar(this);">${op.opcion}</div>
-						                        <img src="svg/quitar.svg" width="20px" style="cursor: pointer;" title="Eliminar opción..." onclick="delete_opcion(this);" class="oculto">
-						                    </div>`;
-					});*/
 					html = `${html}<div class="div-pregunta" style="margin-top:10px;">
 						            <h3>Actividad ${index}</h3>
 						            <form id="form_preg${p.id}" style="background: #efefef; padding: 15px 5px; border-radius:5px; position:relative;">
@@ -766,17 +735,14 @@ const banco = (codmat,codexa) =>{
 			            </div>
 			            <div id="ban${codmat}${codexa}">${html}</div>
 			            <div class="div-add" style="font-size:.8em">
-			                <img src="svg/agregar-documento.svg" style="width:30px; cursor:pointer" onclick="agregar_pregunta('${codmat}',${codexa},${lista.length + 1});">Agregar Actividades
+			                <img src="svg/agregar-documento.svg" style="width:30px; cursor:pointer" onclick="request_actividades('${codmat}',${codexa},${lista.length + 1});">Configurar Actividades
 			            </div>
 			        </div>
 					`)
 
 			}
 		},"json"
-	);
-	/*
-	*/
-}
+	);}
 const delete_examen = (codalu,codexa,e) => {
 	Swal.queue([{
     title: '¿Estás seguro?',
