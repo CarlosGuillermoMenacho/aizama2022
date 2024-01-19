@@ -184,6 +184,13 @@
 			$result = ejecutar_consulta($this->db,$sql,$type,$params);
 			return $result;
 		}
+		public function get_actividades_curso($gestion,$trimestre,$codcur,$codpar){
+			$sql = "SELECT * FROM evaluacion_inicial_actividad_programada INNER JOIN  WHERE gestion = ? AND trimestre = ? AND codcur = ? AND codpar = ? AND estado = 1 ";
+			$type = "iiii";
+			$params = array($gestion,$trimestre,$codcur,$codpar);
+			$result = ejecutar_consulta($this->db,$sql,$type,$params);
+			return $result;
+		}
 		public function contar_actividades($codeva){
 			$sql = "SELECT count(*) as total FROM evaluacion_inicial_actividad ea INNER JOIN evaluacion_inicial_actividades a ON ea.id_actividad_evaluacion_inicial = a.id AND ea.estado = 1 AND a.estado = 1 AND ea.id_evaluacion_inicial = ?";
 			$type = "i";

@@ -559,6 +559,35 @@ switch ($_GET['op']) {
 			}
 			echo json_encode(["status"=>"ok","data"=>$actividades]);
 	   		break;
+	   	case 'get_actividades_curso':
+	   		$user = isset($_SESSION["app_user_id"])?$_SESSION["app_user_id"]:"";
+		    if(empty($user)){
+		    	echo json_encode(["status"=>"eSession"]);
+		    	exit();
+		    }
+		    $trimestre = isset($_SESSION["app_user_bimestre"])?$_SESSION["app_user_bimestre"]:"";
+			if(empty($trimestre)){
+				echo json_encode(["status"=>"eTrimestre"]);
+		    	exit();
+			}
+		    $codcur = isset($_POST["codcur"])?$_POST["codcur"]:"";
+		    $codpar = isset($_POST["codpar"])?$_POST["codpar"]:"";
+		    if(empty($codcur)|| empty($codpar)){
+				echo json_encode(["status"=>"errorParam"]);
+		    	exit();
+			}
+			require_once'../modelo/conexion.php';
+			require_once'../modelo/modelo_evaluacion_inicial.php';
+			$db = Conectar::conexion();
+			$Evaluacion = new Evaluacion_inicial($db);
+			$gestion = date("Y");
+			$result = $Evaluacion->get_actividades_curso($gestion,$trimestre,$codcur,$codpar);
+			$actividades = [];
+			while ($row = $result->fetch_object()) {
+				$actividades[] = $row;
+			}
+			echo json_encode(["status"=>"ok","data"=>$actividades]);
+	   		break;
 	default:
 		echo json_encode(["status"=>"errorOP"]);
 		break;
