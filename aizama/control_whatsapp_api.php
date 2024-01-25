@@ -93,7 +93,7 @@ if($_SESSION['app_user_id']==16){
 </div>
 <script type="text/javascript" src="js/jquery.min.js"></script>
 <script type="text/javascript">
-    let dominio = "http://190.186.185.118:21465/api/";
+    let dominio = "http://190.186.185.116:21465/api/";
     let qr_vivsible = false;
     $(document).ready(()=>{
         init();

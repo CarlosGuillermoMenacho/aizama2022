@@ -588,6 +588,52 @@ switch ($_GET['op']) {
 			}
 			echo json_encode(["status"=>"ok","data"=>$actividades]);
 	   		break;
+	   	case 'revisar':
+	   		$user = isset($_SESSION["app_user_id"])?$_SESSION["app_user_id"]:"";
+		    if(empty($user)){
+		    	echo json_encode(["status"=>"eSession"]);
+		    	exit();
+		    }
+		    $id = isset($_POST["id"])?$_POST["id"]:"";
+		    $codcur = isset($_POST["codcur"])?$_POST["codcur"]:"";
+		    $codpar = isset($_POST["codpar"])?$_POST["codpar"]:"";
+		    if(empty($id)||empty($codcur)||empty($codpar)){
+				echo json_encode(["status"=>"errorParam"]);
+		    	exit();
+			}
+			require_once'../modelo/conexion.php';
+			require_once'../modelo/modelo_evaluacion_inicial.php';
+			require_once'../modelo/modelo_curso.php';
+			$db = Conectar::conexion();
+			$Evaluacion = new Evaluacion_inicial($db);
+			$Curso = new Curso($db);
+			$result = $Evaluacion->get_actividad($id);
+			if (!$row = $result->fetch_object()) {
+				echo json_encode(["status"=>"errorActividad"]);
+		    	exit();
+			}
+			$actividad = [
+				"id"=>$row->id,
+				"descripcion"=>$row->descripcion,
+				"captura"=>$row->captura
+			];
+			$alumnos = $Curso->getListaAlumnos($codcur,$codpar);
+			$result = $Evaluacion->get_actividad_relizada($id);
+			$actividad_realizada = [];
+			while ($row = $result->fetch_object()) {
+				$actividad_realizada[] = $row;
+			}
+			$lista_alumnos = [];
+			foreach ($alumnos as $al) {
+				$a = (object) $al;
+				$lista_alumnos[] = [
+					"codalu"=>$a->codigo,
+					"nombre"=>"$a->paterno $a->materno $a->nombres"
+				];
+			}
+			$actividades = [];
+			echo json_encode(["status"=>"ok","actividad"=>$actividad,"alumnos"=>$lista_alumnos]);
+	   		break;
 	default:
 		echo json_encode(["status"=>"errorOP"]);
 		break;

@@ -5,7 +5,7 @@ switch ($_GET["op"]) {
 			curl_setopt_array(
 				$curl, 
 				array(
-					CURLOPT_URL => 'http://190.186.185.117:21465/api/59177367545/start-session',
+					CURLOPT_URL => 'http://190.186.185.116:21465/api/59177367545/start-session',
 					CURLOPT_RETURNTRANSFER => true,
 					CURLOPT_ENCODING => '',
 					CURLOPT_MAXREDIRS => 10,
@@ -33,7 +33,7 @@ switch ($_GET["op"]) {
 			curl_setopt_array(
 				$curl, 
 				array(
-					CURLOPT_URL => 'http://190.186.185.117:21465/api/59175014423CTM/start-session',
+					CURLOPT_URL => 'http://190.186.185.116:21465/api/59175014423CTM/start-session',
 					CURLOPT_RETURNTRANSFER => true,
 					CURLOPT_ENCODING => '',
 					CURLOPT_MAXREDIRS => 10,
@@ -61,7 +61,7 @@ switch ($_GET["op"]) {
 			curl_setopt_array(
 				$curl, 
 				array(
-					CURLOPT_URL => 'http://190.186.185.117:21465/api/59174609527/start-session',
+					CURLOPT_URL => 'http://190.186.185.116:21465/api/59174609527/start-session',
 					CURLOPT_RETURNTRANSFER => true,
 					CURLOPT_ENCODING => '',
 					CURLOPT_MAXREDIRS => 10,
@@ -89,7 +89,7 @@ switch ($_GET["op"]) {
 			curl_setopt_array(
 				$curl, 
 				array(
-					CURLOPT_URL => 'http://190.186.185.117:21465/api/59165851912/start-session',
+					CURLOPT_URL => 'http://190.186.185.116:21465/api/59165851912/start-session',
 					CURLOPT_RETURNTRANSFER => true,
 					CURLOPT_ENCODING => '',
 					CURLOPT_MAXREDIRS => 10,
@@ -117,7 +117,7 @@ switch ($_GET["op"]) {
 			curl_setopt_array(
 				$curl, 
 				array(
-					CURLOPT_URL => 'http://190.186.185.117:21465/api/59175659436/start-session',
+					CURLOPT_URL => 'http://190.186.185.116:21465/api/59175659436/start-session',
 					CURLOPT_RETURNTRANSFER => true,
 					CURLOPT_ENCODING => '',
 					CURLOPT_MAXREDIRS => 10,
@@ -145,7 +145,7 @@ switch ($_GET["op"]) {
 			curl_setopt_array(
 				$curl, 
 				array(
-					CURLOPT_URL => 'http://190.186.185.117:21465/api/59162243621/start-session',
+					CURLOPT_URL => 'http://190.186.185.116:21465/api/59162243621/start-session',
 					CURLOPT_RETURNTRANSFER => true,
 					CURLOPT_ENCODING => '',
 					CURLOPT_MAXREDIRS => 10,
