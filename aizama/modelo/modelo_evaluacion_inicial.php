@@ -205,8 +205,8 @@
 			$result = ejecutar_consulta($this->db,$sql,$type,$params);
 			return $result;
 		}
-		public function get_actividad_relizada($id_actividad){
-			$sql = "SELECT * FROM evaluacion_inicial_actividad_alumno WHERE id_actividad = ? AND estado = 1";
+		public function get_actividad_relizada($id_actividad,$codcur,$codpar){
+			$sql = "SELECT * FROM evaluacion_inicial_actividad_alumno e INNER JOIN alumno a AND e.id_actividad = ? AND e.estado = 1";
 			$type = "i";
 			$params = array($id_actividad);
 			$result = ejecutar_consulta($this->db,$sql,$type,$params);
