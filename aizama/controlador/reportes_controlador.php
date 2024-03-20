@@ -9,27 +9,12 @@ header('Access-Control-Allow-Headers: Origin, Content-Type, X-Auth-Token , Autho
 require '../includes/functions.php';
 require_once'../modelo/conexion.php';
 $db = Conectar::conexion();
-$_tipo_user = isset($_GET['usr'])&&!empty($_GET['usr'])?$_GET['usr']:"";
-if (empty($_tipo_user)){
-	echo "errorGET";
-	exit();
-}
+
 if(!cliente_activo()){
-	if ($_tipo_user=='doc') {
-		header("Location: ../docentes.php");
-	}
-	if ($_tipo_user=='alu') {
-		header("Location: ../usuario.php");
-	}
-	if ($_tipo_user=='adm') {
-		header("Location: ../administracion.php");
-	}
+	echo json_encode(["status"=>"eSession"]);
 	exit();
 }
-if (!$_GET) {
-	echo "errorGET";
-	exit();
-}
+
 switch ($_GET['op']) {
 	case 'reporte_1':
 		$codcur = isset($_POST['codcur'])?$_POST['codcur']:"";
@@ -75,6 +60,66 @@ switch ($_GET['op']) {
 			exit();
 		}
 		echo json_encode(array("status"=>"ok","lista"=>$res,"curso"=>$nombre_curso,"paralelo"=>$nombre_paralelo,"fecha"=>$fecha));
+		break;
+	case 'resumen':
+		$user = isset($_SESSION['app_user_id'])?$_SESSION['app_user_id']:"";
+		if(empty($user)){
+			echo "eSession";
+			exit();
+		}
+		$codcur = isset($_POST['codcur'])?$_POST['codcur']:"";
+		$codpar = isset($_POST['codpar'])?$_POST['codpar']:"";
+
+		if(empty($codcur) || empty($codpar)){
+			echo "errorParam";
+			exit();
+		}
+		require_once '../modelo/modelo_Evaluacion.php';
+		require_once '../modelo/modelo_material_de_apoyo.php';
+		require_once '../modelo/modelo_practico.php';
+		require_once '../modelo/modelo_cur_mat.php';
+		require_once"../modelo/modelo_materia.php";
+		$Practico = new Practico($db);
+		$Material = new Material($db);
+		$Materia = new Materia($db);
+		$materias = $Materia->getMaterias();
+		$CM = new CurMat($db);
+		$Evaluacion = new Evaluacion_Seleccion($db);
+		$gestion = date("Y");
+		$result = $Evaluacion->get_evaluaciones_gestion($gestion,$codcur,$codpar);
+		$evaluaciones = [];
+		while ($row = $result->fetch_object()) {
+			$evaluaciones[] = $row;
+		}
+		$result = $Practico->get_practicos_gestion($gestion,$codcur,$codpar);
+		$practicos = [];
+		while ($row = $result->fetch_object()) {
+			$practicos[] = $row;
+		}
+		$result = $Material->get_material_gestion($gestion,$codcur,$codpar);
+		$materiales = [];
+		while ($row = $result->fetch_object()) {
+			$materiales[] = [
+				"id"=>$row->id,
+				"trimestre"=>$row->trimestre,
+				"titulo"=>$row->titulo,
+				"descripcion"=>$row->descripcion,
+				"material"=>$row->archivo,
+				"enlace"=>$row->enlace_o_archivo,
+				"tipo"=>$row->tipo_material,
+				"fecha"=>$row->fecha,
+				"codmat"=>$row->codmat
+			];
+		}
+		$result = $CM->get_materias($codcur,$codpar);
+		$lista_materias = [];
+		while ($row = $result->fetch_object()) {
+			$lista_materias[] = [
+				"codmat"=>$row->cod_mat,
+				"materia"=>$materias[$row->cod_mat]['nombre']
+			];
+		}
+		echo json_encode(["status"=>"ok","data"=>["evaluaciones"=>$evaluaciones,"materias"=>$lista_materias,"practicos"=>$practicos,"materiales"=>$materiales]]);
 		break;
 
 }

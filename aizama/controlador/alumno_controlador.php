@@ -449,6 +449,55 @@ if ($_GET) {
 			}
 			echo json_encode(array("status"=>"ok","lista"=>$lista));
 			break;
+		case 'get_deshabilitados':
+			$codusr = isset($_SESSION['app_user_id'])?$_SESSION['app_user_id']:"";
+			if(empty($codusr)){
+				echo json_encode(array("status"=>"eSession"));	
+				exit();		
+			}
+			require '../modelo/modelo_Alumno.php';
+			require_once'../modelo/conexion.php';
+			$db = Conectar::conexion();
+			$Alumno = new Alumno($db);
+			$result = $Alumno->get_dehabilitados();
+			$lista = [];
+			while ($row = $result->fetch_object()) {
+				$lista[] = [
+					"codalu" => $row->codigo,
+					"nombre" => "$row->paterno $row->materno $row->nombres"
+				];
+			}
+			echo json_encode(array("status"=>"ok","lista"=>$lista));
+			break;
+		case 'habilitar':
+			$codusr = isset($_SESSION['app_user_id'])?$_SESSION['app_user_id']:"";
+			if(empty($codusr)){
+				echo json_encode(array("status"=>"eSession"));	
+				exit();		
+			}
+			require '../modelo/modelo_Alumno.php';
+			require_once'../modelo/conexion.php';
+			$codalu = isset($_POST["codalu"])?$_POST["codalu"]:"";
+			$codcur = isset($_POST["codcur"])?$_POST["codcur"]:"";
+			$codpar = isset($_POST["codpar"])?$_POST["codpar"]:"";
+			if(empty($codalu)||empty($codcur)||empty($codpar)){
+				echo json_encode(["status"=>"errorParam"]);
+				exit();
+			}
+			$db = Conectar::conexion();
+			$Alumno = new Alumno($db);
+			$Alumno->habilitar($codalu,$codcur,$codpar);
+			if(isset($_POST["plataforma"])){
+				$Alumno->set_plataforma_access($codalu,"VERDADERO");
+			}
+			if(isset($_POST["evaluacion"])){
+				$Alumno->set_evaluacion_access($codalu,"VERDADERO");
+			}
+			if(isset($_POST["boletin"])){
+				$Alumno->set_boletin_access($codalu,"VERDADERO");
+			}
+			echo json_encode(["status"=>"ok"]);
+			break;
 	}
 }else{
 	echo "errorGET";

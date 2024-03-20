@@ -331,5 +331,29 @@ class Evaluacion_Seleccion
 			$result = ejecutar_consulta($this->db,$sql,$type,$params);
 			return $result;
 		}
+		public function get_evaluaciones_gestion($gestion,$codcur,$codpar){
+			$sql = "SELECT codexa as id,bimestre as trimestre,codmat,descrip as descripcion,fecha,'1' as tipo FROM evaluacion WHERE gestion = ? AND estado = 1 AND codigo = ? AND cod_par = ? UNION SELECT id , trimestre,codmat,descripcion,fechaReg as fecha, '2' as tipo FROM evaluacion_escrita WHERE gestion = ? AND estado = 1 AND codcur = ? AND codpar = ? UNION SELECT em_id as id, em_trimestre as trimestre, em_codmat as codmat,em_descripcion as descripcion,em_fechaReg as fecha, '3' as tipo FROM evaluacion_mixta WHERE em_gestion = ? AND em_estado = 1 AND em_codcur = ? AND em_codpar = ?";
+			$type = "iiiiiiiii";
+			$params = array($gestion,$codcur,$codpar,$gestion,$codcur,$codpar,$gestion,$codcur,$codpar);
+			$result = ejecutar_consulta($this->db,$sql,$type,$params);
+			return $result;
+		}
+		public function get_evaluaciones_count($gestion,$codcur,$codpar,$codmat){
+			$sql = "SELECT count(*) as n FROM evaluacion WHERE gestion = ? AND estado = 1 AND codigo = ? AND cod_par = ? AND codmat = ?";
+			$type = "iiis";
+			$params = array($gestion,$codcur,$codpar,$codmat);
+			$result = ejecutar_consulta($this->db,$sql,$type,$params);
+			$row = $result->fetch_object();
+			$total = $row->n;
+			$sql = "SELECT count(*) as n FROM evaluacion_escrita WHERE gestion = ? AND estado = 1 AND codcur = ? AND codpar = ? AND codmat = ?";
+			$result = ejecutar_consulta($this->db,$sql,$type,$params);
+			$row = $result->fetch_object();
+			$total = $row->n + $total;
+			$sql = "SELECT count(*) as n FROM evaluacion_mixta WHERE em_gestion = ? AND em_estado = 1 AND em_codcur = ? AND em_codpar = ? AND em_codmat = ?";
+			$result = ejecutar_consulta($this->db,$sql,$type,$params);
+			$row = $result->fetch_object();
+			$total = $row->n + $total;
+			return $total;
+		}
 }
 ?>

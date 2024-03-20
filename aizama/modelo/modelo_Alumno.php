@@ -225,5 +225,19 @@ class Alumno{
 			$result=ejecutar_consulta($this->db, $sql, $type, $params);
 			return $result;
 		}
+		public function get_dehabilitados(){
+			$sql = "SELECT * FROM alumno WHERE estado != 1 ORDER BY paterno,materno,nombres ASC";
+			$params = array();
+			$type = "";
+			$result=ejecutar_consulta($this->db, $sql, $type, $params);
+			return $result;
+		}
+		public function habilitar($codalu,$codcur,$codpar){
+			$sql = "UPDATE alumno SET estado = 1, cod_cur = ?,cod_par = ? WHERE codigo = ?";
+			$params = array($codcur,$codpar,$codalu);
+			$type = "iii";
+			$result=ejecutar_consulta($this->db, $sql, $type, $params);
+			return $result;
+		}
 }	
 ?>

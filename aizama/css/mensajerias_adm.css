@@ -1,0 +1,238 @@
+ul li{
+	list-style: none;
+	margin: 5px auto;
+}
+.div-title h1{
+	text-align: center;
+	padding: 10px;
+	font-size: .95em;
+	font-family: arial,roboto,sans-serif;
+	color: var(--title-dark);
+}
+.main{
+	background: url(../images/background-dark.png);
+	max-width: 1300px;
+	margin: auto;
+}
+.btn-control{
+	border: none;
+	border-radius: 5px;
+	padding: 5px 10px;
+	width: 145px;
+	cursor: pointer;
+	background: transparent;
+	font-weight: bold;
+	text-transform: uppercase;
+	color: var(--text-light);
+}
+.div-chatting{
+	border-left: 1px solid var(--border-list);
+	border-right: 1px solid var(--border-list);
+	border-bottom: 1px solid var(--border-list);
+}
+
+.content-primary{
+	display: grid;
+	grid-template-columns: 250px calc(100% - 400px) 150px;
+}
+.div-contact-info{
+	display: flex;
+	align-items: center;
+	column-gap: 10px;
+	justify-content: space-between;
+	padding: 10px;
+}
+.div-chats{
+	height: calc(100vh - 250px);
+}
+.info-user{
+	display: flex;
+	align-items: center;
+	column-gap: 10px;
+}
+.img-user{
+	width: 50px;
+}
+.text-writer{
+	display: flex;
+	align-items: center;
+	width: 100%;
+}
+.text-writer img{
+	width: 50px;
+	cursor: pointer;
+}
+.div-text-writing{
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 7px;
+}
+.div-input-text{
+	width: 100%;
+	
+}
+.div-btn-send{
+	display: flex;
+	padding: 5px;
+}
+.div-btn-send img{
+	width: 25px;
+	cursor: pointer;
+}
+.div-contact-options img{
+	cursor: pointer;
+}
+.div-input-text input{
+	width: 100%;
+	padding: 10px;
+	border-radius: 7px;
+	border: 1px solid #ccc;
+	outline-color: #ccc;
+}
+.name-user h2{
+	font-size: .9em;
+	color: var(--text-light);
+}
+.name-user h3{
+	font-size: .85em;
+	color: var(--text-light);
+}
+.bl{
+	background: var(--background-ligth-transparent);
+}
+.div-search{
+	padding: 19px 10px; 
+	display: flex;
+	align-items: center;
+	gap: 10px;
+}
+.div-search img{
+	width: 25px;
+	cursor: pointer;
+}
+.div-search input{
+	width: 100%;
+	padding: 5px;
+	border-radius: 7px;
+	outline-color: #ccc;
+}
+.div-list-chats ul li{
+	margin: 0;
+}
+.list-chatings{
+	color: var(--text-light);
+	cursor: pointer;
+	border-top: 1px solid var(--border-list);
+}
+.list-chatings:hover{
+	background: var(--background-ligth-transparent);
+}
+.item-list{
+	display: flex;
+	align-items: center;
+	gap: 7px;
+}
+.div-span{
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow-y: hidden;
+	overflow-x: hidden;
+	margin-right: 5px;
+}
+.span-nombre-chat{
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow-y: hidden;
+	overflow-x: hidden;
+	font-size: .85em;
+}
+.div-span-item{
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow-y: hidden;
+	overflow-x: hidden;
+	font-size: .75em;
+	color: var(--title-dark);
+}
+.div-type-chat{
+	border-top: 1px solid var(--border-list);
+}
+.div-type-chat ul li{
+	margin: 0;
+	border-top: 1px solid var(--border-list);
+	padding: 7px;
+	cursor: pointer;
+}
+.div-type-chat ul li:hover{
+	background: var(--background-ligth-transparent);
+}
+.div-fecha{
+	padding: 10px;
+	display: flex;
+	justify-content: center;
+}
+.div-fecha span{
+	border: none;
+	border-radius: 5px;
+	background: var(--background-ligth-transparent);
+	padding: 5px;
+	color: var(--text-light-soft);
+	font-size: .7em;
+}
+.msn-content{
+	background: var(--background-ligth-transparent);
+	border-radius: 0 10px 10px;
+	padding: 7px 25px 14px 7px;
+	max-width: 80%;
+	min-width: 100px;
+	display: table;
+	margin-left: 20px;
+	margin-bottom: 3px;
+	position: relative;
+	min-height: 40px;
+	color: var(--text-light-soft);
+	z-index: 100;
+}
+.div-send{
+	display: flex;
+	justify-content: right;
+}
+.msn-content-send{
+	background: var(--background-ligth-transparent-send);
+	border-radius: 10px 0px 10px 10px;
+	padding: 7px 25px 14px 7px;
+	max-width: 80%;
+	min-width: 100px;
+	display: table;
+	margin-right: 20px;
+	position: relative;
+	min-height: 40px;
+	color: var(--text-light-soft);
+	z-index: 100;
+}
+.span-msn{
+	font-size: .9em;
+}
+.span-hora{
+	position: absolute;
+	font-size: .65em;
+	bottom: 3px;
+	right: 7px;
+}
+.span-cola{
+	width: 20px;
+	height: 20px;
+	background: transparent;
+	position: absolute;
+	top: 0;
+	left: -20px;
+}
+.span-cola-send{
+	width: 20px;
+	height: 20px;
+	background: transparent;
+	position: absolute;
+	top: 0;
+	right: -20px;
+}

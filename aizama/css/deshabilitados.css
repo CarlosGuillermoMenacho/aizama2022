@@ -1,0 +1,12 @@
+.content-search{
+	width:500px;
+	margin: 10px auto;
+}
+.div-formulario{
+	width: 500px;
+	margin: 10px auto;
+}
+.div-accesos{
+	display: flex;
+    justify-content: space-between;
+}

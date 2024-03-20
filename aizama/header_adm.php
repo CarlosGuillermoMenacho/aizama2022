@@ -208,6 +208,7 @@
                 <li><a href="lista_blocked.php" id="">Preincripciones</a></li>
                 <li><a href="asistencia_alumnos.php">Asistencia Alumnos</a></li>
                 <li><a href="foto_perfil_alumnos.php">Foto Perfil</a></li>
+                <li><a href="deshabilitados.php">Alumnos Deshabilitados</a></li>
           </ul>
 
         </li>

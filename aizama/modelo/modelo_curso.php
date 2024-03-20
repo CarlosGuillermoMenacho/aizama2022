@@ -360,6 +360,20 @@ class Curso{
 		$result = ejecutar_consulta($this->db,$sql,$type,$params);
 		return $result;
 	}
+	public function get_materias($codcur,$codpar){
+		$consulta ="SELECT * FROM cur_mat where cod_cur = ? AND cod_par = ? AND estado = 1";
+		$type = "ii";
+		$params = array($codcur,$codpar);
+		$result = ejecutar_consulta($this->db,$consulta,$type,$params);
+		return $result;
+	}
+	public function get_profesor($gestion,$codcur,$codpar,$codmat){
+		$consulta ="SELECT DISTINCT CODPROF,concat(APEPRO,' ',NOMPRO)as nombre,CELPRO,CI FROM prof_cur_mat pm INNER JOIN profe p ON pm.prof = p.CODPROF AND pm.estado = 'activo' AND p.ESTADO = 'activo' AND pm.codcur = ? AND pm.codpar = ? AND pm.codmat = ? AND pm.gestion = ?";
+		$type = "iisi";
+		$params = array($codcur,$codpar,$codmat,$gestion);
+		$result = ejecutar_consulta($this->db,$consulta,$type,$params);
+		return $result;
+	}
 }	
 
 ?>

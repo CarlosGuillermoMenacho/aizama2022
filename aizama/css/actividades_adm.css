@@ -1,0 +1,174 @@
+body{
+	background: url(../images/background.png);
+}
+.logo-background{
+	position: fixed;
+	left: 50%;
+	top: 50%;
+	transform: translate(-50% , -50%);
+	opacity: 0.03;
+	width: 50%;
+	z-index: -1;
+}
+.main{
+	color: var(--text-light);
+	font-size: .9em;
+	display: flex;
+}
+.div-lista-cursos{
+	width: 150px;
+	height: calc(100vh - 60px);
+	border: 1px solid var(--border-list);
+	overflow-y: auto;
+	font-size: .85em;
+	scrollbar-width: thin;
+	scrollbar-color: rgba(var(--white-rgb), .16) transparent;
+}
+.div-lista-cursos ul li{
+	padding: 10px;
+	list-style: none;
+	cursor: pointer;
+	border-bottom: 1px solid var(--border-list);
+}
+.div-lista-cursos ul li:hover{
+	background: var(--background-ligth-transparent);
+}
+.oculto{
+	display: none;
+}
+.selected{
+	background: var(--background-ligth-transparent);
+}
+.div-nombre-curso h1{
+	padding: 10px;
+	font-size: .9em;
+	text-align: center;
+	text-transform: uppercase;
+}
+.div-lista-materias{
+	width: 100%;
+	padding: 5px;
+}
+.content-list-materias{
+	height: calc(100vh - 107px);
+	overflow-y: auto;
+	scrollbar-width: thin;
+	scrollbar-color: rgba(var(--white-rgb), .16) transparent;
+}
+.lista-materias{
+	display: flex;
+	flex-wrap: wrap;
+	gap: 10px;
+	justify-content: center;
+	margin: auto;
+}
+.info-prof{
+	padding: 0 0 0 5px;
+	margin-top: 5px;
+}
+.info-evaluacion{
+	padding: 0 0 0 5px;
+	margin-top: 5px;
+	display: flex;
+	gap: 5px;
+	flex-direction: column;
+	font-size: .9em;
+}
+.info-prof img{
+	width: 18px;
+	cursor: pointer;
+}
+.card-materia{
+	font-weight: bold;
+	font-size: 1.1em;
+	padding: 5px 0;
+}
+.card-descripcion{
+	font-weight: bold;
+	font-size: .9em;
+	padding: 5px 0;
+}
+.card{
+	background: var(--background-ligth-transparent);
+	width: 250px;
+	border-radius: 5px;
+	padding: 10px;
+}
+.card:hover{
+	background: var(--background-blue-transparent);
+}
+.card-evaluacion{
+	background: var(--background-ligth-transparent);
+	max-width: 450px;
+	width: 100%;
+	border-radius: 5px;
+	padding: 10px;
+	position: relative;
+}
+.card-evaluacion:hover{
+	background: var(--background-blue-transparent);
+}
+.contac-prof{
+	display: flex;
+	align-items: center;
+	gap: 5px;
+}
+.contac-prof a {
+	display: flex;
+}
+.item{
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	justify-content: space-between;
+}
+.badget{
+	display: flex;
+	align-items: center;
+	border-radius: 50%;
+	width: 20px;
+	height: 20px;
+	background: var(--badge-red);
+	justify-content: center;
+	font-size: .75em;
+	color: var(--title);
+}
+.contenido-actividades{
+	margin-top: 10px;
+	display: flex;
+	gap: 5px;
+	flex-direction: column;
+	padding: 0 0 0 5px;
+}
+.underline:hover{
+	text-decoration: underline;
+	cursor: pointer;
+}
+.div-nombre-materia h1{
+	font-size: 1.05em;
+	font-weight: normal;
+	text-align: center;
+}
+.content-list-evaluaciones{
+	height: calc(100vh - 127px);
+	overflow-y: auto;
+	scrollbar-width: thin;
+	scrollbar-color: rgba(var(--white-rgb), .16) transparent;
+	padding: 10px 0;
+}
+.bold{
+	font-weight: bold;
+}
+.puntaje{
+	position: absolute;
+	top: 5px;
+	right: 5px;
+	background: var(--background-ligth-transparent);
+	padding: 5px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border-radius: 5px;
+	font-size: 1em;
+	font-weight: bold;
+}
