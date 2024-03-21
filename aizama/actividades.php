@@ -37,39 +37,12 @@ require 'header_adm.php';
 				</div-->
 			</div>
 		</div>
-		<div class="div-lista-evaluaciones">
-			<div class="div-nombre-materia"><h1 id="nc">Evaluaciones de Matemáticas</h1></div>
+		<div class="div-lista-evaluaciones oculto">
+			<div class="div-nombre-materia"><h1 id="mc">Material de apoyo de Matemáticas</h1></div>
 			<div class="content-list-evaluaciones">
-				<div class="lista-materias">
+				<div class="lista-evaluaciones">
 					<div class="card-evaluacion">
-						<span class="card-descripcion">Examen oral del padre nuestro ( castellano e ingles)</span>
-						<span class="puntaje">35 Pts.</span>
-						<div class="info-evaluacion">
-							<span>Disponible desde: <b>2 de marzo, 15:30 hrs.</b></span>
-							<span>hasta: <b>3 de marzo, 15:30 hrs.</b></span>
-							<span>Tiempo: <b>30 min.</b></span>
-							<span>Tipo de evaluación: <b>Evaluación de selección múltiple</b></span>
-						</div>
-						<div class="contenido-actividades">
-							<div class="item">
-								<span class="underline">Banco de Preguntas</span>
-								<span class="badget">10</span>
-							</div>
-							<div class="item">
-								<span>Preguntas a responder</span>
-								<span class="badget">5</span>
-							</div>
-						</div>
-						<div class="contenido-actividades">
-							<div class="item">
-								<span class="underline">Alumnos que realizaron la evaluación</span>
-								<span class="badget">10</span>
-							</div>
-							<div class="item">
-								<span class="underline">Faltan</span>
-								<span class="badget">5</span>
-							</div>
-						</div>
+						<span class="no-material">No hay material</span>
 					</div>
 				</div>
 			</div>

@@ -139,5 +139,33 @@ class EvaluacionEscrita
 			$result = ejecutar_consulta($this->db,$sql,$type,$params);
 			return $result;
 		}
+		public function get_preguntas($id){
+			$sql = "SELECT * FROM pregunta_eval_escrito WHERE estado = 1 AND codeva = ?";
+			$type = "i";
+			$params = array($id);
+			$result = ejecutar_consulta($this->db,$sql,$type,$params);
+			return $result;
+		}
+		public function get_n_preguntas($id){
+			$sql = "SELECT count(*) as total FROM pregunta_eval_escrito WHERE estado = 1 AND codeva = ?";
+			$type = "i";
+			$params = array($id);
+			$result = ejecutar_consulta($this->db,$sql,$type,$params);
+			return $result;
+		}
+		public function evaluacion_realizada($id,$codcur,$codpar){
+			$sql = "SELECT count(*) as total FROM alumno WHERE cod_cur = ? and cod_par = ? AND estado = 1 AND codigo IN (SELECT codalu FROM evaluacion_proceso where codeva = ? AND estado = 1 GROUP by codalu);";
+			$type = "iii";
+			$params = array($codcur,$codpar,$id);
+			$result = ejecutar_consulta($this->db,$sql,$type,$params);
+			return $result;
+		}
+		public function evaluacion_no_realizada($id,$codcur,$codpar){
+			$sql = "SELECT count(*) as total FROM alumno WHERE cod_cur = ? and cod_par = ? AND estado = 1 AND codigo NOT IN (SELECT codalu FROM evaluacion_proceso where codeva = ? AND estado = 1 GROUP by codalu);";
+			$type = "iii";
+			$params = array($codcur,$codpar,$id);
+			$result = ejecutar_consulta($this->db,$sql,$type,$params);
+			return $result;
+		}
 }
 ?>

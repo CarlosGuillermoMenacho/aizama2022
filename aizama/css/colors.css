@@ -11,9 +11,12 @@
 	--text-light:#afafaf;
 	--background-dark-soft: #0C1317;
 	--border-list: rgba(134, 150, 160, 0.15);
-	--background-ligth-transparent: rgba(255, 255, 255, 0.1);
+	--background-ligth-transparent-white: rgba(255, 255, 255, 0.1);
+	--background-ligth-transparent: rgba(159, 159, 159, 0.1);
 	--background-ligth-transparent-send: rgba(0, 197, 197, 0.1);
 	--badge-red: rgb(157 12 12 / 90%);
+	--badge-green: rgb(8 115 75 / 90%);
+	--badge-blue: rgb(12 46 171 / 90%);
 	--background-blue-transparent: rgb(0 247 202 / 10%);
 	--white-rgb: 255, 255, 255;
 }

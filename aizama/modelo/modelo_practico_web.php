@@ -65,7 +65,7 @@ class PracticoWeb{
 				UNION
 				SELECT bimestre as trimestre,count(bimestre) as total FROM cuestionarios WHERE estado = 1 AND gestion = ? AND codprof = ? GROUP BY trimestre) as t GROUP BY trimestre";
 		$type = "isis";
-		$params = array($gestion,$codprof,$gestion,$codprof;
+		$params = array($gestion,$codprof,$gestion,$codprof);
 		$result = ejecutar_consulta($this->db,$sql,$type,$params);
 		return $result;
 	}
@@ -73,6 +73,34 @@ class PracticoWeb{
 		$sql = "SELECT * FROM practicos_web WHERE estado = 1 AND codcur = ? AND codpar = ? AND fecha = ?";
 		$type = "iis";
 		$params = array($codcur,$codpar,$fecha);
+		$result = ejecutar_consulta($this->db,$sql,$type,$params);
+		return $result;
+	}
+	public function get_actividades($id){
+		$sql = "SELECT * FROM pregunta_pract_web WHERE codpractweb = ? AND estado = 1";
+		$type = "i";
+		$params = array($id);
+		$result = ejecutar_consulta($this->db,$sql,$type,$params);
+		return $result;
+	}
+	public function count_actividades($id){
+		$sql = "SELECT COUNT(*) as total FROM pregunta_pract_web WHERE codpractweb = ? AND estado = 1";
+		$type = "i";
+		$params = array($id);
+		$result = ejecutar_consulta($this->db,$sql,$type,$params);
+		return $result;
+	}
+	public function practico_realizado($id,$codcur,$codpar){
+		$sql = "SELECT COUNT(*) as total FROM alumno WHERE estado = 1 AND cod_cur = ? AND cod_par = ? AND codigo IN (SELECT codalumno FROM practicos_web_alumno WHERE estado != 0 AND codpractweb = ?)";
+		$type = "iii";
+		$params = array($codcur,$codpar,$id);
+		$result = ejecutar_consulta($this->db,$sql,$type,$params);
+		return $result;
+	}
+	public function practico_no_realizado($id,$codcur,$codpar){
+		$sql = "SELECT COUNT(*) as total FROM alumno WHERE estado = 1 AND cod_cur = ? AND cod_par = ? AND codigo NOT IN (SELECT codalumno FROM practicos_web_alumno WHERE estado != 0 AND codpractweb = ?)";
+		$type = "iii";
+		$params = array($codcur,$codpar,$id);
 		$result = ejecutar_consulta($this->db,$sql,$type,$params);
 		return $result;
 	}

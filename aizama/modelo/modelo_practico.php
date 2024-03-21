@@ -35,6 +35,13 @@ class Practico{
 		$result = ejecutar_consulta($this->db,$sql,$type,$params);
 		return $result;
 	}
+	public function get_practicos_gestion_materia($gestion,$codcur,$codpar,$codmat){
+		$sql = "SELECT cod_cuest as id, bimestre as trimestre,cod_mat as codmat,descrip as descripcion,fechaReg as fecha,'1' as tipo,fecha as fl,hora as hl ,'Práctico digital' as nombre_tipo, limite,nota FROM cuestionarios WHERE gestion = ? AND estado = 1 AND cod_cur = ? AND cod_par = ? AND cod_mat = ? UNION SELECT id,trimestre,codmat,descripcion,fechaReg as fecha,'2' as tipo ,fecha as fl,hora as hl ,'Práctico web' as nombre_tipo, 'No' as limite,nota FROM practicos_web WHERE gestion = ? AND estado = 1 AND codcur = ? AND codpar = ? AND codmat = ? ORDER BY trimestre ASC";
+		$type = "iiisiiis";
+		$params = array($gestion,$codcur,$codpar,$codmat,$gestion,$codcur,$codpar,$codmat);
+		$result = ejecutar_consulta($this->db,$sql,$type,$params);
+		return $result;
+	}
 	public function get_practicos_count($gestion,$codcur,$codpar,$codmat){
 		$sql = "SELECT COUNT(*) as n FROM cuestionarios WHERE gestion = ? AND estado = 1 AND cod_cur = ? AND cod_par = ? AND cod_mat = ? ";
 		$type = "iiis";
@@ -47,6 +54,34 @@ class Practico{
 		$row = $result->fetch_object();
 		$total = $total + $row->n;
 		return $total;
+	}
+	public function get_actividades($id){
+		$sql = "SELECT * FROM preg_cuest WHERE cod_cuest = ? AND estado = 1";
+		$type = "i";
+		$params = array($id);
+		$result = ejecutar_consulta($this->db,$sql,$type,$params);
+		return $result;
+	}
+	public function count_actividades($id){
+		$sql = "SELECT count(*) as total FROM preg_cuest WHERE cod_cuest = ? AND estado = 1";
+		$type = "i";
+		$params = array($id);
+		$result = ejecutar_consulta($this->db,$sql,$type,$params);
+		return $result;
+	}
+	public function practico_realizado($id,$codcur,$codpar){
+		$sql = "SELECT COUNT(*) as total FROM alumno WHERE estado = 1 AND cod_cur = ? AND cod_par = ? AND codigo IN (SELECT codalumno FROM practico_alumno WHERE estado != 0 AND codpractico = ?)";
+		$type = "iii";
+		$params = array($codcur,$codpar,$id);
+		$result = ejecutar_consulta($this->db,$sql,$type,$params);
+		return $result;
+	}
+	public function practico_no_realizado($id,$codcur,$codpar){
+		$sql = "SELECT COUNT(*) as total FROM alumno WHERE estado = 1 AND cod_cur = ? AND cod_par = ? AND codigo NOT IN (SELECT codalumno FROM practico_alumno WHERE estado != 0 AND codpractico = ?)";
+		$type = "iii";
+		$params = array($codcur,$codpar,$id);
+		$result = ejecutar_consulta($this->db,$sql,$type,$params);
+		return $result;
 	}
 }
 ?>

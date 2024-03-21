@@ -205,13 +205,6 @@ class Evaluacion_Seleccion
 			$result = ejecutar_consulta($this->db,$sql,$type,$params);
 			return $result;	
 		}
-		public function get_preguntas($id){
-			$sql = "SELECT * FROM preguntas WHERE codexa = ? ";
-			$type = "i";
-			$params = array($id);
-			$result = ejecutar_consulta($this->db,$sql,$type,$params);
-			return $result;	
-		}
 		public function set_notas_preguntas($codexa,$nota){
 			$sql = "UPDATE preguntas SET valor = ? WHERE codexa = ? ";
 			$type = "ii";
@@ -221,6 +214,13 @@ class Evaluacion_Seleccion
 		}
 		public function get_n_preguntas($id){
 			$sql = "SELECT count(*) as total FROM preguntas WHERE codexa = ? ";
+			$type = "i";
+			$params = array($id);
+			$result = ejecutar_consulta($this->db,$sql,$type,$params);
+			return $result;	
+		}
+		public function get_preguntas($id){
+			$sql = "SELECT * FROM preguntas WHERE codexa = ? ";
 			$type = "i";
 			$params = array($id);
 			$result = ejecutar_consulta($this->db,$sql,$type,$params);
@@ -338,6 +338,13 @@ class Evaluacion_Seleccion
 			$result = ejecutar_consulta($this->db,$sql,$type,$params);
 			return $result;
 		}
+		public function get_evaluaciones_gestion_materia($gestion,$codcur,$codpar,$codmat){
+			$sql = "SELECT codexa as id,bimestre as trimestre,codmat,descrip as descripcion,fecha,concat(f_inicio,' ',horai)as fi,concat(f_fin,' ',horaf)as ff,'1' as tipo,'Evaluación de selección' as tipo_nombre,'100' as nota,'' as tiempo,tot_preg as preguntas,'' as banco  FROM evaluacion WHERE gestion = ? AND estado = 1 AND codigo = ? AND cod_par = ? AND codmat = ? UNION ALL SELECT id , trimestre,codmat,descripcion,fechaReg as fecha,fecha_inicio as fi,fecha_fin as ff, '2' as tipo,'Evaluación escrita' as tipo_nombre, nota ,concat(tiempo,' min.') as tiempo,preguntas,'' as banco FROM evaluacion_escrita WHERE gestion = ? AND estado = 1 AND codcur = ? AND codpar = ? AND codmat = ? UNION ALL SELECT em_id as id, em_trimestre as trimestre, em_codmat as codmat,em_descripcion as descripcion,em_fechaReg as fecha,em_inicio as fi,em_fin as ff, '3' as tipo,'Evaluación mixta' as tipo_nombre , em_nota as nota , concat(em_tiempo,' min.') as tiempo,em_preguntas as preguntas,em_banco as banco FROM evaluacion_mixta WHERE em_gestion = ? AND em_estado = 1 AND em_codcur = ? AND em_codpar = ? AND em_codmat = ? ORDER BY trimestre ASC";
+			$type = "iiisiiisiiis";
+			$params = array($gestion,$codcur,$codpar,$codmat,$gestion,$codcur,$codpar,$codmat,$gestion,$codcur,$codpar,$codmat);
+			$result = ejecutar_consulta($this->db,$sql,$type,$params);
+			return $result;
+		}
 		public function get_evaluaciones_count($gestion,$codcur,$codpar,$codmat){
 			$sql = "SELECT count(*) as n FROM evaluacion WHERE gestion = ? AND estado = 1 AND codigo = ? AND cod_par = ? AND codmat = ?";
 			$type = "iiis";
@@ -354,6 +361,20 @@ class Evaluacion_Seleccion
 			$row = $result->fetch_object();
 			$total = $row->n + $total;
 			return $total;
+		}
+		public function evaluacion_realizada($id,$codcur,$codpar){
+			$sql = "SELECT count(*) as total FROM alumno WHERE cod_cur = ? and cod_par = ? AND estado = 1 AND codigo IN (SELECT codigo FROM `resp_alu_exa` where codexa = ? GROUP by codigo);";
+			$type = "iii";
+			$params = array($codcur,$codpar,$id);
+			$result = ejecutar_consulta($this->db,$sql,$type,$params);
+			return $result;
+		}
+		public function evaluacion_no_realizada($id,$codcur,$codpar){
+			$sql = "SELECT count(*) as total FROM alumno WHERE cod_cur = ? and cod_par = ? AND estado = 1 AND codigo NOT IN (SELECT codigo FROM `resp_alu_exa` where codexa = ? GROUP by codigo);";
+			$type = "iii";
+			$params = array($codcur,$codpar,$id);
+			$result = ejecutar_consulta($this->db,$sql,$type,$params);
+			return $result;
 		}
 }
 ?>

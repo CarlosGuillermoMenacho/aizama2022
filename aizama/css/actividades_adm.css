@@ -55,7 +55,7 @@ body{
 	scrollbar-width: thin;
 	scrollbar-color: rgba(var(--white-rgb), .16) transparent;
 }
-.lista-materias{
+.lista-materias,.lista-evaluaciones{
 	display: flex;
 	flex-wrap: wrap;
 	gap: 10px;
@@ -84,9 +84,12 @@ body{
 	padding: 5px 0;
 }
 .card-descripcion{
+	display: block;
 	font-weight: bold;
 	font-size: .9em;
 	padding: 5px 0;
+	width: calc(100% - 65px);
+	text-transform: uppercase;
 }
 .card{
 	background: var(--background-ligth-transparent);
@@ -122,6 +125,14 @@ body{
 	gap: 10px;
 	justify-content: space-between;
 }
+.underline a{
+	text-decoration: none;
+	color: var(--text-light);
+}
+.no-material{
+	display: block;
+	text-align: center;
+}
 .badget{
 	display: flex;
 	align-items: center;
@@ -129,6 +140,28 @@ body{
 	width: 20px;
 	height: 20px;
 	background: var(--badge-red);
+	justify-content: center;
+	font-size: .75em;
+	color: var(--title);
+}
+.badget-green{
+	display: flex;
+	align-items: center;
+	border-radius: 50%;
+	width: 20px;
+	height: 20px;
+	background: var(--badge-green);
+	justify-content: center;
+	font-size: .75em;
+	color: var(--title);
+}
+.badget-blue{
+	display: flex;
+	align-items: center;
+	border-radius: 50%;
+	width: 20px;
+	height: 20px;
+	background: var(--badge-blue);
 	justify-content: center;
 	font-size: .75em;
 	color: var(--title);

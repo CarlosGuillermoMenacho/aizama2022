@@ -126,6 +126,66 @@ switch ($_GET['op']) {
 		echo json_encode(array("status"=>"ok","alumnos"=>$lista_Alumnos,"practicos"=>$arrayPracticos),JSON_UNESCAPED_UNICODE);
 		
 		break;
+	case 'get_practicos':
+		$codusr = isset($_SESSION['app_user_id'])?$_SESSION['app_user_id']:"";
+		if(empty($codusr)){
+			echo json_encode(["status"=>"eSession"]);
+			exit();
+		}
+		$codcur =  isset($_POST["codcur"])?$_POST["codcur"]:"";
+		$codpar =  isset($_POST["codpar"])?$_POST["codpar"]:"";
+		$codmat =  isset($_POST["codmat"])?$_POST["codmat"]:"";
+		if(empty($codcur) || empty($codpar) || empty($codmat)){
+			echo json_encode(["status"=>"errorParam"]);
+			exit();
+		}
+		require_once '../modelo/modelo_practico.php';
+		require_once '../modelo/modelo_practico_web.php';
+		$PD = new Practico($db);
+		$PW = new PracticoWeb($db);
+		$gestion = date("Y");
+		$result = $PD->get_practicos_gestion_materia($gestion,$codcur,$codpar,$codmat);
+		$practicos = [];
+		while ($row = $result->fetch_object()) {
+			$actividades = "";
+			$realizados = "";
+			$pendientes = "";
+			$limite = "No";
+			if($row->tipo == 1){
+				$result_act = $PD->count_actividades($row->id);
+				$actividades = $result_act->fetch_object()->total;
+				$resul_r = $PD->practico_realizado($row->id,$codcur,$codpar);
+				$resul_p = $PD->practico_no_realizado($row->id,$codcur,$codpar);
+				$realizados = $resul_r->fetch_object()->total;
+				$pendientes = $resul_p->fetch_object()->total;
+				$limite = $row->limite == 1? "Si":"No";
+			}
+			if ($row->tipo == 2) {
+				$result_act = $PW->count_actividades($row->id);
+				$actividades = $result_act->fetch_object()->total;
+				$resul_r = $PW->practico_realizado($row->id,$codcur,$codpar);
+				$resul_p = $PW->practico_no_realizado($row->id,$codcur,$codpar);
+				$realizados = $resul_r->fetch_object()->total;
+				$pendientes = $resul_p->fetch_object()->total;
+			}
+			$practicos[] = [
+				"descripcion"=>$row->descripcion,
+				"trimestre"=>$row->trimestre,
+				"tipo"=>$row->tipo,
+				"registro"=>$row->fecha,
+				"id"=>$row->id,
+				"fl"=>$row->fl,
+				"hl"=>substr($row->hl,0,5),
+				"limite"=>$limite,
+				"nombre_tipo"=>$row->nombre_tipo,
+				"actividades"=>$actividades,
+				"realizados"=>$realizados,
+				"pendientes"=>$pendientes,
+				"nota"=>$row->nota
+			];
+		}
+		echo json_encode(["status"=>"ok","practicos"=>$practicos]);
+		break;
 	default:
 		echo "errorGET";
 		break;

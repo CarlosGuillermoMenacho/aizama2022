@@ -727,6 +727,80 @@ switch ($_GET['op']) {
 		}
 		echo json_encode(["status"=>"ok","data"=>$respuestas,"evaluacion"=>$evaluacion,"alumno"=>$nombre,"curso"=>$curso,"materia"=>$materia,"nota"=>$nota]);
 		break;
+	case 'get_evaluaciones':
+		$codusr = $_SESSION["app_user_id"];
+		if(empty($codusr)){
+			echo json_encode(["status"=>"eSession"]);
+			exit();
+		}
+		$codcur =  isset($_POST["codcur"])?$_POST["codcur"]:"";
+		$codpar =  isset($_POST["codpar"])?$_POST["codpar"]:"";
+		$codmat =  isset($_POST["codmat"])?$_POST["codmat"]:"";
+		if(empty($codcur) || empty($codpar) || empty($codmat)){
+			echo json_encode(["status"=>"errorParam"]);
+			exit();
+		}
+
+		require_once"../modelo/modelo_Evaluacion.php";
+		require_once"../modelo/modelo_evaluacion_escrita.php";
+		require_once"../modelo/modelo_evaluacion_mixta.php";
+		$Evaluacion = new Evaluacion_Seleccion($db);
+		$EE = new EvaluacionEscrita($db);
+		$EM = new Evaluacion_mixta($db);
+		$gestion = date("Y");
+		$result = $Evaluacion->get_evaluaciones_gestion_materia($gestion,$codcur,$codpar,$codmat);
+		$evaluaciones = [];
+		while ($row = $result->fetch_object()) {
+			$realizados = 0;
+			$no_realizado = 0;
+			$banco = $row->banco;
+			if($row->tipo == 1){
+				if($banco == ""){
+					$result_banco = $Evaluacion->get_n_preguntas($row->id);
+					$banco = $result_banco->fetch_object()->total;					
+				}
+				$res_realizado = $Evaluacion->evaluacion_realizada($row->id,$codcur,$codpar);
+				$realizados = $res_realizado->fetch_object()->total;
+				$res_no_realizado = $Evaluacion->evaluacion_no_realizada($row->id,$codcur,$codpar);
+				$no_realizado = $res_no_realizado->fetch_object()->total;
+			}
+			if($row->tipo == 2){
+				if($banco == ""){
+					$result_banco = $EE->get_n_preguntas($row->id);
+					$banco = $result_banco->fetch_object()->total;					
+				}
+				$res_realizado = $EE->evaluacion_realizada($row->id,$codcur,$codpar);
+				$realizados = $res_realizado->fetch_object()->total;
+				$res_no_realizado = $EE->evaluacion_no_realizada($row->id,$codcur,$codpar);
+				$no_realizado = $res_no_realizado->fetch_object()->total;
+			}
+			if($row->tipo == 3){
+				$res_realizado = $EM->evaluacion_realizada($row->id,$codcur,$codpar);
+				$realizados = $res_realizado->fetch_object()->total;
+				$res_no_realizado = $EM->evaluacion_no_realizada($row->id,$codcur,$codpar);
+				$no_realizado = $res_no_realizado->fetch_object()->total;
+			}
+			$evaluaciones[] = [
+				"banco"=>$banco,
+				"descripcion"=>$row->descripcion,
+				"registro"=>$row->fecha,
+				"fi"=>substr($row->fi,0,10),
+				"ff"=>substr($row->ff,0,10),
+				"hi"=>substr($row->fi,11,5),
+				"hf"=>substr($row->ff,11,5),
+				"id"=>$row->id,
+				"nota"=>$row->nota,
+				"preguntas"=>$row->preguntas,
+				"tiempo"=>$row->tiempo,
+				"tipo"=>$row->tipo,
+				"tipo_nombre"=>$row->tipo_nombre,
+				"trimestre"=>$row->trimestre,
+				"realizados"=>$realizados,
+				"pendientes"=>$no_realizado
+			];
+		}
+		echo json_encode(["status"=>"ok","evaluaciones"=>$evaluaciones]);
+		break;
 	default:
 		echo "errorGET";
 		break;
