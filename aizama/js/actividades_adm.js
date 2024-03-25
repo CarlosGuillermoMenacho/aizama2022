@@ -4,6 +4,10 @@ let __EVALUACIONES = [];
 let __PRACTICOS = [];
 let __MATERIALES = [];
 let __MESES = ["","Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"];
+let __BANCO = [];
+let __C = ""; //Código de curso
+let __P = ""; //Código de paralelo
+let __M = ""; //Código de materia
 const get_materia = m => {
 	for (var i = 0; i < __MATERIAS.length; i++) {
 		if(__MATERIAS[i].codmat == m) return __MATERIAS[i];
@@ -16,8 +20,83 @@ const get_curso = (c,p) => {
 	}
 	return false;
 }
-const mostrar_lista_evaluaciones = (l,c,p,m) =>{
+const mostrar_lista_banco = (l,t,i) => {
 	$(".lista-evaluaciones").empty();
+	let e = __EVALUACIONES[i];
+	if (t == 1) {
+		let html = "";
+		l.forEach(p => {
+			html = `${html}<div class="div-pregunta">
+						<span class="span-pregunta"><b>${p.pregunta}</b></span>
+						<div class="info-pregunta">
+							<div class="opciones-pregunta">
+								<div class="opciones">
+									<span ${p.respuesta == 1?'class="opcion-selected"':""}>1. ${p.opciones[0].opcion}</span>
+									<span ${p.respuesta == 2?'class="opcion-selected"':""}>2. ${p.opciones[1].opcion}</span>
+									<span ${p.respuesta == 3?'class="opcion-selected"':""}>3. ${p.opciones[2].opcion}</span>
+								</div>
+								<span>Tiempo: <b>${p.tiempo} min.</b></span>
+							</div>
+							${p.imagen != ""?`<div class="img-pregunta">
+								<img src="resources/${p.imagen}">
+							</div>`:''}
+						</div>
+					</div>`;
+		})
+		$(".lista-evaluaciones").append(
+			`<div class="div-banco">
+						<img class="icon-close" src="images/close.svg" title="Cerrar" onclick="get_evaluaciones(${__C},${__P},'${__M}')">
+						<span class="card-descripcion-pregunta">${e.descripcion}</span>
+						<span class="title-banco">Banco de Preguntas</span>
+						<div class="info-evaluacion-pregunta">
+							${html}
+						</div>
+					</div>`
+		);
+	}
+	if (t == 2) {
+		let html = "";
+		l.forEach(p => {
+			html = `${html}<div class="div-pregunta">
+						<span class="span-pregunta">${p.pregunta}</span>
+					</div>`;
+		})
+		$(".lista-evaluaciones").append(
+			`<div class="div-banco">
+						<img class="icon-close" src="images/close.svg" title="Cerrar" onclick="get_evaluaciones(${__C},${__P},'${__M}')">
+						<span class="card-descripcion-pregunta">${e.descripcion}</span>
+						<span class="title-banco">Banco de Preguntas</span>
+						<div class="info-evaluacion-pregunta">
+							${html}
+						</div>
+					</div>`
+		);
+	}
+}
+const get_banco = (id,t,i) => {
+	let url = "controlador/evaluacionSeleccion_controlador.php?op=banco&usr=adm";
+	if (t == 2) url = "controlador/evaluacion_escrita_controlador.php?op=get_banco"; 
+	$.post(
+		url,
+		{codexa:id},
+		data => {
+			if (data.status == "eSession") {
+				Swal.fire("La sesión ha finalizado, vuelva a iniciar sesión con su usuario y contraseña...");
+				return;
+			}
+			if(data.status == "ok"){
+				__BANCO = data.data;
+				mostrar_lista_banco(__BANCO,t,i);
+			} 
+		},"json"
+	);
+}
+const mostrar_lista_evaluaciones = (l,c,p,m) =>{
+	__C = c;
+	__P = p;
+	__M = m;
+	$(".lista-evaluaciones").empty();
+	let index = 0;
 	l.forEach(e => {
 		$(".lista-evaluaciones").append(
 			`<div class="card-evaluacion">
@@ -27,12 +106,12 @@ const mostrar_lista_evaluaciones = (l,c,p,m) =>{
 							<span>Trimestre: <b>${e.trimestre} </b></span>
 							<span>Disponible desde: <b>${e.fi.substring(8,10)} de ${__MESES[parseInt(e.fi.substring(5,7))]}, ${e.hi} hrs.</b></span>
 							<span>hasta: <b>${e.ff.substring(8,10)} de ${__MESES[parseInt(e.ff.substring(5,7))]}, ${e.hf} hrs.</b></span>
-							<span>Tiempo: <b>${e.tiempo} min.</b></span>
+							${e.tiempo != ""?`<span>Tiempo: <b>${e.tiempo}</b></span>`:''}
 							<span>Tipo de evaluación: <b>${e.tipo_nombre}</b></span>
 						</div>
 						<div class="contenido-actividades">
 							<div class="item">
-								<span class="underline">Banco de Preguntas</span>
+								<span class="underline" onclick="get_banco(${e.id},${e.tipo},${index})">Banco de Preguntas</span>
 								<span class="badget-blue">${e.banco}</span>
 							</div>
 							<div class="item">
@@ -53,6 +132,7 @@ const mostrar_lista_evaluaciones = (l,c,p,m) =>{
 					</div>
 				</div>`
 		);
+		index++;
 	});
 	if(l.length == 0){
 		$(".lista-evaluaciones").append(

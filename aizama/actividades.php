@@ -37,12 +37,19 @@ require 'header_adm.php';
 				</div-->
 			</div>
 		</div>
-		<div class="div-lista-evaluaciones oculto">
-			<div class="div-nombre-materia"><h1 id="mc">Material de apoyo de Matemáticas</h1></div>
+		<div class="div-lista-evaluaciones">
+			<div class="div-nombre-materia"><h1 id="mc">Evaluaciones de Matemáticas</h1></div>
 			<div class="content-list-evaluaciones">
 				<div class="lista-evaluaciones">
-					<div class="card-evaluacion">
-						<span class="no-material">No hay material</span>
+					<div class="div-banco">
+						<img class="icon-close" src="images/close.svg">
+						<span class="card-descripcion-pregunta">Descripción</span>
+						<span class="title-banco">Banco de Preguntas</span>
+						<div class="info-evaluacion-pregunta">
+							<div class="div-pregunta">
+								<span><b>-¿ QUE ES LO QUE PERMITE SOSTENER NUESTRO CUERPO?</b></span>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
